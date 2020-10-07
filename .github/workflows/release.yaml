@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'charts/**'
+      - 'valeriano-manassero/**'
 
 jobs:
   release:
