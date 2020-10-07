@@ -1,52 +1,47 @@
-# Presto Chart
+# prestosql
 
-[Prestosql](https://prestosql.io/) is an open source distributed SQL query engine for running interactive analytic queries against data sources of all sizes ranging from gigabytes to petabytes.
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: 343](https://img.shields.io/badge/AppVersion-343-informational?style=flat-square)
 
-## Chart Details
+Distributed SQL query engine for running interactive analytic queries
 
-This chart will do the following:
+**Homepage:** <https://prestosql.io>
 
-* Install a single server which acts both as coordinator and worker
-* Install a configmap for it
-* Install a service
+## Maintainers
 
-## Installing the Chart
+| Name | Email | Url |
+| ---- | ------ | --- |
+| valeriano-manassero | valeriano.manassero@gmail.com |  |
 
-To install the chart with the release name `my-release`:
+## Source Code
 
-```bash
-$ helm install --name my-release valeriano-manassero/prestosql
-```
+* <https://github.com/prestosql/presto>
 
-## Configuration
+## Values
 
-Configurable values are documented in the `values.yaml`:
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| affinity | object | `{}` |  |
+| image.pullPolicy | string | `"IfNotPresent"` |  |
+| image.repository | string | `"prestosql/presto"` |  |
+| image.securityContext.runAsGroup | int | `1000` |  |
+| image.securityContext.runAsUser | int | `1000` |  |
+| image.tag | int | `343` |  |
+| nodeSelector | object | `{}` |  |
+| resources | object | `{}` |  |
+| server.config.http.port | int | `8080` |  |
+| server.config.path | string | `"/usr/lib/presto/etc"` |  |
+| server.config.query.maxMemory | string | `"4GB"` |  |
+| server.config.query.maxMemoryPerNode | string | `"1GB"` |  |
+| server.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
+| server.jvm.gcMethod.type | string | `"UseG1GC"` |  |
+| server.jvm.maxHeapSize | string | `"8G"` |  |
+| server.log.presto.level | string | `"INFO"` |  |
+| server.node.dataDir | string | `"/data/presto"` |  |
+| server.node.environment | string | `"production"` |  |
+| server.node.pluginDir | string | `"/usr/lib/presto/plugin"` |  |
+| server.workers | int | `2` |  |
+| service.type | string | `"ClusterIP"` |  |
+| tolerations | list | `[]` |  |
 
-| Parameter                               | Description                                                                 | Default                  |
-|-----------------------------------------|-----------------------------------------------------------------------------|--------------------------|
-| `server.workers`                        | Numbers of prestosql worker nodes.                                          | `2`                      |
-| `server.node.environment`               | The name of the environment.                                                | `production`             |
-| `server.node.dataDir`                   | The location (filesystem path) of the data directory.                       | `/data/presto`           |
-| `server.note.pluginDir`                 | The location of the plugin directory.                                       | `/usr/lib/presto/plugin` |
-| `server.log.presto.level`               | The minimum log level of named logger `io.prestosql`.                       | `INFO`                   |
-| `server.config.path`                    | The location of customize configuration.                                    | `/usr/lib/presto/etc`    |
-| `server.config.http.port`               | The port number of coordinator service                                      | `8080`                   |
-| `server.config.query.maxMemory`         | The maximum amount of distributed memory, that a query may use.             | `4GB`                    |
-| `server.config.query.maxMemoryPerNode`  | The maximum amount of user memory, that a query may use on any one machine. | `1GB`                    |
-| `server.jvm.maxHeapSize`                | The value for JVM option `-Xmx`                                             | `8G`                     |
-| `server.jvm.gcMethod.type`              | Portion of the value for JVM option `-XX:`                                  | `UseG1GC`                |
-| `server.jvm.gcMethod.g1.heapRegionSize` | The value for JVM option `-XX:G1HeapRegionSize=`                            | `32M`                    |
-| `image.repository`                      | `prestosql` image repository.                                               | `prestosql/presto`       |
-| `image.tag`                             | `prestosql` image tag.                                                      | `329`                    |
-| `image.securityContext.runAsUser`       | The `uid` of `prestosql` image repository.                                  | `1000`                   |
-| `image.securityContext.runAsGroup`      | The `gid` of `prestosql` image repository.                                  | `1000`                   |
-
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
-
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
-
-```bash
-$ helm install my-release valeriano-manassero/prestosql -f values.yaml
-```
-
-> **Tip**: You can use the default [values.yaml](values.yaml)
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.3.0](https://github.com/norwoodj/helm-docs/releases/v1.3.0)
