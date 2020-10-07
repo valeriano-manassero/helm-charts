@@ -15,7 +15,7 @@ This chart will do the following:
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install --name my-release stable/presto
+$ helm install --name my-release valeriano-manassero/prestosql
 ```
 
 ## Configuration
@@ -46,7 +46,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```bash
-$ helm install my-release stable/presto -f values.yaml
+$ helm install my-release valeriano-manassero/prestosql -f values.yaml
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
