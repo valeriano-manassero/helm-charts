@@ -8,5 +8,5 @@ icon: https://prestosql.io/assets/presto.png
 sources:
   - https://github.com/prestosql/presto
 maintainers:
-  - name: Valeriano Manasero
+  - name: valeriano-manassero
     email: valeriano.manassero@gmail.com
