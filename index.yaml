@@ -1,0 +1,20 @@
+apiVersion: v1
+entries:
+  prestosql:
+  - apiVersion: v1
+    appVersion: "343"
+    created: "2020-10-08T10:00:13.186731489Z"
+    description: High performance, distributed SQL query engine for big data
+    digest: 77e171ca9f96167021aa4fc4dca2880b514ace63fe670bb1a8712dae3b968164
+    home: https://prestosql.io
+    icon: https://prestosql.io/assets/presto.png
+    maintainers:
+    - email: valeriano.manassero@gmail.com
+      name: valeriano-manassero
+    name: prestosql
+    sources:
+    - https://github.com/prestosql/presto
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/prestosql-1.0.0/prestosql-1.0.0.tgz
+    version: 1.0.0
+generated: "2020-10-08T10:00:13.069048206Z"
