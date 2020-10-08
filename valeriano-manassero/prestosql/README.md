@@ -2,7 +2,7 @@
 
 ![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: 343](https://img.shields.io/badge/AppVersion-343-informational?style=flat-square)
 
-Distributed SQL query engine for running interactive analytic queries
+High performance, distributed SQL query engine for big data
 
 **Homepage:** <https://prestosql.io>
 

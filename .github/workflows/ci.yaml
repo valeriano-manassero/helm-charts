@@ -32,9 +32,9 @@ jobs:
     strategy:
       matrix:
         k8s:
-          - v1.17.12
-          - v1.18.9
-          - v1.19.2
+          - v1.16.4
+          - v1.17.2
+          - v1.18.0
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -52,9 +52,9 @@ jobs:
     strategy:
       matrix:
         k8s:
-          - v1.17.12
-          - v1.18.9
-          - v1.19.2
+          - v1.16.4
+          - v1.17.2
+          - v1.18.0
     steps:
       - name: Checkout
         uses: actions/checkout@v1
