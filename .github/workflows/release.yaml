@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'valeriano-manassero/**'
 
 jobs:
   release:
@@ -19,5 +17,3 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@master
-        env:
-          CR_TOKEN: '${{ secrets.CR_TOKEN }}'
