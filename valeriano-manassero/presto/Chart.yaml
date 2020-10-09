@@ -2,10 +2,11 @@ apiVersion: v1
 appVersion: "343"
 description: High performance, distributed SQL query engine for big data
 name: presto
-version: 1.0.0
+version: 1.1.0
 home: https://prestosql.io
 icon: https://prestosql.io/assets/presto.png
 sources:
+  - https://github.com/valeriano-manassero/helm-charts
   - https://github.com/prestosql/presto
 maintainers:
   - name: valeriano-manassero
