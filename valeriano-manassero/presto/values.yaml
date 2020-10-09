@@ -1,3 +1,11 @@
+image:
+  repository: prestosql/presto
+  tag: 343
+  pullPolicy: IfNotPresent
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+
 server:
   workers: 2
   node:
@@ -21,13 +29,23 @@ server:
       g1:
         heapRegionSize: "32M"
 
-image:
-  repository: prestosql/presto
-  tag: 343
-  pullPolicy: IfNotPresent
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
+connectors: {}
+  # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
+  # so data is stored in a secret
+  # mysql.properties: |-
+  #   connector.name=mysql
+  #   connection-url=jdbc:mysql://mysqlserver:3306
+  #   connection-user=mysqluser
+  #   connection-password=mysqlpassword
+  # elk.properties: |-
+  #   connector.name=elasticsearch
+  #   elasticsearch.host=elasticsearchserver
+  #   elasticsearch.port=9200
+  #   elasticsearch.default-schema-name=default
+  #   elasticsearch.security=PASSWORD
+  #   elasticsearch.auth.user=elastiuser
+  #   elasticsearch.auth.password=elasticpassword
+  #   elasticsearch.tls.enabled=true
 
 service:
   type: ClusterIP
