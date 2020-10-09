@@ -1,6 +1,6 @@
 # presto
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: 343](https://img.shields.io/badge/AppVersion-343-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![AppVersion: 343](https://img.shields.io/badge/AppVersion-343-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -14,6 +14,7 @@ High performance, distributed SQL query engine for big data
 
 ## Source Code
 
+* <https://github.com/valeriano-manassero/helm-charts>
 * <https://github.com/prestosql/presto>
 
 ## Values
@@ -21,6 +22,7 @@ High performance, distributed SQL query engine for big data
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| connectors | object | `{}` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"prestosql/presto"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
