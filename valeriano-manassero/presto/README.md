@@ -1,6 +1,6 @@
 # presto
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![AppVersion: 343](https://img.shields.io/badge/AppVersion-343-informational?style=flat-square)
+![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![AppVersion: 344](https://img.shields.io/badge/AppVersion-344-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -27,7 +27,7 @@ High performance, distributed SQL query engine for big data
 | image.repository | string | `"prestosql/presto"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
-| image.tag | int | `343` |  |
+| image.tag | int | `344` |  |
 | nodeSelector | object | `{}` |  |
 | resources | object | `{}` |  |
 | server.config.http.port | int | `8080` |  |
