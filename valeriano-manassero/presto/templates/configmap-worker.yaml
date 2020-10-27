@@ -31,6 +31,8 @@ data:
     http-server.http.port={{ .Values.server.config.http.port }}
     query.max-memory={{ .Values.server.config.query.maxMemory }}
     query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
+    query.max-memory={{ .Values.server.config.query.maxTotalMemory }}
+    query.max-total-memory-per-node={{ .Values.server.config.query.maxTotalMemoryPerNode }}
     discovery.uri=http://{{ template "presto.fullname" . }}:{{ .Values.server.config.http.port }}
 
   log.properties: |
