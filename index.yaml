@@ -3,6 +3,32 @@ entries:
   presto:
   - apiVersion: v1
     appVersion: "345"
+    created: "2020-10-27T13:12:15.112364347Z"
+    description: High performance, distributed SQL query engine for big data
+    digest: 9c5348dd8271e70f76c21c5bbdc53b2454837ce0864ef026a985c1e739cbca5c
+    home: https://prestosql.io
+    icon: https://prestosql.io/assets/presto.png
+    keywords:
+    - presto
+    - prestosql
+    - prestodb
+    - big data
+    - database
+    - sql
+    - query engine
+    - high performance
+    maintainers:
+    - email: valeriano.manassero@gmail.com
+      name: valeriano-manassero
+    name: presto
+    sources:
+    - https://github.com/valeriano-manassero/helm-charts
+    - https://github.com/prestosql/presto
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/presto-1.2.1/presto-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v1
+    appVersion: "345"
     created: "2020-10-27T08:27:47.409838358Z"
     description: High performance, distributed SQL query engine for big data
     digest: 545969b9925aedf40228d87b9ce3826cabc4b984eea814a7a28de3ddc89f4d57
