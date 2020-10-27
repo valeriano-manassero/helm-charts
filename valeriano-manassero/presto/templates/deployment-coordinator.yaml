@@ -20,6 +20,8 @@ spec:
         app: {{ template "presto.name" . }}
         release: {{ .Release.Name }}
         component: coordinator
+      annotations:
+        checksum/config: {{ .Values.server | sha256sum }}
     spec:
       {{- with .Values.image.securityContext }}
       securityContext:

@@ -22,6 +22,8 @@ spec:
         app: {{ template "presto.name" . }}
         release: {{ .Release.Name }}
         component: worker
+      annotations:
+        checksum/config: {{ .Values.server | sha256sum }}
     spec:
       volumes:
         - name: config-volume
