@@ -21,7 +21,7 @@ spec:
         release: {{ .Release.Name }}
         component: coordinator
       annotations:
-        checksum/config: {{ .Values.server | sha256sum }}
+        checksum/config: {{ sha256sum .Values.server }}
     spec:
       {{- with .Values.image.securityContext }}
       securityContext:

@@ -23,7 +23,7 @@ spec:
         release: {{ .Release.Name }}
         component: worker
       annotations:
-        checksum/config: {{ .Values.server | sha256sum }}
+        checksum/config: {{ sha256sum .Values.server }}
     spec:
       volumes:
         - name: config-volume
