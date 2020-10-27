@@ -1,6 +1,6 @@
 # presto
 
-![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![AppVersion: 344](https://img.shields.io/badge/AppVersion-344-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![AppVersion: 345](https://img.shields.io/badge/AppVersion-345-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -27,21 +27,23 @@ High performance, distributed SQL query engine for big data
 | image.repository | string | `"prestosql/presto"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
-| image.tag | int | `344` |  |
+| image.tag | int | `345` |  |
 | nodeSelector | object | `{}` |  |
 | resources | object | `{}` |  |
 | server.config.http.port | int | `8080` |  |
 | server.config.path | string | `"/usr/lib/presto/etc"` |  |
-| server.config.query.maxMemory | string | `"4GB"` |  |
+| server.config.query.maxMemory | string | `"3GB"` |  |
 | server.config.query.maxMemoryPerNode | string | `"1GB"` |  |
+| server.config.query.maxTotalMemory | string | `"6GB"` |  |
+| server.config.query.maxTotalMemoryPerNode | string | `"2GB"` |  |
 | server.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | server.jvm.gcMethod.type | string | `"UseG1GC"` |  |
-| server.jvm.maxHeapSize | string | `"8G"` |  |
+| server.jvm.maxHeapSize | string | `"10G"` |  |
 | server.log.presto.level | string | `"INFO"` |  |
 | server.node.dataDir | string | `"/data/presto"` |  |
 | server.node.environment | string | `"production"` |  |
 | server.node.pluginDir | string | `"/usr/lib/presto/plugin"` |  |
-| server.workers | int | `2` |  |
+| server.workers | int | `3` |  |
 | service.type | string | `"ClusterIP"` |  |
 | tolerations | list | `[]` |  |
 
