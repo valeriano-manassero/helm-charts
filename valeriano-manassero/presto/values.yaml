@@ -1,13 +1,13 @@
 image:
   repository: prestosql/presto
-  tag: 344
+  tag: 345
   pullPolicy: IfNotPresent
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
 
 server:
-  workers: 2
+  workers: 3
   node:
     environment: production
     dataDir: /data/presto
@@ -20,10 +20,12 @@ server:
     http:
       port: 8080
     query:
-      maxMemory: "4GB"
+      maxMemory: "3GB"
       maxMemoryPerNode: "1GB"
+      maxTotalMemory: "6GB"
+      maxTotalMemoryPerNode: "2GB"
   jvm:
-    maxHeapSize: "8G"
+    maxHeapSize: "10G"
     gcMethod:
       type: "UseG1GC"
       g1:
