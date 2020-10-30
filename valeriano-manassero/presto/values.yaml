@@ -24,12 +24,6 @@ server:
       maxMemoryPerNode: "1GB"
       maxTotalMemory: "6GB"
       maxTotalMemoryPerNode: "2GB"
-  jvm:
-    maxHeapSize: "10G"
-    gcMethod:
-      type: "UseG1GC"
-      g1:
-        heapRegionSize: "32M"
 
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
