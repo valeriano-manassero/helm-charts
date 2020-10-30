@@ -1,6 +1,6 @@
 # presto
 
-![Version: 1.2.2](https://img.shields.io/badge/Version-1.2.2-informational?style=flat-square) ![AppVersion: 345](https://img.shields.io/badge/AppVersion-345-informational?style=flat-square)
+![Version: 1.2.3](https://img.shields.io/badge/Version-1.2.3-informational?style=flat-square) ![AppVersion: 345](https://img.shields.io/badge/AppVersion-345-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -36,6 +36,9 @@ High performance, distributed SQL query engine for big data
 | server.config.query.maxMemoryPerNode | string | `"1GB"` |  |
 | server.config.query.maxTotalMemory | string | `"6GB"` |  |
 | server.config.query.maxTotalMemoryPerNode | string | `"2GB"` |  |
+| server.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
+| server.jvm.gcMethod.type | string | `"UseG1GC"` |  |
+| server.jvm.maxHeapSize | string | `"7G"` |  |
 | server.log.presto.level | string | `"INFO"` |  |
 | server.node.dataDir | string | `"/data/presto"` |  |
 | server.node.environment | string | `"production"` |  |
