@@ -16,9 +16,14 @@ data:
 
   jvm.config: |
     -server
-    -XX:+UnlockExperimentalVMOptions
-    -XX:+UseCGroupMemoryLimitForHeap
-    -XX:MaxRAMFraction=1
+    -Xmx{{ .Values.server.jvm.maxHeapSize }}
+    -XX:+{{ .Values.server.jvm.gcMethod.type }}
+    -XX:G1HeapRegionSize={{ .Values.server.jvm.gcMethod.g1.heapRegionSize }}
+    -XX:+UseGCOverheadLimit
+    -XX:+ExplicitGCInvokesConcurrent
+    -XX:+HeapDumpOnOutOfMemoryError
+    -XX:+ExitOnOutOfMemoryError
+    -Djdk.attach.allowAttachSelf=true
 
   config.properties: |
     coordinator=true
