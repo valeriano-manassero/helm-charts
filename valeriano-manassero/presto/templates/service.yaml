@@ -12,6 +12,5 @@ spec:
       protocol: TCP
       name: http-coord
   selector:
-    app: {{ template "presto.name" . }}
-    release: {{ .Release.Name }}
-    component: coordinator
+    {{- include "presto.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
