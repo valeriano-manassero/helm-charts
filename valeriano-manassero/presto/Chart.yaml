@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: "348"
 description: High performance, distributed SQL query engine for big data
 name: presto
-version: 1.2.5
+version: 1.2.6
 home: https://prestosql.io
 icon: https://prestosql.io/assets/presto.png
 sources:

@@ -10,9 +10,8 @@ spec:
   replicas: {{ .Values.server.workers }}
   selector:
     matchLabels:
-      app: {{ template "presto.name" . }}
-      release: {{ .Release.Name }}
-      component: worker
+      {{- include "presto.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: worker
   template:
     metadata:
       labels:
