@@ -4,11 +4,8 @@ kind: ConfigMap
 metadata:
   name: {{ template "presto.worker" . }}
   labels:
-    app: {{ template "presto.name" . }}
-    chart: {{ template "presto.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-    component: worker
+    {{- include "presto.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
 data:
   node.properties: |
     node.environment={{ .Values.server.node.environment }}
