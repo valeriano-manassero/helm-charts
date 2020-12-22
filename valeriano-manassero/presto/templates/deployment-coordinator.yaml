@@ -3,11 +3,8 @@ kind: Deployment
 metadata:
   name: {{ template "presto.coordinator" . }}
   labels:
-    app: {{ template "presto.name" . }}
-    chart: {{ template "presto.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-    component: coordinator
+    {{- include "presto.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
 spec:
   selector:
     matchLabels:
@@ -17,9 +14,8 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "presto.name" . }}
-        release: {{ .Release.Name }}
-        component: coordinator
+        {{- include "presto.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: coordinator
       annotations:
         checksum/config: {{ printf "%s%s" .Values.server .Values.connectors | sha256sum }}
     spec:

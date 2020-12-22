@@ -3,10 +3,7 @@ kind: Service
 metadata:
   name: {{ template "presto.fullname" . }}
   labels:
-    app: {{ template "presto.name" . }}
-    chart: {{ template "presto.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "presto.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
