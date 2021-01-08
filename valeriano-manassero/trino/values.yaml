@@ -1,0 +1,71 @@
+image:
+  repository: trinodb/trino
+  tag: 351
+  pullPolicy: IfNotPresent
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+
+server:
+  workers: 3
+  node:
+    environment: production
+    dataDir: /data/trino
+    pluginDir: /usr/lib/trino/plugin
+  log:
+    trino:
+      level: INFO
+  config:
+    path: /usr/lib/trino/etc
+    http:
+      port: 8080
+    query:
+      maxMemory: "3GB"
+      maxMemoryPerNode: "1GB"
+      maxTotalMemory: "6GB"
+      maxTotalMemoryPerNode: "2GB"
+  jvm:
+    maxHeapSize: "7G"
+    gcMethod:
+      type: "UseG1GC"
+      g1:
+        heapRegionSize: "32M"
+
+connectors: {}
+  # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
+  # so data is stored in a secret
+  # mysql.properties: |-
+  #   connector.name=mysql
+  #   connection-url=jdbc:mysql://mysqlserver:3306
+  #   connection-user=mysqluser
+  #   connection-password=mysqlpassword
+  # elk.properties: |-
+  #   connector.name=elasticsearch
+  #   elasticsearch.host=elasticsearchserver
+  #   elasticsearch.port=9200
+  #   elasticsearch.default-schema-name=default
+  #   elasticsearch.security=PASSWORD
+  #   elasticsearch.auth.user=elastiuser
+  #   elasticsearch.auth.password=elasticpassword
+  #   elasticsearch.tls.enabled=true
+
+service:
+  type: ClusterIP
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
