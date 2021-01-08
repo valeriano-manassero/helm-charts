@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "trino.coordinator" . }}
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
+spec:
+  selector:
+    matchLabels:
+      {{- include "trino.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: coordinator
+  template:
+    metadata:
+      labels:
+        {{- include "trino.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: coordinator
+      annotations:
+        checksum/config: {{ printf "%s%s" .Values.server .Values.connectors | sha256sum }}
+    spec:
+      {{- with .Values.image.securityContext }}
+      securityContext:
+        runAsUser: {{ .runAsUser }}
+        runAsGroup: {{ .runAsGroup }}
+      {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ template "trino.coordinator" . }}
+        - name: catalog-volume
+          secret:
+            secretName: trino-connectors
+      containers:
+        - name: {{ .Chart.Name }}-coordinator
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: {{ .Values.server.config.path }}
+              name: config-volume
+            - mountPath: {{ .Values.server.config.path }}/catalog
+              name: catalog-volume
+          ports:
+            - name: http-coord
+              containerPort: {{ .Values.server.config.http.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /v1/status
+              port: http-coord
+          readinessProbe:
+            httpGet:
+              path: /v1/status
+              port: http-coord
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
