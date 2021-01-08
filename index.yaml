@@ -3,6 +3,31 @@ entries:
   presto:
   - apiVersion: v1
     appVersion: "348"
+    created: "2021-01-08T11:05:58.682737458Z"
+    description: Deprecated, please use new Trino chart
+    digest: 4348de9d100889345b29066f22c94d6088ec0517619e759bb16a8f75e99dfd54
+    home: https://prestosql.io
+    keywords:
+    - presto
+    - prestosql
+    - prestodb
+    - big data
+    - database
+    - sql
+    - query engine
+    - high performance
+    maintainers:
+    - email: valeriano.manassero@gmail.com
+      name: valeriano-manassero
+    name: presto
+    sources:
+    - https://github.com/valeriano-manassero/helm-charts
+    - https://github.com/prestosql/presto
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/presto-1.2.9/presto-1.2.9.tgz
+    version: 1.2.9
+  - apiVersion: v1
+    appVersion: "348"
     created: "2021-01-08T10:48:37.320791326Z"
     description: Deprecated, please use new Trino chart
     digest: 30698bd7bc9a4e0e08e44366f4ea6acc78afd993a8bc0e971dd5a5912b8bd032
