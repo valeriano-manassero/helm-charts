@@ -1,8 +1,8 @@
 # presto
 
-![Version: 1.2.7](https://img.shields.io/badge/Version-1.2.7-informational?style=flat-square) ![AppVersion: 348](https://img.shields.io/badge/AppVersion-348-informational?style=flat-square)
+![Version: 1.2.8](https://img.shields.io/badge/Version-1.2.8-informational?style=flat-square) ![AppVersion: 348](https://img.shields.io/badge/AppVersion-348-informational?style=flat-square)
 
-High performance, distributed SQL query engine for big data
+Deprecated, please use new Trino chart
 
 **Homepage:** <https://prestosql.io>
 

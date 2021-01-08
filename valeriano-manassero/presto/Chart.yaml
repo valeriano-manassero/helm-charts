@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: "348"
 description: Deprecated, please use new Trino chart
 name: presto
-version: 1.2.7
+version: 1.2.8
 home: https://prestosql.io
 icon: https://prestosql.io/assets/presto.png
 sources:
