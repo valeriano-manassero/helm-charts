@@ -1,0 +1,285 @@
+ingress:
+    enabled: false
+    name: clearml-server-ingress
+    annotations: {}
+    host: ""
+    tls:
+        secretName: ""
+
+apiserver:
+  prepopulateEnabled: "true"
+  prepopulateZipFiles: "/opt/clearml/db-pre-populate"
+  prepopulateArtifactsPath: "/mnt/fileserver"
+  deploymentType: "Helm"
+  configDir: /opt/clearml/config
+
+  service:
+    type: ClusterIP
+    port: 8008
+
+  replicaCount: 1
+
+  image:
+    repository: "allegroai/clearml-server"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  podAnnotations: {}
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  storage:
+    logs:
+      class: "standard"
+      size: 10Gi
+    config:
+      class: "standard"
+      size: 1Gi
+
+fileserver:
+  service:
+    type: ClusterIP
+    port: 8081
+
+  replicaCount: 1
+
+  image:
+    repository: "allegroai/clearml-server"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  podAnnotations: {}
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  storage:
+    data:
+      class: "standard"
+      size: 50Gi
+    logs:
+      class: "standard"
+      size: 5Gi
+
+webserver:
+  service:
+    type: ClusterIP
+    port: 80
+
+  replicaCount: 1
+
+  image:
+    repository: "allegroai/clearml-server"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  podAnnotations: {}
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+agentservices:
+  clearmlHostIp: null
+  defaultBaseDocker: "ubuntu:18.04"
+  agentVersion: ""
+  clearmlApiHost: "http://apiserver-service:8008"
+  clearmlWebHost: null
+  clearmlFilesHost: null
+  clearmlGitUser: null
+  clearmlGitPassword: null
+  clearmlAccessKey: null
+  clearmlSecretKey: null
+  awsAccessKeyId: null
+  awsSecretAccessKey: null
+  awsDefaultRegion: null
+  azureStorageAccount: null
+  azureStorageKey: null
+  googleCredentials: null
+  clearmlWorkerId: "clearml-services"
+
+  replicaCount: 1
+
+  image:
+    repository: "allegroai/clearml-agent-services"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  podAnnotations: {}
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  storage:
+    data:
+      class: "standard"
+      size: 50Gi
+
+agentGroups:
+  - name: agent-group0
+    replicaCount: 0
+    nvidiaGpusPerAgent: 1
+    agentVersion: "" # if set, it *MUST* include comparison operator (e.g. ">=0.16.1")
+    queues: "default" # multiple queues can be specified separated by a space (e.g. "important_jobs default")
+    clearmlApiHost: "http://apiserver-service:8008"
+    clearmlWebHost: "http://webserver-service"
+    clearmlFilesHost: "http://fileserver-service:8081"
+    clearmlGitUser: null
+    clearmlGitPassword: null
+    clearmlAccessKey: null
+    clearmlSecretKey: null
+    awsAccessKeyId: null
+    awsSecretAccessKey: null
+    awsDefaultRegion: null
+    azureStorageAccount: null
+    azureStorageKey: null
+    clearmlConfig: |-
+      sdk {
+      }
+
+    storage:
+      data:
+        class: "standard"
+        size: 50Gi
+
+    image:
+      repository: "nvidia/cuda"
+      pullPolicy: IfNotPresent
+      tag: "latest"
+
+    podAnnotations: {}
+
+    resources: {}
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    nodeSelector: {}
+
+    tolerations: []
+
+    affinity: {}
+
+redis: # configuration from https://github.com/bitnami/charts/blob/master/bitnami/redis/values.yaml
+  enabled: true
+  usePassword: false
+  databaseNumber: 0
+  master:
+    port: 6379
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+  cluster:
+    enabled: false
+
+mongodb: # configuration from https://github.com/bitnami/charts/blob/master/bitnami/mongodb/values.yaml
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
+  replicaCount: 1
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 50Gi
+  service:
+    type: ClusterIP
+    port: 27017
+    portName: mongo-service
+
+elasticsearch: # configuration from https://github.com/elastic/helm-charts/blob/7.10/elasticsearch/values.yaml
+  enabled: true
+  httpPort: 9200
+  roles:
+    master: "true"
+    ingest: "true"
+    data: "true"
+    remote_cluster_client: "true"
+  replicas: 1
+  minimumMasterNodes: 1
+  esJavaOpts: "-Xmx2g -Xms2g"
+  resources:
+    requests:
+      memory: "4Gi"
+    limits:
+      memory: "4Gi"
+  persistence:
+    enabled: true
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 50Gi
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: false

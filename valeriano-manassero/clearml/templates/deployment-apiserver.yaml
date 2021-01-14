@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "clearml.fullname" . }}-apiserver
+  labels:
+    {{- include "clearml.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.apiserver.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "clearml.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.apiserver.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "clearml.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+        - name: apiserver-config
+          persistentVolumeClaim:
+            claimName: {{ include "clearml.fullname" . }}-apiserver-config
+        - name: apiserver-logs
+          persistentVolumeClaim:
+            claimName: {{ include "clearml.fullname" . }}-apiserver-logs
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.apiserver.image.repository }}:{{ .Values.apiserver.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.apiserver.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8008
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -X OPTIONS
+                - http://localhost:8008/
+          readinessProbe:
+            exec:
+              command:
+                - curl
+                - -X OPTIONS
+                - http://localhost:8008/
+          env:
+          - name: CLEARML_ELASTIC_SERVICE_HOST
+            value: "elasticsearch-master"
+          - name: CLEARML_ELASTIC_SERVICE_PORT
+            value: "{{ .Values.elasticsearch.httpPort }}"
+          - name: CLEARML_MONGODB_SERVICE_HOST
+            value: "{{ .Release.Name }}-mongodb"
+          - name: CLEARML_MONGODB_SERVICE_PORT
+            value: "{{ .Values.mongodb.service.port }}"
+          - name: CLEARML_REDIS_SERVICE_HOST
+            value: "{{ .Release.Name }}-redis-master"
+          - name: CLEARML_REDIS_SERVICE_PORT
+            value: "{{ .Values.redis.master.port }}"
+          - name: CLEARML__apiserver__pre_populate__enabled
+            value: "{{ .Values.apiserver.prepopulateEnabled }}"
+          - name: CLEARML__apiserver__pre_populate__zip_files
+            value: "{{ .Values.apiserver.prepopulateZipFiles }}"
+          - name: CLEARML__apiserver__pre_populate__artifacts_path
+            value: "{{ .Values.apiserver.prepopulateArtifactsPath }}"
+          - name: CLEARML_SERVER_DEPLOYMENT_TYPE
+            value: {{ .Values.apiserver.deploymentType }}
+          - name: CLEARML_CONFIG_DIR
+            value: /opt/clearml/config
+          args:
+          - apiserver
+          volumeMounts:
+            - name: apiserver-config
+              mountPath: /opt/clearml/config
+            - name: apiserver-logs
+              mountPath: /var/log/clearml
+          resources:
+            {{- toYaml .Values.apiserver.resources | nindent 12 }}
+      {{- with .Values.apiserver.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.apiserver.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.apiserver.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
