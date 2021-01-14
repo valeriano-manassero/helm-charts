@@ -49,10 +49,10 @@ MLOps platform
 | agentGroups[0].image.tag | string | `"latest"` |  |
 | agentGroups[0].name | string | `"agent-group0"` |  |
 | agentGroups[0].nodeSelector | object | `{}` |  |
-| agentGroups[0].nvidiaGpusPerAgent | int | `0` |  |
+| agentGroups[0].nvidiaGpusPerAgent | int | `1` |  |
 | agentGroups[0].podAnnotations | object | `{}` |  |
 | agentGroups[0].queues | string | `"default"` |  |
-| agentGroups[0].replicaCount | int | `1` |  |
+| agentGroups[0].replicaCount | int | `0` |  |
 | agentGroups[0].resources | object | `{}` |  |
 | agentGroups[0].storage.data.class | string | `"standard"` |  |
 | agentGroups[0].storage.data.size | string | `"50Gi"` |  |
