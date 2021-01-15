@@ -198,11 +198,6 @@ agentGroups:
       sdk {
       }
 
-    storage:
-      data:
-        class: "standard"
-        size: 50Gi
-
     image:
       repository: "nvidia/cuda"
       pullPolicy: IfNotPresent
