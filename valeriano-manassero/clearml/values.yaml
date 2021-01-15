@@ -20,9 +20,9 @@ apiserver:
   replicaCount: 1
 
   image:
-    repository: "allegroai/clearml-server"
+    repository: "allegroai/clearml"
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "0.17"
 
   podAnnotations: {}
 
@@ -60,9 +60,9 @@ fileserver:
   replicaCount: 1
 
   image:
-    repository: "allegroai/clearml-server"
+    repository: "allegroai/clearml"
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "0.17"
 
   podAnnotations: {}
 
@@ -93,6 +93,8 @@ fileserver:
       size: 5Gi
 
 webserver:
+  clearmlApiHost: "http://clearml-apiserver:8008"
+
   service:
     type: ClusterIP
     port: 80
@@ -100,9 +102,9 @@ webserver:
   replicaCount: 1
 
   image:
-    repository: "allegroai/clearml-server"
+    repository: "allegroai/clearml"
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "0.17"
 
   podAnnotations: {}
 
@@ -126,9 +128,8 @@ webserver:
 
 agentservices:
   clearmlHostIp: null
-  defaultBaseDocker: "ubuntu:18.04"
   agentVersion: ""
-  clearmlApiHost: "http://apiserver-service:8008"
+  clearmlApiHost: "http://clearml-apiserver:8008"
   clearmlWebHost: null
   clearmlFilesHost: null
   clearmlGitUser: null
@@ -181,9 +182,9 @@ agentGroups:
     nvidiaGpusPerAgent: 1
     agentVersion: "" # if set, it *MUST* include comparison operator (e.g. ">=0.16.1")
     queues: "default" # multiple queues can be specified separated by a space (e.g. "important_jobs default")
-    clearmlApiHost: "http://apiserver-service:8008"
-    clearmlWebHost: "http://webserver-service"
-    clearmlFilesHost: "http://fileserver-service:8081"
+    clearmlApiHost: "http://clearml-apiserver:8008"
+    clearmlWebHost: "http://clearml-webserver"
+    clearmlFilesHost: "http://clearml-fileserver:8081"
     clearmlGitUser: null
     clearmlGitPassword: null
     clearmlAccessKey: null
@@ -205,7 +206,7 @@ agentGroups:
     image:
       repository: "nvidia/cuda"
       pullPolicy: IfNotPresent
-      tag: "latest"
+      tag: "11.2.0-runtime"
 
     podAnnotations: {}
 
