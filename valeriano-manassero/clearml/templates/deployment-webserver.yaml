@@ -38,6 +38,9 @@ spec:
                 - curl
                 - -X OPTIONS
                 - http://localhost:80/
+          env:
+          - name: NGINX_APISERVER_ADDRESS
+            value: {{ .Values.agentservices.clearmlApiHost }}
           args:
           - webserver
           resources:
