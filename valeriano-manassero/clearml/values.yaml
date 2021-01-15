@@ -1,10 +1,10 @@
 ingress:
-    enabled: false
-    name: clearml-server-ingress
-    annotations: {}
-    host: ""
-    tls:
-        secretName: ""
+  enabled: false
+  name: clearml-server-ingress
+  annotations: {}
+  host: ""
+  tls:
+      secretName: ""
 
 apiserver:
   prepopulateEnabled: "true"
