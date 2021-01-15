@@ -1,6 +1,6 @@
 # clearml
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.17.4](https://img.shields.io/badge/AppVersion-1.17.4-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.17](https://img.shields.io/badge/AppVersion-1.17-informational?style=flat-square)
 
 MLOps platform
 
@@ -37,16 +37,16 @@ MLOps platform
 | agentGroups[0].azureStorageAccount | string | `nil` |  |
 | agentGroups[0].azureStorageKey | string | `nil` |  |
 | agentGroups[0].clearmlAccessKey | string | `nil` |  |
-| agentGroups[0].clearmlApiHost | string | `"http://apiserver-service:8008"` |  |
+| agentGroups[0].clearmlApiHost | string | `"http://clearml-apiserver:8008"` |  |
 | agentGroups[0].clearmlConfig | string | `"sdk {\n}"` |  |
-| agentGroups[0].clearmlFilesHost | string | `"http://fileserver-service:8081"` |  |
+| agentGroups[0].clearmlFilesHost | string | `"http://clearml-fileserver:8081"` |  |
 | agentGroups[0].clearmlGitPassword | string | `nil` |  |
 | agentGroups[0].clearmlGitUser | string | `nil` |  |
 | agentGroups[0].clearmlSecretKey | string | `nil` |  |
-| agentGroups[0].clearmlWebHost | string | `"http://webserver-service"` |  |
+| agentGroups[0].clearmlWebHost | string | `"http://clearml-webserver"` |  |
 | agentGroups[0].image.pullPolicy | string | `"IfNotPresent"` |  |
 | agentGroups[0].image.repository | string | `"nvidia/cuda"` |  |
-| agentGroups[0].image.tag | string | `"latest"` |  |
+| agentGroups[0].image.tag | string | `"11.2.0-runtime"` |  |
 | agentGroups[0].name | string | `"agent-group0"` |  |
 | agentGroups[0].nodeSelector | object | `{}` |  |
 | agentGroups[0].nvidiaGpusPerAgent | int | `1` |  |
@@ -65,7 +65,7 @@ MLOps platform
 | agentservices.azureStorageAccount | string | `nil` |  |
 | agentservices.azureStorageKey | string | `nil` |  |
 | agentservices.clearmlAccessKey | string | `nil` |  |
-| agentservices.clearmlApiHost | string | `"http://apiserver-service:8008"` |  |
+| agentservices.clearmlApiHost | string | `"http://clearml-apiserver:8008"` |  |
 | agentservices.clearmlFilesHost | string | `nil` |  |
 | agentservices.clearmlGitPassword | string | `nil` |  |
 | agentservices.clearmlGitUser | string | `nil` |  |
@@ -73,7 +73,6 @@ MLOps platform
 | agentservices.clearmlSecretKey | string | `nil` |  |
 | agentservices.clearmlWebHost | string | `nil` |  |
 | agentservices.clearmlWorkerId | string | `"clearml-services"` |  |
-| agentservices.defaultBaseDocker | string | `"ubuntu:18.04"` |  |
 | agentservices.googleCredentials | string | `nil` |  |
 | agentservices.image.pullPolicy | string | `"IfNotPresent"` |  |
 | agentservices.image.repository | string | `"allegroai/clearml-agent-services"` |  |
@@ -89,8 +88,8 @@ MLOps platform
 | apiserver.configDir | string | `"/opt/clearml/config"` |  |
 | apiserver.deploymentType | string | `"Helm"` |  |
 | apiserver.image.pullPolicy | string | `"IfNotPresent"` |  |
-| apiserver.image.repository | string | `"allegroai/clearml-server"` |  |
-| apiserver.image.tag | string | `"latest"` |  |
+| apiserver.image.repository | string | `"allegroai/clearml"` |  |
+| apiserver.image.tag | string | `"0.17"` |  |
 | apiserver.nodeSelector | object | `{}` |  |
 | apiserver.podAnnotations | object | `{}` |  |
 | apiserver.prepopulateArtifactsPath | string | `"/mnt/fileserver"` |  |
@@ -122,8 +121,8 @@ MLOps platform
 | elasticsearch.volumeClaimTemplate.resources.requests.storage | string | `"50Gi"` |  |
 | fileserver.affinity | object | `{}` |  |
 | fileserver.image.pullPolicy | string | `"IfNotPresent"` |  |
-| fileserver.image.repository | string | `"allegroai/clearml-server"` |  |
-| fileserver.image.tag | string | `"latest"` |  |
+| fileserver.image.repository | string | `"allegroai/clearml"` |  |
+| fileserver.image.tag | string | `"0.17"` |  |
 | fileserver.nodeSelector | object | `{}` |  |
 | fileserver.podAnnotations | object | `{}` |  |
 | fileserver.replicaCount | int | `1` |  |
@@ -159,9 +158,10 @@ MLOps platform
 | redis.master.port | int | `6379` |  |
 | redis.usePassword | bool | `false` |  |
 | webserver.affinity | object | `{}` |  |
+| webserver.clearmlApiHost | string | `"http://clearml-apiserver:8008"` |  |
 | webserver.image.pullPolicy | string | `"IfNotPresent"` |  |
-| webserver.image.repository | string | `"allegroai/clearml-server"` |  |
-| webserver.image.tag | string | `"latest"` |  |
+| webserver.image.repository | string | `"allegroai/clearml"` |  |
+| webserver.image.tag | string | `"0.17"` |  |
 | webserver.nodeSelector | object | `{}` |  |
 | webserver.podAnnotations | object | `{}` |  |
 | webserver.replicaCount | int | `1` |  |
