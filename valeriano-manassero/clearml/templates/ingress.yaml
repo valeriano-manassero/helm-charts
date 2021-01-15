@@ -30,20 +30,20 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: webserver-service
+              serviceName: {{ include "clearml.fullname" . }}-webserver
               servicePort: 80
     - host: "api.{{ .Values.ingress.host }}"
       http:
         paths:
           - path: /
             backend:
-              serviceName: apiserver-service
+              serviceName: {{ include "clearml.fullname" . }}-apiserver
               servicePort: 8008
     - host: "files.{{ .Values.ingress.host }}"
       http:
         paths:
           - path: /
             backend:
-              serviceName: fileserver-service
+              serviceName: {{ include "clearml.fullname" . }}-fileserver
               servicePort: 8081
 {{- end }}
