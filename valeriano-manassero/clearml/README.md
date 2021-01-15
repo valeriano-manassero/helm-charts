@@ -1,6 +1,6 @@
 # clearml
 
-![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.17](https://img.shields.io/badge/AppVersion-1.17-informational?style=flat-square)
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.17](https://img.shields.io/badge/AppVersion-1.17-informational?style=flat-square)
 
 MLOps platform
 
@@ -46,7 +46,7 @@ MLOps platform
 | agentGroups[0].clearmlWebHost | string | `"http://clearml-webserver"` |  |
 | agentGroups[0].image.pullPolicy | string | `"IfNotPresent"` |  |
 | agentGroups[0].image.repository | string | `"nvidia/cuda"` |  |
-| agentGroups[0].image.tag | string | `"11.2.0-runtime"` |  |
+| agentGroups[0].image.tag | string | `"11.0-base-ubuntu18.04"` |  |
 | agentGroups[0].name | string | `"agent-group0"` |  |
 | agentGroups[0].nodeSelector | object | `{}` |  |
 | agentGroups[0].nvidiaGpusPerAgent | int | `1` |  |
