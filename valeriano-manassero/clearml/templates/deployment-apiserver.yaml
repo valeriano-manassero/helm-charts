@@ -46,27 +46,27 @@ spec:
                 - -X OPTIONS
                 - http://localhost:8008/
           env:
-          - name: CLEARML_ELASTIC_SERVICE_HOST
+          - name: TRAINS_ELASTIC_SERVICE_HOST
             value: "elasticsearch-master"
-          - name: CLEARML_ELASTIC_SERVICE_PORT
+          - name: TRAINS_ELASTIC_SERVICE_PORT
             value: "{{ .Values.elasticsearch.httpPort }}"
-          - name: CLEARML_MONGODB_SERVICE_HOST
+          - name: TRAINS_MONGODB_SERVICE_HOST
             value: "{{ .Release.Name }}-mongodb"
-          - name: CLEARML_MONGODB_SERVICE_PORT
+          - name: TRAINS_MONGODB_SERVICE_PORT
             value: "{{ .Values.mongodb.service.port }}"
-          - name: CLEARML_REDIS_SERVICE_HOST
+          - name: TRAINS_REDIS_SERVICE_HOST
             value: "{{ .Release.Name }}-redis-master"
-          - name: CLEARML_REDIS_SERVICE_PORT
+          - name: TRAINS_REDIS_SERVICE_PORT
             value: "{{ .Values.redis.master.port }}"
-          - name: CLEARML__apiserver__pre_populate__enabled
+          - name: TRAINS__apiserver__pre_populate__enabled
             value: "{{ .Values.apiserver.prepopulateEnabled }}"
-          - name: CLEARML__apiserver__pre_populate__zip_files
+          - name: TRAINS__apiserver__pre_populate__zip_files
             value: "{{ .Values.apiserver.prepopulateZipFiles }}"
-          - name: CLEARML__apiserver__pre_populate__artifacts_path
+          - name: TRAINS__apiserver__pre_populate__artifacts_path
             value: "{{ .Values.apiserver.prepopulateArtifactsPath }}"
-          - name: CLEARML_SERVER_DEPLOYMENT_TYPE
+          - name: TRAINS_SERVER_DEPLOYMENT_TYPE
             value: {{ .Values.apiserver.deploymentType }}
-          - name: CLEARML_CONFIG_DIR
+          - name: TRAINS_CONFIG_DIR
             value: /opt/clearml/config
           args:
           - apiserver
