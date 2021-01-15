@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "clearml.fullname" $ }}-agent
+  name: {{ include "clearml.fullname" $ }}-{{ .name }}-agent
   labels:
     {{- include "clearml.labels" $ | nindent 4 }}
 spec:
@@ -33,7 +33,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "clearml.fullname" $ }}-{{ .name }}-agent-data
       containers:
-        - name: {{ $.Chart.Name }}
+        - name: {{ $.Chart.Name }}-{{ .name }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           securityContext:
