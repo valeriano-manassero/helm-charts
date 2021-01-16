@@ -50,6 +50,41 @@ app.kubernetes.io/name: {{ include "clearml.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+Selector labels (apiserver)
+*/}}
+{{- define "clearml.selectorLabelsApiServer" -}}
+app.kubernetes.io/name: {{ include "clearml.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}-apiserver
+{{- end }}
+
+Selector labels (fileserver)
+*/}}
+{{- define "clearml.selectorLabelsFileServer" -}}
+app.kubernetes.io/name: {{ include "clearml.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}-fileserver
+{{- end }}
+
+Selector labels (webserver)
+*/}}
+{{- define "clearml.selectorLabelsWebServer" -}}
+app.kubernetes.io/name: {{ include "clearml.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}-webserver
+{{- end }}
+
+Selector labels (agentservices)
+*/}}
+{{- define "clearml.selectorLabelsAgentServices" -}}
+app.kubernetes.io/name: {{ include "clearml.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}-agentservices
+{{- end }}
+
+Selector labels (agent)
+*/}}
+{{- define "clearml.selectorLabelsAgent" -}}
+app.kubernetes.io/name: {{ include "clearml.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}-agent
+{{- end }}
+
 {{/*
 Create the name of the service account to use
 */}}

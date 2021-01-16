@@ -11,4 +11,4 @@ spec:
       targetPort: {{ .Values.apiserver.service.port }}
       protocol: TCP
   selector:
-    {{- include "clearml.selectorLabels" . | nindent 4 }}-apiserver
+    {{- include "clearml.selectorLabelsApiServer" . | nindent 4 }}

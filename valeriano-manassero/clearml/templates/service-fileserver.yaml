@@ -11,4 +11,4 @@ spec:
       targetPort: {{ .Values.fileserver.service.port }}
       protocol: TCP
   selector:
-    {{- include "clearml.selectorLabels" . | nindent 4 }}-fileserver
+    {{- include "clearml.selectorLabelsFileServer" . | nindent 4 }}

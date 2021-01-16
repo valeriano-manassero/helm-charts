@@ -11,4 +11,4 @@ spec:
       targetPort: {{ .Values.webserver.service.port }}
       protocol: TCP
   selector:
-    {{- include "clearml.selectorLabels" . | nindent 4 }}-webserver
+    {{- include "clearml.selectorLabelsWebServer" . | nindent 4 }}

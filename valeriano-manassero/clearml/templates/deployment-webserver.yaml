@@ -8,7 +8,7 @@ spec:
   replicas: {{ .Values.webserver.replicaCount }}
   selector:
     matchLabels:
-      {{- include "clearml.selectorLabels" . | nindent 6 }}-webserver
+      {{- include "clearml.selectorLabelsWebServer" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.webserver.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "clearml.selectorLabels" . | nindent 8 }}-webserver
+        {{- include "clearml.selectorLabelsWebServer" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
