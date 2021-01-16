@@ -8,7 +8,7 @@ spec:
   replicas: {{ .Values.fileserver.replicaCount }}
   selector:
     matchLabels:
-      {{- include "clearml.selectorLabels" . | nindent 6 }}
+      {{- include "clearml.selectorLabels" . | nindent 6 }}-fileserver
   template:
     metadata:
       {{- with .Values.fileserver.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "clearml.selectorLabels" . | nindent 8 }}
+        {{- include "clearml.selectorLabels" . | nindent 8 }}-fileserver
     spec:
       volumes:
         - name: fileserver-data
