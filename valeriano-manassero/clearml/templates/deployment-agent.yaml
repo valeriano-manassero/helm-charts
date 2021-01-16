@@ -10,7 +10,7 @@ spec:
   replicas: {{ .replicaCount }}
   selector:
     matchLabels:
-      {{- include "clearml.selectorLabels" $ | nindent 6 }}-agent
+      {{- include "clearml.selectorLabels" $ | nindent 6 }}
   template:
     metadata:
       {{- with .podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "clearml.selectorLabels" $ | nindent 8 }}-agent
+        {{- include "clearml.selectorLabels" $ | nindent 8 }}
     spec:
       volumes:
         {{ if .clearmlConfig }}

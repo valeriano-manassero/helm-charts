@@ -8,7 +8,7 @@ spec:
   replicas: {{ .Values.apiserver.replicaCount }}
   selector:
     matchLabels:
-      {{- include "clearml.selectorLabels" . | nindent 6 }}-apiserver
+      {{- include "clearml.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.apiserver.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "clearml.selectorLabels" . | nindent 8 }}-apiserver
+        {{- include "clearml.selectorLabels" . | nindent 8 }}
     spec:
       volumes:
         - name: apiserver-config
