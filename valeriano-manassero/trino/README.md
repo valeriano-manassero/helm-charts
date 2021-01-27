@@ -31,7 +31,7 @@ High performance, distributed SQL query engine for big data
 | nodeSelector | object | `{}` |  |
 | resources | object | `{}` |  |
 | server.config.http.port | int | `8080` |  |
-| server.config.path | string | `"/usr/lib/trino/etc"` |  |
+| server.config.path | string | `"/etc/trino"` |  |
 | server.config.query.maxMemory | string | `"3GB"` |  |
 | server.config.query.maxMemoryPerNode | string | `"1GB"` |  |
 | server.config.query.maxTotalMemory | string | `"6GB"` |  |
