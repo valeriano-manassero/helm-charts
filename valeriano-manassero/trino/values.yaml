@@ -16,7 +16,7 @@ server:
     trino:
       level: INFO
   config:
-    path: /usr/lib/trino/etc
+    path: /etc/trino/
     http:
       port: 8080
     query:
