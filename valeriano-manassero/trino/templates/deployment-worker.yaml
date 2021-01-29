@@ -24,6 +24,10 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
+        - name: health-check-volume
+          configMap:
+            name: {{ template "trino.worker" . }}-health-check
+            defaultMode: 0777
         - name: catalog-volume
           secret:
             secretName: trino-connectors
@@ -34,20 +38,20 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.server.config.path }}
               name: config-volume
+            - mountPath: /startup/
+              name: health-check-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
           livenessProbe:
             exec:
               command:
-                - /bin/bash
-                - {{ .Values.server.config.path }}/health_check.sh
+                - /startup/health_check.sh
             initialDelaySeconds: 10
             periodSeconds: 25
           readinessProbe:
             exec:
               command:
-                - /bin/bash
-                - {{ .Values.server.config.path }}/health_check.sh
+                - /startup/health_check.sh
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
