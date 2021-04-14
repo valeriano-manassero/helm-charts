@@ -49,4 +49,17 @@ data:
     curl -H 'X-trino-User: healthCheck' --silent {{ template "trino.fullname" . }}:{{ .Values.server.config.http.port }}/v1/node | tr "," "\n" | grep --silent $(hostname -i)
 
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: schemas-volume
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+data:
+  {{- range $key, $val := .Values.schemas }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+
+---
 {{- end }}
