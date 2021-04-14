@@ -31,6 +31,9 @@ spec:
         - name: catalog-volume
           secret:
             secretName: trino-connectors
+        - name: schemas-volume
+          configMap:
+            name: schemas-volume
       containers:
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -38,6 +41,8 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.server.config.path }}
               name: config-volume
+            - mountPath: /etc/trino/schemas
+              name: schemas-volume
             - mountPath: /startup/
               name: health-check-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
