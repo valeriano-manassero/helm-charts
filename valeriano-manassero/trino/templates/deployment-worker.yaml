@@ -33,7 +33,7 @@ spec:
             secretName: trino-connectors
         - name: schemas-volume
           configMap:
-            name: schemas-volume
+            name: schemas-volume-worker
       containers:
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
