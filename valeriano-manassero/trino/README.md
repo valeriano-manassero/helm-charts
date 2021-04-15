@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![AppVersion: 355](https://img.shields.io/badge/AppVersion-355-informational?style=flat-square)
+![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![AppVersion: 355](https://img.shields.io/badge/AppVersion-355-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
