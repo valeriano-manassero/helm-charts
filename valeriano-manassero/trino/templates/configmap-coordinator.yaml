@@ -41,3 +41,16 @@ data:
     io.trino={{ .Values.server.log.trino.level }}
 
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: schemas-volume-coordinator
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
+data:
+  {{- range $key, $val := .Values.schemas }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+
+---
