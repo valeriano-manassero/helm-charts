@@ -30,6 +30,9 @@ spec:
         - name: catalog-volume
           secret:
             secretName: trino-connectors
+        - name: schemas-volume
+          configMap:
+            name: schemas-volume-coordinator
       containers:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -37,6 +40,8 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.server.config.path }}
               name: config-volume
+            - mountPath: /etc/trino/schemas
+              name: schemas-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
           ports:
