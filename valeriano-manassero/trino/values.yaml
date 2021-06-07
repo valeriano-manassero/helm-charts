@@ -19,6 +19,7 @@ server:
     path: /etc/trino/
     http:
       port: 8080
+    process-forwarded: false
     query:
       maxMemory: "3GB"
       maxMemoryPerNode: "1GB"
@@ -30,6 +31,11 @@ server:
       type: "UseG1GC"
       g1:
         heapRegionSize: "32M"
+  auth:
+    secretName: trino-secret
+    config:
+      password-authenticator.name: "file"
+      file.password-file: /etc/trino/auth.d/trino.htpasswd
 
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)

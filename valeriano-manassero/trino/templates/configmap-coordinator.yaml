@@ -30,6 +30,10 @@ data:
     node-scheduler.include-coordinator=true
 {{- end }}
     http-server.http.port={{ .Values.server.config.http.port }}
+    http-server.process-forwarded={{ .Values.server.config.process-forwarded }}
+{{- if .Values.server.config.authentication.type }}
+    http-server.authentication.type={{ .Values.server.config.authentication.type }}
+{{- end }}
     query.max-memory={{ .Values.server.config.query.maxMemory }}
     query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
     query.max-memory={{ .Values.server.config.query.maxTotalMemory }}
@@ -51,6 +55,19 @@ metadata:
 data:
   {{- range $key, $val := .Values.schemas }}
   {{ $key }}: {{ $val | quote }}
+  {{- end }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: password-auth-config-volume-coordinator
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
+data:
+  {{- range $key, $val := .Values.auth.config }}
+  {{ $key }}={{ $val | quote }}
   {{- end }}
 
 ---
