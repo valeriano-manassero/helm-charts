@@ -19,6 +19,10 @@ server:
     path: /etc/trino/
     http:
       port: 8080
+    processForwarded: false
+    # Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS
+    # For more info: https://trino.io/docs/current/security/authentication-types.html
+    # authenticationType: "PASSWORD"
     query:
       maxMemory: "3GB"
       maxMemoryPerNode: "1GB"
@@ -30,6 +34,11 @@ server:
       type: "UseG1GC"
       g1:
         heapRegionSize: "32M"
+
+auth: {}
+  # Set username and password
+  # https://trino.io/docs/current/security/password-file.html#file-format
+  # passwordAuth: "username:encrypted-password-with-htpasswd"
 
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)

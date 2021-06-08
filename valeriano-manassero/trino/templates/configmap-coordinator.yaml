@@ -30,6 +30,12 @@ data:
     node-scheduler.include-coordinator=true
 {{- end }}
     http-server.http.port={{ .Values.server.config.http.port }}
+{{- if .Values.server.config.processForwarded }}
+    http-server.process-forwarded={{ .Values.server.config.processForwarded }}
+{{- end }}
+{{- if .Values.server.config.authenticationType }}
+    http-server.authentication.type={{ .Values.server.config.authenticationType }}
+{{- end }}
     query.max-memory={{ .Values.server.config.query.maxMemory }}
     query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
     query.max-memory={{ .Values.server.config.query.maxTotalMemory }}
@@ -39,6 +45,12 @@ data:
 
   log.properties: |
     io.trino={{ .Values.server.log.trino.level }}
+
+{{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
+  password-authenticator.properties: |
+    password-authenticator.name=file
+    file.password-file={{ .Values.server.config.path }}/auth/password.db
+{{- end }}{{- end }}
 
 ---
 apiVersion: v1
