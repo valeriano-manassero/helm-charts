@@ -52,6 +52,13 @@ data:
     file.password-file={{ .Values.server.config.path }}/auth/password.db
 {{- end }}{{- end }}
 
+{{- if .Values.accessControl }}{{- if .Values.accessControl.type }}
+  access-control.properties: |
+    access-control.name=file
+    security.refresh-period={{ .Values.accessControl.refreshPeriod | default "1s" }}
+    security.config-file={{ .Values.server.config.path }}/access-control/{{ .Values.accessControl.configFile | default "rules.json" }}
+{{- end }}{{- end }}
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -64,5 +71,21 @@ data:
   {{- range $key, $val := .Values.schemas }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
+
+---
+
+{{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trino-access-control-volume-coordinator
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
+data:
+  {{- range $key, $val := .Values.accessControl.rules }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+{{- end }}{{- end }}
 
 ---

@@ -16,7 +16,7 @@ server:
     trino:
       level: INFO
   config:
-    path: /etc/trino/
+    path: /etc/trino
     http:
       port: 8080
     processForwarded: false
@@ -39,6 +39,61 @@ auth: {}
   # Set username and password
   # https://trino.io/docs/current/security/password-file.html#file-format
   # passwordAuth: "username:encrypted-password-with-htpasswd"
+
+accessControl: {}
+  # # Supported types: pvc or configmap
+  # type: pvc
+  # refreshPeriod: 1s
+  # # Rules file is mounted to /etc/trino/access-control
+  # configFile: "/access-control/rules.json"
+  # # If you use pvc as the type, you have to specify the pvcName field:
+  # pvcName:
+  # # If you use configmap as the type, you have to specify the rules field:
+  # rules:
+  #   rules.json: |-
+  #     {
+  #       "catalogs": [
+  #         {
+  #           "user": "admin",
+  #           "catalog": "(mysql|system)",
+  #           "allow": "all"
+  #         },
+  #         {
+  #           "group": "finance|human_resources",
+  #           "catalog": "postgres",
+  #           "allow": true
+  #         },
+  #         {
+  #           "catalog": "hive",
+  #           "allow": "all"
+  #         },
+  #         {
+  #           "user": "alice",
+  #           "catalog": "postgresql",
+  #           "allow": "read-only"
+  #         },
+  #         {
+  #           "catalog": "system",
+  #           "allow": "none"
+  #         }
+  #       ],
+  #       "schemas": [
+  #         {
+  #           "user": "admin",
+  #           "schema": ".*",
+  #           "owner": true
+  #         },
+  #         {
+  #           "user": "guest",
+  #           "owner": false
+  #         },
+  #         {
+  #           "catalog": "default",
+  #           "schema": "default",
+  #           "owner": true
+  #         }
+  #       ]
+  #     }
 
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
