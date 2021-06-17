@@ -46,8 +46,7 @@ metadata:
 data:
   health_check.sh: |
     #!/bin/bash
-    curl -H 'X-trino-User: healthCheck' --silent {{ template "trino.fullname" . }}:{{ .Values.server.config.http.port }}/v1/node | tr "," "\n" | grep --silent $(hostname -i)
-
+    curl -H 'X-trino-User: healthCheck' -m 3 --silent {{ template "trino.fullname" . }}:{{ .Values.server.config.http.port }}/v1/info/node
 ---
 apiVersion: v1
 kind: ConfigMap
