@@ -34,10 +34,6 @@ spec:
         - name: schemas-volume
           configMap:
             name: schemas-volume-worker
-        - name: data-volume
-          emptyDir: {}
-        - name: plugin-volume
-          emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -51,10 +47,6 @@ spec:
               name: health-check-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
-            - mountPath: {{ .Values.server.node.dataDir }}
-              name: data-volume
-            - mountPath: {{ .Values.server.node.pluginDir }}
-              name: plugin-volume
           livenessProbe:
             exec:
               command:
