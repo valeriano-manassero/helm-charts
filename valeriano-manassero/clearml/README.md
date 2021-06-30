@@ -123,7 +123,6 @@ MLOps platform
 | elasticsearch.extraEnvs[8].value | string | `"false"` |  |
 | elasticsearch.httpPort | int | `9200` |  |
 | elasticsearch.minimumMasterNodes | int | `1` |  |
-| elasticsearch.name | string | `"{{ .Release.Name }}-elastic-master"` |  |
 | elasticsearch.persistence.enabled | bool | `true` |  |
 | elasticsearch.replicas | int | `1` |  |
 | elasticsearch.resources.limits.memory | string | `"4Gi"` |  |
