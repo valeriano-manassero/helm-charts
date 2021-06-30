@@ -104,7 +104,7 @@ MLOps platform
 | elasticsearch.esConfig."elasticsearch.yml" | string | `"xpack.security.enabled: false\n"` |  |
 | elasticsearch.esJavaOpts | string | `"-Xmx2g -Xms2g"` |  |
 | elasticsearch.extraEnvs[0].name | string | `"bootstrap.memory_lock"` |  |
-| elasticsearch.extraEnvs[0].value | string | `"true"` |  |
+| elasticsearch.extraEnvs[0].value | string | `"false"` |  |
 | elasticsearch.extraEnvs[1].name | string | `"cluster.routing.allocation.node_initial_primaries_recoveries"` |  |
 | elasticsearch.extraEnvs[1].value | string | `"500"` |  |
 | elasticsearch.extraEnvs[2].name | string | `"cluster.routing.allocation.disk.watermark.low"` |  |
@@ -122,8 +122,6 @@ MLOps platform
 | elasticsearch.extraEnvs[8].name | string | `"xpack.security.enabled"` |  |
 | elasticsearch.extraEnvs[8].value | string | `"false"` |  |
 | elasticsearch.httpPort | int | `9200` |  |
-| elasticsearch.image | string | `"docker.elastic.co/elasticsearch/elasticsearch"` |  |
-| elasticsearch.imageTag | string | `"7.6.2"` |  |
 | elasticsearch.minimumMasterNodes | int | `1` |  |
 | elasticsearch.name | string | `"{{ .Release.Name }}-elastic-master"` |  |
 | elasticsearch.persistence.enabled | bool | `true` |  |
@@ -133,6 +131,7 @@ MLOps platform
 | elasticsearch.roles.data | string | `"true"` |  |
 | elasticsearch.roles.ingest | string | `"true"` |  |
 | elasticsearch.roles.master | string | `"true"` |  |
+| elasticsearch.roles.remote_cluster_client | string | `"true"` |  |
 | elasticsearch.volumeClaimTemplate.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | elasticsearch.volumeClaimTemplate.resources.requests.storage | string | `"50Gi"` |  |
 | fileserver.affinity | object | `{}` |  |
@@ -157,9 +156,6 @@ MLOps platform
 | mongodb.architecture | string | `"standalone"` |  |
 | mongodb.auth.enabled | bool | `false` |  |
 | mongodb.enabled | bool | `true` |  |
-| mongodb.image.registry | string | `"docker.io"` |  |
-| mongodb.image.repository | string | `"bitnami/mongodb"` |  |
-| mongodb.image.tag | string | `"3.6.21-debian-9-r71"` |  |
 | mongodb.persistence.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | mongodb.persistence.enabled | bool | `true` |  |
 | mongodb.persistence.size | string | `"50Gi"` |  |
@@ -171,9 +167,6 @@ MLOps platform
 | redis.cluster.enabled | bool | `false` |  |
 | redis.databaseNumber | int | `0` |  |
 | redis.enabled | bool | `true` |  |
-| redis.image.registry | string | `"docker.io"` |  |
-| redis.image.repository | string | `"bitnami/redis"` |  |
-| redis.image.tag | string | `"5.0.10-debian-10-r88"` |  |
 | redis.master.name | string | `"{{ .Release.Name }}-redis-master"` |  |
 | redis.master.persistence.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | redis.master.persistence.enabled | bool | `true` |  |
