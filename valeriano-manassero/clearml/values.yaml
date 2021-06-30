@@ -6,7 +6,7 @@ ingress:
   annotations: {}
   host: ""
   tls:
-      secretName: ""
+    secretName: ""
 
 apiserver:
   prepopulateEnabled: "true"
@@ -184,8 +184,8 @@ agentGroups:
     name: agent-group0
     replicaCount: 0
     nvidiaGpusPerAgent: 1
-    agentVersion: "" # if set, it *MUST* include comparison operator (e.g. ">=0.16.1")
-    queues: "default" # multiple queues can be specified separated by a space (e.g. "important_jobs default")
+    agentVersion: ""  # if set, it *MUST* include comparison operator (e.g. ">=0.16.1")
+    queues: "default"  # multiple queues can be specified separated by a space (e.g. "important_jobs default")
     clearmlGitUser: null
     clearmlGitPassword: null
     clearmlAccessKey: null
@@ -212,7 +212,7 @@ agentGroups:
 
     affinity: {}
 
-redis: # configuration from https://github.com/bitnami/charts/blob/master/bitnami/redis/values.yaml
+redis:  # configuration from https://github.com/bitnami/charts/blob/master/bitnami/redis/values.yaml
   enabled: true
   usePassword: false
   databaseNumber: 0
@@ -227,7 +227,7 @@ redis: # configuration from https://github.com/bitnami/charts/blob/master/bitnam
   cluster:
     enabled: false
 
-mongodb: # configuration from https://github.com/bitnami/charts/blob/master/bitnami/mongodb/values.yaml
+mongodb:  # configuration from https://github.com/bitnami/charts/blob/master/bitnami/mongodb/values.yaml
   enabled: true
   architecture: standalone
   auth:
@@ -244,7 +244,7 @@ mongodb: # configuration from https://github.com/bitnami/charts/blob/master/bitn
     port: 27017
     portName: mongo-service
 
-elasticsearch: # configuration from https://github.com/elastic/helm-charts/blob/7.6.2/elasticsearch/values.yaml
+elasticsearch:  # configuration from https://github.com/elastic/helm-charts/blob/7.6.2/elasticsearch/values.yaml
   enabled: true
   name: "{{ .Release.Name }}-elastic-master"
   httpPort: 9200
@@ -287,7 +287,7 @@ elasticsearch: # configuration from https://github.com/elastic/helm-charts/blob/
   persistence:
     enabled: true
   volumeClaimTemplate:
-    accessModes: [ "ReadWriteOnce" ]
+    accessModes: ["ReadWriteOnce"]
     resources:
       requests:
         storage: 50Gi
