@@ -22,9 +22,6 @@ spec:
         - name: fileserver-data
           persistentVolumeClaim:
             claimName: {{ include "clearml.fullname" . }}-fileserver-data
-        - name: fileserver-logs
-          persistentVolumeClaim:
-            claimName: {{ include "clearml.fullname" . }}-fileserver-logs
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.fileserver.image.repository }}:{{ .Values.fileserver.image.tag | default .Chart.AppVersion }}"
@@ -33,6 +30,14 @@ spec:
             - name: http
               containerPort: 8081
               protocol: TCP
+          env:
+          - name: CLEARML_CONFIG_DIR
+            value: /opt/clearml/config
+          {{- if .Values.fileserver.extraEnvs }}
+          {{ toYaml .Values.fileserver.extraEnvs | nindent 10 }}
+          {{- end }}
+          args:
+            - fileserver
           livenessProbe:
             exec:
               command:
@@ -45,13 +50,9 @@ spec:
                 - curl
                 - -X OPTIONS
                 - http://localhost:8081/
-          args:
-          - fileserver
           volumeMounts:
             - name: fileserver-data
               mountPath: /mnt/fileserver
-            - name: fileserver-logs
-              mountPath: /var/log/clearml
           resources:
             {{- toYaml .Values.fileserver.resources | nindent 12 }}
       {{- with .Values.fileserver.nodeSelector }}

@@ -18,13 +18,12 @@ spec:
       labels:
         {{- include "clearml.selectorLabelsApiServer" . | nindent 8 }}
     spec:
+      {{- if .Values.apiserver.storage.enableConfigVolume }}
       volumes:
         - name: apiserver-config
           persistentVolumeClaim:
             claimName: {{ include "clearml.fullname" . }}-apiserver-config
-        - name: apiserver-logs
-          persistentVolumeClaim:
-            claimName: {{ include "clearml.fullname" . }}-apiserver-logs
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.apiserver.image.repository }}:{{ .Values.apiserver.image.tag | default .Chart.AppVersion }}"
@@ -33,48 +32,80 @@ spec:
             - name: http
               containerPort: 8008
               protocol: TCP
-          livenessProbe:
-            exec:
-              command:
-                - curl
-                - -X OPTIONS
-                - http://localhost:8008/
-          readinessProbe:
-            exec:
-              command:
-                - curl
-                - -X OPTIONS
-                - http://localhost:8008/
           env:
-          - name: TRAINS_ELASTIC_SERVICE_HOST
-            value: "elasticsearch-master"
-          - name: TRAINS_ELASTIC_SERVICE_PORT
+          - name: CLEARML_ELASTIC_SERVICE_HOST
+            value: "{{ .Values.elasticsearch.clusterName }}-master"
+          - name: CLEARML_ELASTIC_SERVICE_PORT
             value: "{{ .Values.elasticsearch.httpPort }}"
-          - name: TRAINS_MONGODB_SERVICE_HOST
-            value: "{{ .Release.Name }}-mongodb"
-          - name: TRAINS_MONGODB_SERVICE_PORT
+          - name: CLEARML_MONGODB_SERVICE_HOST
+            value: "{{ tpl .Values.mongodb.service.name . }}"
+          - name: CLEARML_MONGODB_SERVICE_PORT
             value: "{{ .Values.mongodb.service.port }}"
-          - name: TRAINS_REDIS_SERVICE_HOST
-            value: "{{ .Release.Name }}-redis-master"
-          - name: TRAINS_REDIS_SERVICE_PORT
+          - name: CLEARML_REDIS_SERVICE_HOST
+            value: "{{ tpl .Values.redis.master.name . }}"
+          - name: CLEARML_REDIS_SERVICE_PORT
             value: "{{ .Values.redis.master.port }}"
-          - name: TRAINS__apiserver__pre_populate__enabled
+          - name: CLEARML__APISERVER__PRE_POPULATE__ENABLED
             value: "{{ .Values.apiserver.prepopulateEnabled }}"
-          - name: TRAINS__apiserver__pre_populate__zip_files
+          - name: CLEARML__APISERVER__PRE_POPULATE__ZIP_FILES
             value: "{{ .Values.apiserver.prepopulateZipFiles }}"
-          - name: TRAINS__apiserver__pre_populate__artifacts_path
-            value: "{{ .Values.apiserver.prepopulateArtifactsPath }}"
-          - name: TRAINS_SERVER_DEPLOYMENT_TYPE
-            value: {{ .Values.apiserver.deploymentType }}
-          - name: TRAINS_CONFIG_DIR
+          - name: CLEARML_SERVER_DEPLOYMENT_TYPE
+            value: "helm-cloud"
+          - name: CLEARML_CONFIG_DIR
             value: /opt/clearml/config
+          - name: CLEARML__APISERVER__DEFAULT_COMPANY
+            value: {{ .Values.clearml.defaultCompany }}
+          - name: CLEARML__SECURE__HTTP__SESSION_SECRET__APISERVER
+            valueFrom:
+              secretKeyRef:
+                name: clearml-conf
+                key: http_session
+          - name: CLEARML__SECURE__AUTH__TOKEN_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: clearml-conf
+                key: auth_token
+          - name: CLEARML__SECURE__CREDENTIALS__APISERVER__USER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: clearml-conf
+                key: apiserver_key
+          - name: CLEARML__SECURE__CREDENTIALS__APISERVER__USER_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: clearml-conf
+                key: apiserver_secret
+          - name: CLEARML__SECURE__CREDENTIALS__TESTS__USER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: clearml-conf
+                key: tests_user_key
+          - name: CLEARML__SECURE__CREDENTIALS__TESTS__USER_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: clearml-conf
+                key: tests_user_secret
+         {{- if .Values.apiserver.extraEnvs }}
+         {{ toYaml .Values.apiserver.extraEnvs | nindent 10 }}
+         {{- end }}
           args:
-          - apiserver
+            - apiserver
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.apiserver.livenessDelay }}
+            httpGet:
+              path: /debug.ping
+              port: 8008
+          readinessProbe:
+            initialDelaySeconds: {{ .Values.apiserver.readinessDelay }}
+            failureThreshold: 8
+            httpGet:
+              path: /debug.ping
+              port: 8008
+          {{- if .Values.apiserver.storage.enableConfigVolume }}
           volumeMounts:
-            - name: apiserver-config
-              mountPath: /opt/clearml/config
-            - name: apiserver-logs
-              mountPath: /var/log/clearml
+           - name: apiserver-config
+             mountPath: /opt/clearml/config
+          {{- end }}
           resources:
             {{- toYaml .Values.apiserver.resources | nindent 12 }}
       {{- with .Values.apiserver.nodeSelector }}

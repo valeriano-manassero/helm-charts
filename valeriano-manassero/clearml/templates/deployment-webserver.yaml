@@ -31,18 +31,23 @@ spec:
               command:
                 - curl
                 - -X OPTIONS
-                - http://localhost:80/
+                - http://0.0.0.0:80/
           readinessProbe:
             exec:
               command:
                 - curl
                 - -X OPTIONS
-                - http://localhost:80/
+                - http://0.0.0.0:80/
           env:
           - name: NGINX_APISERVER_ADDRESS
-            value: {{ .Values.agentservices.clearmlApiHost }}
+            value: "http://{{ include "clearml.fullname" . }}-apiserver:{{ .Values.apiserver.service.port }}"
+          - name: NGINX_FILESERVER_ADDRESS
+            value: "http://{{ include "clearml.fullname" . }}-fileserver:{{ .Values.fileserver.service.port }}"
+          {{- if .Values.webserver.extraEnvs }}
+          {{ toYaml .Values.webserver.extraEnvs | nindent 10 }}
+          {{- end }}
           args:
-          - webserver
+            - webserver
           resources:
             {{- toYaml .Values.webserver.resources | nindent 12 }}
       {{- with .Values.webserver.nodeSelector }}
