@@ -34,7 +34,7 @@ spec:
               protocol: TCP
           env:
           - name: CLEARML_ELASTIC_SERVICE_HOST
-            value: "{{ tpl .Values.elasticsearch.name . }}"
+            value: "{{ .Values.elasticsearch.clusterName }}-master"
           - name: CLEARML_ELASTIC_SERVICE_PORT
             value: "{{ .Values.elasticsearch.httpPort }}"
           - name: CLEARML_MONGODB_SERVICE_HOST
