@@ -45,4 +45,4 @@ jobs:
             echo "::set-output name=changed::true"
           fi
       - name: Run chart-testing (lint nd install)
-        run: ct lint-and-install --chart-dirs=valeriano-manassero --target-branch=main --helm-extra-args="--timeout=600s" --debug=true
+        run: ct lint-and-install --chart-dirs=valeriano-manassero --target-branch=main --helm-extra-args="--timeout=15m" --debug=true
