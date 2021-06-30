@@ -36,6 +36,7 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
+          ct list-changed --chart-dirs valeriano-manassero/clearml,valeriano-manassero/presto,valeriano-manassero/trino
           changed=$(ct list-changed --chart-dirs valeriano-manassero/clearml,valeriano-manassero/presto,valeriano-manassero/trino)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
