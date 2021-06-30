@@ -214,10 +214,6 @@ agentGroups:
 
 redis: # configuration from https://github.com/bitnami/charts/blob/master/bitnami/redis/values.yaml
   enabled: true
-  image:
-    registry: docker.io
-    repository: bitnami/redis
-    tag: 5.0.10-debian-10-r88
   usePassword: false
   databaseNumber: 0
   master:
@@ -233,10 +229,6 @@ redis: # configuration from https://github.com/bitnami/charts/blob/master/bitnam
 
 mongodb: # configuration from https://github.com/bitnami/charts/blob/master/bitnami/mongodb/values.yaml
   enabled: true
-  image:
-    registry: docker.io
-    repository: bitnami/mongodb
-    tag: 3.6.21-debian-9-r71
   architecture: standalone
   auth:
     enabled: false
@@ -255,13 +247,12 @@ mongodb: # configuration from https://github.com/bitnami/charts/blob/master/bitn
 elasticsearch: # configuration from https://github.com/elastic/helm-charts/blob/7.6.2/elasticsearch/values.yaml
   enabled: true
   name: "{{ .Release.Name }}-elastic-master"
-  image: "docker.elastic.co/elasticsearch/elasticsearch"
-  imageTag: "7.6.2"
   httpPort: 9200
   roles:
     master: "true"
     ingest: "true"
     data: "true"
+    remote_cluster_client: "true"
   replicas: 1
   # Readiness probe hack for a single-node cluster (where status will never be green). Should be removed if using replicas > 1
   clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
@@ -271,7 +262,7 @@ elasticsearch: # configuration from https://github.com/elastic/helm-charts/blob/
   esJavaOpts: "-Xmx2g -Xms2g"
   extraEnvs:
     - name: bootstrap.memory_lock
-      value: "true"
+      value: "false"
     - name: cluster.routing.allocation.node_initial_primaries_recoveries
       value: "500"
     - name: cluster.routing.allocation.disk.watermark.low
