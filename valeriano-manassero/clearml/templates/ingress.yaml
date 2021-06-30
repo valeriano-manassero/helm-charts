@@ -27,22 +27,22 @@ spec:
     - host: "app.{{ .Values.ingress.host }}"
       http:
         paths:
-          - path: /
+          - path: "/*"
             backend:
               serviceName: {{ include "clearml.fullname" . }}-webserver
-              servicePort: 80
+              servicePort: {{ .Values.webserver.service.port }}
     - host: "api.{{ .Values.ingress.host }}"
       http:
         paths:
-          - path: /
+          - path: "/*"
             backend:
               serviceName: {{ include "clearml.fullname" . }}-apiserver
-              servicePort: 8008
+              servicePort: {{ .Values.apiserver.service.port }}
     - host: "files.{{ .Values.ingress.host }}"
       http:
         paths:
-          - path: /
+          - path: "/*"
             backend:
               serviceName: {{ include "clearml.fullname" . }}-fileserver
-              servicePort: 8081
+              servicePort: {{ .Values.fileserver.service.port }}
 {{- end }}
