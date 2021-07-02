@@ -30,11 +30,6 @@ High performance, distributed SQL query engine for big data
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
 | image.tag | int | `358` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.enabled | bool | `false` |  |
-| ingress.host | string | `""` |  |
-| ingress.name | string | `"trino-ingress"` |  |
-| ingress.tls.secretName | string | `""` |  |
 | initContainers | object | `{}` |  |
 | nodeSelector | object | `{}` |  |
 | resources | object | `{}` |  |
