@@ -108,6 +108,9 @@ accessControl: {}
   #       ]
   #     }
 
+# If you want to provide your own secrets resource, you can use this field:
+# connectorsSecret:
+
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
   # so data is stored in a secret
