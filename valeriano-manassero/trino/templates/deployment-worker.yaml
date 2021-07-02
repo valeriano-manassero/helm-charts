@@ -28,11 +28,9 @@ spec:
           configMap:
             name: {{ template "trino.worker" . }}-health-check
             defaultMode: 0777
-        {{- if .Values.connectors }}
         - name: catalog-volume
           secret:
             secretName: {{ .Values.connectorsSecret | default "trino-connectors" }}
-        {{- end }}
         - name: schemas-volume
           configMap:
             name: schemas-volume-worker
@@ -51,10 +49,8 @@ spec:
               name: schemas-volume
             - mountPath: /startup/
               name: health-check-volume
-            {{- if .Values.connectors }}
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
-            {{- end }}
           livenessProbe:
             exec:
               command:
