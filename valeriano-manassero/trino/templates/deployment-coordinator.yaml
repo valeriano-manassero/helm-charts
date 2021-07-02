@@ -27,9 +27,11 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "trino.coordinator" . }}
+        {{- if .Values.connectors }}
         - name: catalog-volume
           secret:
             secretName: {{ .Values.connectorsSecret | default "trino-connectors" }}
+        {{- end }}
         - name: schemas-volume
           configMap:
             name: schemas-volume-coordinator
@@ -61,8 +63,10 @@ spec:
               name: config-volume
             - mountPath: /etc/trino/schemas
               name: schemas-volume
+            {{- if .Values.connectors }}
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
+            {{- end }}
             {{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
             - mountPath: {{ .Values.server.config.path }}/auth
               name: password-volume

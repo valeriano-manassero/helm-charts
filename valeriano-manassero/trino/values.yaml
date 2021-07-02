@@ -6,6 +6,14 @@ image:
     runAsUser: 1000
     runAsGroup: 1000
 
+ingress:
+  enabled: false
+  name: trino-ingress
+  annotations: {}
+  host: ""
+  tls:
+    secretName: ""
+
 server:
   workers: 3
   node:
