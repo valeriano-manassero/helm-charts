@@ -16,7 +16,7 @@ spec:
         {{- include "trino.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: coordinator
       annotations:
-        checksum/config: {{ printf "%s%s" .Values.server .Values.connectors .Values.connectorsSecret | sha256sum }}
+        checksum/config: {{ printf "%s%s" (include (print $.Template.BasePath "/configmap-coordinator.yaml") .) (include (print $.Template.BasePath "/secret.yaml") .) | sha256sum }}
     spec:
       {{- with .Values.image.securityContext }}
       securityContext:
