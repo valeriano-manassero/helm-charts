@@ -35,12 +35,13 @@ server:
       maxMemoryPerNode: "1GB"
       maxTotalMemory: "6GB"
       maxTotalMemoryPerNode: "2GB"
+    prestoCompatibleHeader: false
   jvm:
     maxHeapSize: "7G"
     gcMethod:
       type: "UseG1GC"
       g1:
-        heapRegionSize: "32M"
+        heapRegionSize: "32M"  
 
 initContainers: {}
   # coordinator:
