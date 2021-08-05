@@ -31,6 +31,9 @@ data:
     query.max-memory={{ .Values.server.config.query.maxTotalMemory }}
     query.max-total-memory-per-node={{ .Values.server.config.query.maxTotalMemoryPerNode }}
     discovery.uri=http://{{ template "trino.fullname" . }}:{{ .Values.server.config.http.port }}
+{{- if .Values.server.config.prestoCompatibleHeader }}
+    protocol.v1.alternate-header-name=Presto
+{{- end }}
 
   log.properties: |
     io.trino={{ .Values.server.log.trino.level }}

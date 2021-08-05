@@ -35,6 +35,7 @@ server:
       maxMemoryPerNode: "1GB"
       maxTotalMemory: "6GB"
       maxTotalMemoryPerNode: "2GB"
+    prestoCompatibleHeader: false
   jvm:
     maxHeapSize: "7G"
     gcMethod:

@@ -42,6 +42,9 @@ data:
     query.max-total-memory-per-node={{ .Values.server.config.query.maxTotalMemoryPerNode }}
     discovery-server.enabled=true
     discovery.uri=http://localhost:{{ .Values.server.config.http.port }}
+{{- if .Values.server.config.prestoCompatibleHeader }}
+    protocol.v1.alternate-header-name=Presto
+{{- end }}
 
   log.properties: |
     io.trino={{ .Values.server.log.trino.level }}
