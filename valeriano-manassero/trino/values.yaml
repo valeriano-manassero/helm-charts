@@ -41,7 +41,7 @@ server:
     gcMethod:
       type: "UseG1GC"
       g1:
-        heapRegionSize: "32M"  
+        heapRegionSize: "32M"
 
 initContainers: {}
   # coordinator:
