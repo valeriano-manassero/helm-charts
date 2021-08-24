@@ -340,6 +340,35 @@ entries:
   trino:
   - apiVersion: v1
     appVersion: "358"
+    created: "2021-08-24T05:19:10.93823461Z"
+    description: High performance, distributed SQL query engine for big data
+    digest: 1130d9dee12179c2463c0a65fe73d52fe8e76ee450e18b5adb442092d47a3d01
+    home: https://trino.io
+    icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
+    keywords:
+    - trino
+    - trinosql
+    - trinodb
+    - presto
+    - prestosql
+    - prestodb
+    - big data
+    - database
+    - sql
+    - query engine
+    - high performance
+    maintainers:
+    - email: valeriano.manassero@gmail.com
+      name: valeriano-manassero
+    name: trino
+    sources:
+    - https://github.com/valeriano-manassero/helm-charts
+    - https://github.com/trinodb/trino
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/trino-1.3.1/trino-1.3.1.tgz
+    version: 1.3.1
+  - apiVersion: v1
+    appVersion: "358"
     created: "2021-08-05T14:51:11.29410243Z"
     description: High performance, distributed SQL query engine for big data
     digest: 4d9a3222da41d816c3fef817d75f9551b75ddc0d18548df6ff78f99b6df13041
