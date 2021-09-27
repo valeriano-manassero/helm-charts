@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square) ![AppVersion: 361](https://img.shields.io/badge/AppVersion-361-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![AppVersion: 361](https://img.shields.io/badge/AppVersion-361-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -38,6 +38,9 @@ High performance, distributed SQL query engine for big data
 | nodeSelector | object | `{}` |  |
 | resources | object | `{}` |  |
 | schemas | object | `{}` |  |
+| server.autoscaler.enabled | bool | `false` |  |
+| server.autoscaler.maxReplicas | int | `5` |  |
+| server.autoscaler.targetCPUUtilizationPercentage | int | `50` |  |
 | server.config.http.port | int | `8080` |  |
 | server.config.path | string | `"/etc/trino"` |  |
 | server.config.prestoCompatibleHeader | bool | `false` |  |
