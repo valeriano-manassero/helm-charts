@@ -1,3 +1,4 @@
+{{- if .Values.server.autoscaler.maxReplicas }}
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -10,3 +11,4 @@ spec:
     kind: Deployment
     name: {{ template "trino.worker" . }}
   targetCPUUtilizationPercentage: {{ .Values.server.autoscaler.targetCPUUtilizationPercentage }}
+{{- end }}
