@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square) ![AppVersion: 361](https://img.shields.io/badge/AppVersion-361-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![AppVersion: 363](https://img.shields.io/badge/AppVersion-363-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -29,7 +29,7 @@ High performance, distributed SQL query engine for big data
 | image.repository | string | `"trinodb/trino"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
-| image.tag | int | `361` |  |
+| image.tag | int | `363` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
 | ingress.host | string | `""` |  |
