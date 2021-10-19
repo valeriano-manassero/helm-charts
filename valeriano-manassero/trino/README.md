@@ -38,7 +38,12 @@ High performance, distributed SQL query engine for big data
 | nodeSelector | object | `{}` |  |
 | resources | object | `{}` |  |
 | schemas | object | `{}` |  |
+| secretMounts | list | `[]` |  |
 | server.config.http.port | int | `8080` |  |
+| server.config.httpsServer.enabled | bool | `false` |  |
+| server.config.httpsServer.keystore.key | string | `""` |  |
+| server.config.httpsServer.keystore.path | string | `"/usr/local/certs/clustercoord.pem"` |  |
+| server.config.httpsServer.port | int | `8443` |  |
 | server.config.path | string | `"/etc/trino"` |  |
 | server.config.prestoCompatibleHeader | bool | `false` |  |
 | server.config.processForwarded | bool | `false` |  |
