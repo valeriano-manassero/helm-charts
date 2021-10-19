@@ -1,6 +1,6 @@
 image:
   repository: trinodb/trino
-  tag: 361
+  tag: 363
   pullPolicy: IfNotPresent
   securityContext:
     runAsUser: 1000
@@ -30,6 +30,13 @@ server:
     # Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS
     # For more info: https://trino.io/docs/current/security/authentication-types.html
     # authenticationType: "PASSWORD"
+    httpsServer:
+      enabled: false
+      port: 8443
+      keystore:
+        path: "/usr/local/certs/clustercoord.pem"
+        # JKS keystores always require a password, while PEM format certificates can optionally require a password
+        key: ""
     query:
       maxMemory: "3GB"
       maxMemoryPerNode: "1GB"
@@ -196,3 +203,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+secretMounts: []
+  # - name: ssl-cert
+  #   secretName: ssl-cert
+  #   path: /usr/local/certs/

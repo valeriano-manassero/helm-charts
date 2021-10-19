@@ -45,6 +45,11 @@ data:
 {{- if .Values.server.config.prestoCompatibleHeader }}
     protocol.v1.alternate-header-name=Presto
 {{- end }}
+{{- if .Values.server.config.httpsServer.enabled }}
+    http-server.https.enabled=true
+    http-server.https.port={{ .Values.server.config.httpsServer.port }}
+    http-server.https.keystore.path={{ .Values.server.config.httpsServer.keystore.path }}
+{{- end }}
 
   log.properties: |
     io.trino={{ .Values.server.log.trino.level }}
