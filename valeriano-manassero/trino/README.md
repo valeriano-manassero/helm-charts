@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![AppVersion: 363](https://img.shields.io/badge/AppVersion-363-informational?style=flat-square)
+![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![AppVersion: 363](https://img.shields.io/badge/AppVersion-363-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -39,6 +39,9 @@ High performance, distributed SQL query engine for big data
 | resources | object | `{}` |  |
 | schemas | object | `{}` |  |
 | secretMounts | list | `[]` |  |
+| server.autoscaler.enabled | bool | `false` |  |
+| server.autoscaler.maxReplicas | int | `5` |  |
+| server.autoscaler.targetCPUUtilizationPercentage | int | `50` |  |
 | server.config.http.port | int | `8080` |  |
 | server.config.httpsServer.enabled | bool | `false` |  |
 | server.config.httpsServer.keystore.key | string | `""` |  |
