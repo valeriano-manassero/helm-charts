@@ -25,12 +25,12 @@ High performance, distributed SQL query engine for big data
 | affinity | object | `{}` |  |
 | auth | object | `{}` |  |
 | connectors | object | `{}` |  |
+| env | list | `[]` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"trinodb/trino"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
 | image.tag | int | `363` |  |
-| env | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
 | ingress.host | string | `""` |  |
