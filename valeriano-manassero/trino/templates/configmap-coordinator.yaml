@@ -36,6 +36,10 @@ data:
 {{- if .Values.server.config.authenticationType }}
     http-server.authentication.type={{ .Values.server.config.authenticationType }}
 {{- end }}
+{{- if .Values.server.config.authenticationType }}
+    resource-groups.configuration-manager=file
+    resource-groups.config-file=etc/resource-groups.json
+{{- end }}
     query.max-memory={{ .Values.server.config.query.maxMemory }}
     query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
     query.max-total-memory={{ .Values.server.config.query.maxTotalMemory }}
@@ -67,6 +71,12 @@ data:
     security.config-file={{ .Values.server.config.path }}/access-control/{{ .Values.accessControl.configFile | default "rules.json" }}
 {{- end }}{{- end }}
 
+{{- if .Values.resourceGroups }}{{- if .Values.resourceGroups.type }}
+  resource-groups.json: |
+    resource-groups.configuration-manager=file
+    resource-groups.config-file={{ .Values.server.config.path }}/resource-groups/{{ .Values.resourceGroups.configFile | default "resource-groups.json" }}
+{{- end }}{{- end }}
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -92,6 +102,22 @@ metadata:
     app.kubernetes.io/component: coordinator
 data:
   {{- range $key, $val := .Values.accessControl.rules }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+{{- end }}{{- end }}
+
+---
+
+{{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "configmap" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trino-resource-groups-volume-coordinator
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
+data:
+  {{- range $key, $val := .Values.resourceGroups.rules }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
 {{- end }}{{- end }}

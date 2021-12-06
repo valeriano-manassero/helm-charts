@@ -48,6 +48,16 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.accessControl.pvcName }}
         {{- end }}{{- end }}
+        {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "configmap" }}
+        - name: resource-groups-volume
+          configMap:
+            name: trino-resource-groups-volume-coordinator
+        {{- end }}{{- end }}
+        {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "pvc" }}
+        - name: {{ .Values.resourceGroups.pvcVolumeName | default "resource-groups-pvc-volume" }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.resourceGroups.pvcName }}
+        {{- end }}{{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:
@@ -83,6 +93,14 @@ spec:
             {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "pvc" }}
             - mountPath: {{ .Values.server.config.path }}/access-control
               name: {{ .Values.accessControl.pvcVolumeName | default "access-control-pvc-volume" }}
+            {{- end }}{{- end }}
+            {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "configmap" }}
+            - mountPath: {{ .Values.server.config.path }}/resource-groups
+              name: resource-groups-volume
+            {{- end }}{{- end }}
+            {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "pvc" }}
+            - mountPath: {{ .Values.server.config.path }}/resource-groups
+              name: {{ .Values.resourceGroups.pvcVolumeName | default "resource-groups-pvc-volume" }}
             {{- end }}{{- end }}
             {{- range .Values.secretMounts }}
             - name: {{ .name }}
