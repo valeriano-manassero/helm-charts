@@ -133,7 +133,6 @@ accessControl: {}
 resourceGroups: {}
   # # Supported types: pvc or configmap
   # type: pvc
-  # refreshPeriod: 1s
   # # Rules file is mounted to /etc/trino/resource-groups
   # configFile: "/resource-groups/resource-groups.json"
   # # If you use pvc as the type, you have to specify the pvcName field:
@@ -218,7 +217,7 @@ resourceGroups: {}
   #             ]
   #           }
   #         ]
-  #     #       },
+  #       },
   #       {
   #         "name": "admin",
   #         "softMemoryLimit": "100%",
