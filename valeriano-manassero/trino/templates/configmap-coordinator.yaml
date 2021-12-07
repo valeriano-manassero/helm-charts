@@ -36,10 +36,6 @@ data:
 {{- if .Values.server.config.authenticationType }}
     http-server.authentication.type={{ .Values.server.config.authenticationType }}
 {{- end }}
-{{- if .Values.server.config.authenticationType }}
-    resource-groups.configuration-manager=file
-    resource-groups.config-file=etc/resource-groups.json
-{{- end }}
     query.max-memory={{ .Values.server.config.query.maxMemory }}
     query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
     query.max-total-memory={{ .Values.server.config.query.maxTotalMemory }}
@@ -72,7 +68,7 @@ data:
 {{- end }}{{- end }}
 
 {{- if .Values.resourceGroups }}{{- if .Values.resourceGroups.type }}
-  resource-groups.json: |
+  resource-groups.properties: |
     resource-groups.configuration-manager=file
     resource-groups.config-file={{ .Values.server.config.path }}/resource-groups/{{ .Values.resourceGroups.configFile | default "resource-groups.json" }}
 {{- end }}{{- end }}
