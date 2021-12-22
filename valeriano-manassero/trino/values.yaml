@@ -6,6 +6,11 @@ image:
     runAsUser: 1000
     runAsGroup: 1000
 
+imagePullSecrets: []
+# For example:
+# imagePullSecrets:
+#   - name: registry-credentials
+
 env: []
 # Both worker & coordinator can use environment variables to expose information about itself to Containers running in the Pod
 
