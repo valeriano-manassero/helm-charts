@@ -1,4 +1,4 @@
-{{- if .Values.server.autoscaler.maxReplicas }}
+{{- if .Values.server.autoscaler.enabled -}}
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
