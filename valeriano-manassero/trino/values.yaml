@@ -1,6 +1,6 @@
 image:
   repository: trinodb/trino
-  tag: 365
+  tag: 369
   pullPolicy: IfNotPresent
   securityContext:
     runAsUser: 1000
@@ -51,6 +51,8 @@ server:
       maxTotalMemory: "6GB"
       maxTotalMemoryPerNode: "2GB"
     prestoCompatibleHeader: false
+  workerExtraConfig: ""
+  coordinatorExtraConfig: ""
   jvm:
     maxHeapSize: "7G"
     gcMethod:
