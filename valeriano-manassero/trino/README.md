@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.9.1](https://img.shields.io/badge/Version-1.9.1-informational?style=flat-square) ![AppVersion: 365](https://img.shields.io/badge/AppVersion-365-informational?style=flat-square)
+![Version: 1.9.2](https://img.shields.io/badge/Version-1.9.2-informational?style=flat-square) ![AppVersion: 365](https://img.shields.io/badge/AppVersion-365-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -30,7 +30,7 @@ High performance, distributed SQL query engine for big data
 | image.repository | string | `"trinodb/trino"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
-| image.tag | int | `365` |  |
+| image.tag | int | `369` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
@@ -57,6 +57,7 @@ High performance, distributed SQL query engine for big data
 | server.config.query.maxMemoryPerNode | string | `"1GB"` |  |
 | server.config.query.maxTotalMemory | string | `"6GB"` |  |
 | server.config.query.maxTotalMemoryPerNode | string | `"2GB"` |  |
+| server.coordinatorExtraConfig | string | `""` |  |
 | server.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | server.jvm.gcMethod.type | string | `"UseG1GC"` |  |
 | server.jvm.maxHeapSize | string | `"7G"` |  |
@@ -64,6 +65,7 @@ High performance, distributed SQL query engine for big data
 | server.node.dataDir | string | `"/data/trino"` |  |
 | server.node.environment | string | `"production"` |  |
 | server.node.pluginDir | string | `"/usr/lib/trino/plugin"` |  |
+| server.workerExtraConfig | string | `""` |  |
 | server.workers | int | `3` |  |
 | service.type | string | `"ClusterIP"` |  |
 | tolerations | list | `[]` |  |
