@@ -39,8 +39,6 @@ data:
     query.max-memory={{ .Values.server.config.query.maxMemory }}
     query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
     query.max-total-memory={{ .Values.server.config.query.maxTotalMemory }}
-    query.max-total-memory-per-node={{ .Values.server.config.query.maxTotalMemoryPerNode }}
-    discovery-server.enabled=true
     discovery.uri=http://localhost:{{ .Values.server.config.http.port }}
 {{- if .Values.server.config.prestoCompatibleHeader }}
     protocol.v1.alternate-header-name=Presto
@@ -50,6 +48,7 @@ data:
     http-server.https.port={{ .Values.server.config.httpsServer.port }}
     http-server.https.keystore.path={{ .Values.server.config.httpsServer.keystore.path }}
 {{- end }}
+{{ .Values.server.coordinatorExtraConfig | indent 4 }}
 
   log.properties: |
     io.trino={{ .Values.server.log.trino.level }}
