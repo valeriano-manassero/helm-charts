@@ -38,6 +38,7 @@ High performance, distributed SQL query engine for big data
 | ingress.tls.secretName | string | `""` |  |
 | initContainers | object | `{}` |  |
 | nodeSelector | object | `{}` |  |
+| podAnnotations | object | `{}` |  |
 | resourceGroups | object | `{}` |  |
 | resources | object | `{}` |  |
 | schemas | object | `{}` |  |

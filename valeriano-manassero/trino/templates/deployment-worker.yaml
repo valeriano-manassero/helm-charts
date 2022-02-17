@@ -19,6 +19,9 @@ spec:
         app.kubernetes.io/component: worker
       annotations:
         checksum/config: {{ printf "%s%s" (include (print $.Template.BasePath "/configmap-worker.yaml") .) (include (print $.Template.BasePath "/secret.yaml") .) | sha256sum }}
+    {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     spec:
       volumes:
         - name: config-volume
