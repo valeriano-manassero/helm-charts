@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.10.0](https://img.shields.io/badge/Version-1.10.0-informational?style=flat-square) ![AppVersion: 369](https://img.shields.io/badge/AppVersion-369-informational?style=flat-square)
+![Version: 1.11.0](https://img.shields.io/badge/Version-1.11.0-informational?style=flat-square) ![AppVersion: 369](https://img.shields.io/badge/AppVersion-369-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -38,6 +38,7 @@ High performance, distributed SQL query engine for big data
 | ingress.tls.secretName | string | `""` |  |
 | initContainers | object | `{}` |  |
 | nodeSelector | object | `{}` |  |
+| podAnnotations | object | `{}` |  |
 | resourceGroups | object | `{}` |  |
 | resources | object | `{}` |  |
 | schemas | object | `{}` |  |
