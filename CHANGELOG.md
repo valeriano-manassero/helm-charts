@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [trino-1.12.0](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-1.12.0) - 2022-03-22 16:27:08
+
+High performance, distributed SQL query engine for big data
+
 ## [trino-1.11.0](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-1.11.0) - 2022-02-23 15:07:04
 
 High performance, distributed SQL query engine for big data
@@ -143,6 +147,10 @@ High performance, distributed SQL query engine for big data
 
 High performance, distributed SQL query engine for big data
 
+## [trino-1.0.0](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-1.0.0) - 2021-01-08 10:23:54
+
+High performance, distributed SQL query engine for big data
+
 ## [presto-1.2.9](https://github.com/valeriano-manassero/helm-charts/releases/tag/presto-1.2.9) - 2021-01-08 11:05:31
 
 Deprecated, please use new Trino chart
@@ -150,10 +158,6 @@ Deprecated, please use new Trino chart
 ## [presto-1.2.8](https://github.com/valeriano-manassero/helm-charts/releases/tag/presto-1.2.8) - 2021-01-08 10:48:17
 
 Deprecated, please use new Trino chart
-
-## [trino-1.0.0](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-1.0.0) - 2021-01-08 10:23:54
-
-High performance, distributed SQL query engine for big data
 
 ## [presto-1.2.7](https://github.com/valeriano-manassero/helm-charts/releases/tag/presto-1.2.7) - 2020-12-22 08:38:32
 
