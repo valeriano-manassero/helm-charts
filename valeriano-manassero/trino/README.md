@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.13.0](https://img.shields.io/badge/Version-1.13.0-informational?style=flat-square) ![AppVersion: 369](https://img.shields.io/badge/AppVersion-369-informational?style=flat-square)
+![Version: 1.14.0](https://img.shields.io/badge/Version-1.14.0-informational?style=flat-square) ![AppVersion: 375](https://img.shields.io/badge/AppVersion-375-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -10,7 +10,7 @@ High performance, distributed SQL query engine for big data
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| valeriano-manassero | valeriano.manassero@gmail.com |  |
+| valeriano-manassero |  | https://github.com/valeriano-manassero |
 
 ## Source Code
 
@@ -30,7 +30,7 @@ High performance, distributed SQL query engine for big data
 | image.repository | string | `"trinodb/trino"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
-| image.tag | int | `369` |  |
+| image.tag | int | `375` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
