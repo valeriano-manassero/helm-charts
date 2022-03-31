@@ -1,6 +1,6 @@
 image:
   repository: trinodb/trino
-  tag: 369
+  tag: 375
   pullPolicy: IfNotPresent
   securityContext:
     runAsUser: 1000

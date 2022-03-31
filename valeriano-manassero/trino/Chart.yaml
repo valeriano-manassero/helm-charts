@@ -1,8 +1,8 @@
 apiVersion: v1
-appVersion: "369"
+appVersion: "375"
 description: High performance, distributed SQL query engine for big data
 name: trino
-version: 1.13.0
+version: 1.14.0
 home: https://trino.io
 icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
 sources:
@@ -10,7 +10,7 @@ sources:
   - https://github.com/trinodb/trino
 maintainers:
   - name: valeriano-manassero
-    email: valeriano.manassero@gmail.com
+    url: https://github.com/valeriano-manassero
 keywords:
   - trino
   - trinosql
