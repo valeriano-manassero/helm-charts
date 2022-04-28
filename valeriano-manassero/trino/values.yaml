@@ -1,6 +1,6 @@
 image:
   repository: trinodb/trino
-  tag: 375
+  tag: 378
   pullPolicy: IfNotPresent
   securityContext:
     runAsUser: 1000
@@ -45,6 +45,7 @@ server:
         path: "/usr/local/certs/clustercoord.pem"
         # JKS keystores always require a password, while PEM format certificates can optionally require a password
         key: ""
+    internalCommunicationSharedSecret: some-secret
     query:
       maxMemory: "3GB"
       maxMemoryPerNode: "1GB"
