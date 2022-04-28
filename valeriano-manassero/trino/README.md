@@ -57,7 +57,6 @@ High performance, distributed SQL query engine for big data
 | server.config.query.maxMemory | string | `"3GB"` |  |
 | server.config.query.maxMemoryPerNode | string | `"1GB"` |  |
 | server.config.query.maxTotalMemory | string | `"6GB"` |  |
-| server.config.query.maxTotalMemoryPerNode | string | `"2GB"` |  |
 | server.coordinatorExtraConfig | string | `""` |  |
 | server.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | server.jvm.gcMethod.type | string | `"UseG1GC"` |  |
