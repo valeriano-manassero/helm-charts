@@ -1,6 +1,6 @@
 # trino
 
-![Version: 1.14.0](https://img.shields.io/badge/Version-1.14.0-informational?style=flat-square) ![AppVersion: 375](https://img.shields.io/badge/AppVersion-375-informational?style=flat-square)
+![Version: 1.15.0](https://img.shields.io/badge/Version-1.15.0-informational?style=flat-square) ![AppVersion: 378](https://img.shields.io/badge/AppVersion-378-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -30,7 +30,7 @@ High performance, distributed SQL query engine for big data
 | image.repository | string | `"trinodb/trino"` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
-| image.tag | int | `375` |  |
+| image.tag | int | `378` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
@@ -51,13 +51,13 @@ High performance, distributed SQL query engine for big data
 | server.config.httpsServer.keystore.key | string | `""` |  |
 | server.config.httpsServer.keystore.path | string | `"/usr/local/certs/clustercoord.pem"` |  |
 | server.config.httpsServer.port | int | `8443` |  |
+| server.config.internalCommunicationSharedSecret | string | `"some-secret"` |  |
 | server.config.path | string | `"/etc/trino"` |  |
 | server.config.prestoCompatibleHeader | bool | `false` |  |
 | server.config.processForwarded | bool | `false` |  |
 | server.config.query.maxMemory | string | `"3GB"` |  |
 | server.config.query.maxMemoryPerNode | string | `"1GB"` |  |
 | server.config.query.maxTotalMemory | string | `"6GB"` |  |
-| server.config.query.maxTotalMemoryPerNode | string | `"2GB"` |  |
 | server.coordinatorExtraConfig | string | `""` |  |
 | server.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | server.jvm.gcMethod.type | string | `"UseG1GC"` |  |

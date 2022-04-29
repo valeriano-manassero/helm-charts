@@ -48,6 +48,9 @@ data:
     http-server.https.port={{ .Values.server.config.httpsServer.port }}
     http-server.https.keystore.path={{ .Values.server.config.httpsServer.keystore.path }}
 {{- end }}
+{{- if .Values.server.config.internalCommunicationSharedSecret }}
+    internal-communication.shared-secret={{ .Values.server.config.internalCommunicationSharedSecret }}
+{{- end }}
 {{ .Values.server.coordinatorExtraConfig | indent 4 }}
 
   log.properties: |

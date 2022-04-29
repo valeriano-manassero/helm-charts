@@ -33,12 +33,15 @@ data:
 {{- if .Values.server.config.prestoCompatibleHeader }}
     protocol.v1.alternate-header-name=Presto
 {{- end }}
+{{- if .Values.server.config.internalCommunicationSharedSecret }}
+    internal-communication.shared-secret={{ .Values.server.config.internalCommunicationSharedSecret }}
+{{- end }}
 {{ .Values.server.workerExtraConfig | indent 4 }}
 
 
   log.properties: |
     io.trino={{ .Values.server.log.trino.level }}
-  
+
 ---
 apiVersion: v1
 kind: ConfigMap
