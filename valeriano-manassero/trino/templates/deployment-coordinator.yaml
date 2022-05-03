@@ -125,7 +125,7 @@ spec:
               path: /v1/status
               port: http-coord
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+{{ toYaml .Values.resources.coordinator | indent 12 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
