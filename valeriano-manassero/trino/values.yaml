@@ -51,18 +51,18 @@ config:
   coordinator:
     replicas: 1
     env: [ ]
-    nodeSelector: { }
+    nodeSelector: {}
     tolerations: [ ]
-    affinity: { }
-    podAnnotations: { }
-    resources: { }
+    affinity: {}
+    podAnnotations: {}
+    resources: {}
     # limits:
     #  cpu: 100m
     #  memory: 128Mi
     # requests:
     #  cpu: 100m
     #  memory: 128Mi
-    initContainers: { }
+    initContainers: {}
     #   - name: init-coordinator
     #     image: busybox:1.28
     #     imagePullPolicy: IfNotPresent
@@ -78,18 +78,18 @@ config:
   worker:
     replicas: 2
     env: [ ]
-    nodeSelector: { }
+    nodeSelector: {}
     tolerations: [ ]
-    affinity: { }
-    podAnnotations: { }
-    resources: { }
+    affinity: {}
+    podAnnotations: {}
+    resources: {}
     # limits:
     #  cpu: 100m
     #  memory: 128Mi
     # requests:
     #  cpu: 100m
     #  memory: 128Mi
-    initContainers: { }
+    initContainers: {}
     # worker:
     #   - name: init-worker
     #     image: busybox:1.28
