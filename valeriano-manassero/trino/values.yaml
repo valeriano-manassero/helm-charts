@@ -47,12 +47,12 @@ config:
       maxMemoryPerNode: "1GB"
       maxTotalMemory: "6GB"
     prestoCompatibleHeader: false
-  
+
   coordinator:
     replicas: 1
-    env: [ ]
+    env: []
     nodeSelector: {}
-    tolerations: [ ]
+    tolerations: []
     affinity: {}
     podAnnotations: {}
     resources: {}
@@ -74,12 +74,12 @@ config:
         g1:
           heapRegionSize: "32M"
     extraConfig: ""
-  
+
   worker:
     replicas: 2
-    env: [ ]
+    env: []
     nodeSelector: {}
-    tolerations: [ ]
+    tolerations: []
     affinity: {}
     podAnnotations: {}
     resources: {}
