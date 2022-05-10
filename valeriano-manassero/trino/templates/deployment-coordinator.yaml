@@ -6,6 +6,7 @@ metadata:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
 spec:
+  replicas: {{ .Values.config.coordinator.replicas }}
   selector:
     matchLabels:
       {{- include "trino.selectorLabels" . | nindent 6 }}
@@ -36,7 +37,7 @@ spec:
         - name: schemas-volume
           configMap:
             name: schemas-volume-coordinator
-        {{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
+        {{- if .Values.config.coordinator.authenticationType }}{{- if eq .Values.config.coordinator.authenticationType "PASSWORD" }}
         - name: password-volume
           secret:
             secretName: trino-password-authentication
@@ -66,9 +67,9 @@ spec:
           secret:
             secretName: {{ .secretName }}
         {{- end }}
-      {{- if .Values.initContainers.coordinator }}
+      {{- if .Values.config.coordinator.initContainers }}
       initContainers:
-      {{-  tpl (toYaml .Values.initContainers.coordinator) . | nindent 6 }}
+      {{-  tpl (toYaml .Values.config.coordinator.initContainers) . | nindent 6 }}
       {{- end }}
       serviceAccountName: {{ include "trino.serviceAccountName" . }}
       imagePullSecrets:
@@ -82,30 +83,30 @@ spec:
           {{-  tpl (toYaml .Values.env) . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - mountPath: {{ .Values.server.config.path }}/
+            - mountPath: {{ .Values.config.general.path }}/
               name: config-volume
             - mountPath: /etc/trino/schemas
               name: schemas-volume
-            - mountPath: {{ .Values.server.config.path }}/catalog
+            - mountPath: {{ .Values.config.general.path }}/catalog
               name: catalog-volume
-            {{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
-            - mountPath: {{ .Values.server.config.path }}/auth
+            {{- if .Values.config.coordinator.authenticationType }}{{- if eq .Values.config.coordinator.authenticationType "PASSWORD" }}
+            - mountPath: {{ .Values.config.general.path }}/auth
               name: password-volume
             {{- end }}{{- end }}
             {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
-            - mountPath: {{ .Values.server.config.path }}/access-control
+            - mountPath: {{ .Values.config.general.path }}/access-control
               name: access-control-volume
             {{- end }}{{- end }}
             {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "pvc" }}
-            - mountPath: {{ .Values.server.config.path }}/access-control
+            - mountPath: {{ .Values.config.general.path }}/access-control
               name: {{ .Values.accessControl.pvcVolumeName | default "access-control-pvc-volume" }}
             {{- end }}{{- end }}
             {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "configmap" }}
-            - mountPath: {{ .Values.server.config.path }}/resource-groups
+            - mountPath: {{ .Values.config.general.path }}/resource-groups
               name: resource-groups-volume
             {{- end }}{{- end }}
             {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "pvc" }}
-            - mountPath: {{ .Values.server.config.path }}/resource-groups
+            - mountPath: {{ .Values.config.general.path }}/resource-groups
               name: {{ .Values.resourceGroups.pvcVolumeName | default "resource-groups-pvc-volume" }}
             {{- end }}{{- end }}
             {{- range .Values.secretMounts }}
@@ -114,7 +115,7 @@ spec:
             {{- end }}
           ports:
             - name: http-coord
-              containerPort: {{ .Values.server.config.http.port }}
+              containerPort: {{ .Values.config.general.http.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -125,16 +126,16 @@ spec:
               path: /v1/status
               port: http-coord
           resources:
-{{ toYaml .Values.resources.coordinator | indent 12 }}
+{{ toYaml .Values.config.coordinator.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.config.coordinator.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.config.coordinator.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}

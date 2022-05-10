@@ -7,7 +7,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.server.config.http.port }}
+    - port: {{ .Values.config.general.http.port }}
       targetPort: http-coord
       protocol: TCP
       name: http-coord

@@ -27,7 +27,7 @@ spec:
           service:
             name: {{ include "trino.fullname" . }}
             port:
-              number: {{ .Values.server.config.http.port }}
+              number: {{ .Values.config.general.http.port }}
 {{- else -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -57,6 +57,6 @@ spec:
           - path: "/*"
             backend:
               serviceName: {{ include "trino.fullname" . }}
-              servicePort: {{ .Values.server.config.http.port }}
+              servicePort: {{ .Values.config.general.http.port }}
 {{- end }}
 {{- end }}
