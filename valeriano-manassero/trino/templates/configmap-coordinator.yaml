@@ -7,15 +7,15 @@ metadata:
     app.kubernetes.io/component: coordinator
 data:
   node.properties: |
-    node.environment={{ .Values.server.node.environment }}
-    node.data-dir={{ .Values.server.node.dataDir }}
-    plugin.dir={{ .Values.server.node.pluginDir }}
+    node.environment={{ .Values.config.general.node.environment }}
+    node.data-dir={{ .Values.config.general.node.dataDir }}
+    plugin.dir={{ .Values.config.general.node.pluginDir }}
 
   jvm.config: |
     -server
-    -Xmx{{ .Values.server.jvm.maxHeapSize }}
-    -XX:+{{ .Values.server.jvm.gcMethod.type }}
-    -XX:G1HeapRegionSize={{ .Values.server.jvm.gcMethod.g1.heapRegionSize }}
+    -Xmx{{ .Values.config.coordinator.jvm.maxHeapSize }}
+    -XX:+{{ .Values.config.coordinator.jvm.gcMethod.type }}
+    -XX:G1HeapRegionSize={{ .Values.config.coordinator.jvm.gcMethod.g1.heapRegionSize }}
     -XX:+UseGCOverheadLimit
     -XX:+ExplicitGCInvokesConcurrent
     -XX:+HeapDumpOnOutOfMemoryError
@@ -24,55 +24,55 @@ data:
 
   config.properties: |
     coordinator=true
-{{- if gt (int .Values.server.workers) 0 }}
+{{- if gt (int .Values.config.worker.replicas) 0 }}
     node-scheduler.include-coordinator=false
 {{- else }}
     node-scheduler.include-coordinator=true
 {{- end }}
-    http-server.http.port={{ .Values.server.config.http.port }}
-{{- if .Values.server.config.processForwarded }}
-    http-server.process-forwarded={{ .Values.server.config.processForwarded }}
+    http-server.http.port={{ .Values.config.general.http.port }}
+{{- if .Values.config.general.processForwarded }}
+    http-server.process-forwarded={{ .Values.config.general.processForwarded }}
 {{- end }}
-{{- if .Values.server.config.authenticationType }}
-    http-server.authentication.type={{ .Values.server.config.authenticationType }}
+{{- if .Values.config.general.authenticationType }}
+    http-server.authentication.type={{ .Values.config.general.authenticationType }}
 {{- end }}
-    query.max-memory={{ .Values.server.config.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
-    query.max-total-memory={{ .Values.server.config.query.maxTotalMemory }}
-    discovery.uri=http://localhost:{{ .Values.server.config.http.port }}
-{{- if .Values.server.config.prestoCompatibleHeader }}
+    query.max-memory={{ .Values.config.general.query.maxMemory }}
+    query.max-memory-per-node={{ .Values.config.general.query.maxMemoryPerNode }}
+    query.max-total-memory={{ .Values.config.general.query.maxTotalMemory }}
+    discovery.uri=http://localhost:{{ .Values.config.general.http.port }}
+{{- if .Values.config.general.prestoCompatibleHeader }}
     protocol.v1.alternate-header-name=Presto
 {{- end }}
-{{- if .Values.server.config.httpsServer.enabled }}
+{{- if .Values.config.general.httpsServer.enabled }}
     http-server.https.enabled=true
-    http-server.https.port={{ .Values.server.config.httpsServer.port }}
-    http-server.https.keystore.path={{ .Values.server.config.httpsServer.keystore.path }}
+    http-server.https.port={{ .Values.config.general.httpsServer.port }}
+    http-server.https.keystore.path={{ .Values.config.general.httpsServer.keystore.path }}
 {{- end }}
-{{- if .Values.server.config.internalCommunicationSharedSecret }}
-    internal-communication.shared-secret={{ .Values.server.config.internalCommunicationSharedSecret }}
+{{- if .Values.config.general.internalCommunicationSharedSecret }}
+    internal-communication.shared-secret={{ .Values.config.general.internalCommunicationSharedSecret }}
 {{- end }}
-{{ .Values.server.coordinatorExtraConfig | indent 4 }}
+{{ .Values.config.coordinator.extraConfig | indent 4 }}
 
   log.properties: |
-    io.trino={{ .Values.server.log.trino.level }}
+    io.trino={{ .Values.config.general.log.trino.level }}
 
-{{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
+{{- if .Values.config.general.authenticationType }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
   password-authenticator.properties: |
     password-authenticator.name=file
-    file.password-file={{ .Values.server.config.path }}/auth/password.db
+    file.password-file={{ .Values.config.general.path }}/auth/password.db
 {{- end }}{{- end }}
 
 {{- if .Values.accessControl }}{{- if .Values.accessControl.type }}
   access-control.properties: |
     access-control.name=file
     security.refresh-period={{ .Values.accessControl.refreshPeriod | default "1s" }}
-    security.config-file={{ .Values.server.config.path }}/access-control/{{ .Values.accessControl.configFile | default "rules.json" }}
+    security.config-file={{ .Values.config.general.path }}/access-control/{{ .Values.accessControl.configFile | default "rules.json" }}
 {{- end }}{{- end }}
 
 {{- if .Values.resourceGroups }}{{- if .Values.resourceGroups.type }}
   resource-groups.properties: |
     resource-groups.configuration-manager=file
-    resource-groups.config-file={{ .Values.server.config.path }}/resource-groups/{{ .Values.resourceGroups.configFile | default "resource-groups.json" }}
+    resource-groups.config-file={{ .Values.config.general.path }}/resource-groups/{{ .Values.resourceGroups.configFile | default "resource-groups.json" }}
 {{- end }}{{- end }}
 
 ---

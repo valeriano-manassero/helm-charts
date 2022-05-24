@@ -11,9 +11,6 @@ imagePullSecrets: []
 # imagePullSecrets:
 #   - name: registry-credentials
 
-env: []
-# Both worker & coordinator can use environment variables to expose information about itself to Containers running in the Pod
-
 ingress:
   enabled: false
   annotations: {}
@@ -21,16 +18,15 @@ ingress:
   tls:
     secretName: ""
 
-server:
-  workers: 3
-  node:
-    environment: production
-    dataDir: /data/trino
-    pluginDir: /usr/lib/trino/plugin
-  log:
-    trino:
-      level: INFO
-  config:
+config:
+  general:
+    node:
+      environment: production
+      dataDir: /data/trino
+      pluginDir: /usr/lib/trino/plugin
+    log:
+      trino:
+        level: INFO
     path: /etc/trino
     http:
       port: 8080
@@ -51,29 +47,64 @@ server:
       maxMemoryPerNode: "1GB"
       maxTotalMemory: "6GB"
     prestoCompatibleHeader: false
-  workerExtraConfig: ""
-  coordinatorExtraConfig: ""
-  jvm:
-    maxHeapSize: "7G"
-    gcMethod:
-      type: "UseG1GC"
-      g1:
-        heapRegionSize: "32M"
-  autoscaler:
-    enabled: false
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 50
 
-initContainers: {}
-  # coordinator:
-  #   - name: init-coordinator
-  #     image: busybox:1.28
-  #     imagePullPolicy: IfNotPresent
-  #     command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
-  # worker:
-  #   - name: init-worker
-  #     image: busybox:1.28
-  #     command: ['sh', '-c', 'echo The worker is running! && sleep 3600']
+  coordinator:
+    replicas: 1
+    env: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podAnnotations: {}
+    resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+    initContainers: {}
+    #   - name: init-coordinator
+    #     image: busybox:1.28
+    #     imagePullPolicy: IfNotPresent
+    #     command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+    jvm:
+      maxHeapSize: "24G"
+      gcMethod:
+        type: "UseG1GC"
+        g1:
+          heapRegionSize: "32M"
+    extraConfig: ""
+
+  worker:
+    replicas: 2
+    env: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podAnnotations: {}
+    resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+    initContainers: {}
+    # worker:
+    #   - name: init-worker
+    #     image: busybox:1.28
+    #     command: ['sh', '-c', 'echo The worker is running! && sleep 3600']
+    jvm:
+      maxHeapSize: "10G"
+      gcMethod:
+        type: "UseG1GC"
+        g1:
+          heapRegionSize: "32M"
+    extraConfig: ""
+    autoscaler:
+      enabled: false
+      maxReplicas: 5
+      targetCPUUtilizationPercentage: 50
 
 auth: {}
   # Set username and password
@@ -323,24 +354,6 @@ schemas: {}
 service:
   type: ClusterIP
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
 secretMounts: []
   # - name: ssl-cert
   #   secretName: ssl-cert
@@ -354,5 +367,3 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
-
-podAnnotations: {}
