@@ -359,6 +359,16 @@ secretMounts: []
   # - name: ssl-cert
   #   secretName: ssl-cert
   #   path: /usr/local/certs/
+  # - name: ssh-key
+  #   secretName: ssh-key
+  #   path: /home/trino/.ssh/id_rsa.pub
+  #   subPath: id_rsa.pub
+
+configMapMounts: []
+  # - name: ssh-config
+  #   configMapName: ssh-config
+  #   path: /home/trino/.ssh/config
+  #   subPath: config
 
 serviceAccount:
   # Specifies whether a service account should be created
