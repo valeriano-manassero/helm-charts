@@ -1,6 +1,6 @@
 # trino
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![AppVersion: 378](https://img.shields.io/badge/AppVersion-378-informational?style=flat-square)
+![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![AppVersion: 378](https://img.shields.io/badge/AppVersion-378-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -67,6 +67,7 @@ High performance, distributed SQL query engine for big data
 | config.worker.replicas | int | `2` |  |
 | config.worker.resources | object | `{}` |  |
 | config.worker.tolerations | list | `[]` |  |
+| configMapMounts | list | `[]` |  |
 | connectors | object | `{}` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"trinodb/trino"` |  |

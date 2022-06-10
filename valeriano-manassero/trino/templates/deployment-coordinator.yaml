@@ -67,6 +67,11 @@ spec:
           secret:
             secretName: {{ .secretName }}
         {{- end }}
+        {{- range .Values.configMapMounts }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .configMapName }}
+        {{- end }}
       {{- if .Values.config.coordinator.initContainers }}
       initContainers:
       {{-  tpl (toYaml .Values.config.coordinator.initContainers) . | nindent 6 }}
@@ -112,6 +117,16 @@ spec:
             {{- range .Values.secretMounts }}
             - name: {{ .name }}
               mountPath: {{ .path }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+            {{- end }}
+            {{- range .Values.configMapMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .path }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
             {{- end }}
           ports:
             - name: http-coord
