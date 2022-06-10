@@ -64,7 +64,7 @@ High performance, distributed SQL query engine for big data
 | config.worker.jvm.maxHeapSize | string | `"10G"` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
-| config.worker.replicas | int | `2` |  |
+| config.worker.replicas | int | `2` | Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas. |
 | config.worker.resources | object | `{}` |  |
 | config.worker.tolerations | list | `[]` |  |
 | configMapMounts | list | `[]` |  |
