@@ -1,6 +1,6 @@
 # trino
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![AppVersion: 378](https://img.shields.io/badge/AppVersion-378-informational?style=flat-square)
+![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square) ![AppVersion: 378](https://img.shields.io/badge/AppVersion-378-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -64,7 +64,7 @@ High performance, distributed SQL query engine for big data
 | config.worker.jvm.maxHeapSize | string | `"10G"` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
-| config.worker.replicas | int | `2` |  |
+| config.worker.replicas | int | `2` | Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas. |
 | config.worker.resources | object | `{}` |  |
 | config.worker.tolerations | list | `[]` |  |
 | connectors | object | `{}` |  |

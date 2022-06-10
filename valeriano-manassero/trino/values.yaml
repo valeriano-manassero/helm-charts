@@ -76,6 +76,7 @@ config:
     extraConfig: ""
 
   worker:
+    # -- Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas.
     replicas: 2
     env: []
     nodeSelector: {}
