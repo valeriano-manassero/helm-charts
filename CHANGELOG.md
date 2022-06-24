@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [trino-2.2.0](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-2.2.0) - 2022-06-24 13:57:58
+
+High performance, distributed SQL query engine for big data
+
+### Feature
+
+- general:
+  - added possibility to set ingressClassName (#126) ([eab808d](https://github.com/valeriano-manassero/helm-charts/commit/eab808d545758d5d91e08ac2c71af83fc1615716)) ([#126](https://github.com/valeriano-manassero/helm-charts/pull/126))
+
 ## [trino-2.1.0](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-2.1.0) - 2022-06-10 13:22:07
 
 High performance, distributed SQL query engine for big data
