@@ -78,8 +78,8 @@ High performance, distributed SQL query engine for big data
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
 | ingress.host | string | `""` |  |
+| ingress.ingressClassName | string | `nil` |  |
 | ingress.tls.secretName | string | `""` |  |
-| ingress.ingressClassName | string | `""` |  |
 | resourceGroups | object | `{}` |  |
 | schemas | object | `{}` |  |
 | secretMounts | list | `[]` |  |
