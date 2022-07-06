@@ -1,6 +1,6 @@
 # trino
 
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![AppVersion: 378](https://img.shields.io/badge/AppVersion-378-informational?style=flat-square)
+![Version: 2.2.1](https://img.shields.io/badge/Version-2.2.1-informational?style=flat-square) ![AppVersion: 378](https://img.shields.io/badge/AppVersion-378-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -30,6 +30,7 @@ High performance, distributed SQL query engine for big data
 | config.coordinator.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | config.coordinator.jvm.gcMethod.type | string | `"UseG1GC"` |  |
 | config.coordinator.jvm.maxHeapSize | string | `"24G"` |  |
+| config.coordinator.jvmExtraConfig | string | `""` |  |
 | config.coordinator.nodeSelector | object | `{}` |  |
 | config.coordinator.podAnnotations | object | `{}` |  |
 | config.coordinator.replicas | int | `1` |  |
@@ -62,6 +63,7 @@ High performance, distributed SQL query engine for big data
 | config.worker.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | config.worker.jvm.gcMethod.type | string | `"UseG1GC"` |  |
 | config.worker.jvm.maxHeapSize | string | `"10G"` |  |
+| config.worker.jvmExtraConfig | string | `""` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
 | config.worker.replicas | int | `2` | Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas. |
