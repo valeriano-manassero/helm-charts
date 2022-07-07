@@ -21,6 +21,7 @@ data:
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+ExitOnOutOfMemoryError
     -Djdk.attach.allowAttachSelf=true
+{{ .Values.config.coordinator.jvmExtraConfig | indent 4 }}
 
   config.properties: |
     coordinator=true
