@@ -303,7 +303,7 @@ resourceGroups: {}
 # If you want to provide your own secrets resource, you can use this field:
 # connectorsSecret:
 
-groupProvider: 
+groupProvider: {}
   # # Supported types: pvc or configmap
   # type: pvc
   # refreshPeriod: 5s
