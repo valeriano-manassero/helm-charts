@@ -62,6 +62,16 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.resourceGroups.pvcName }}
         {{- end }}{{- end }}
+        {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "configmap" }}
+        - name: group-provider-volume
+          configMap:
+            name: trino-group-provider-volume-coordinator
+        {{- end }}{{- end }}
+        {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "pvc" }}
+        - name: {{ .Values.groupProvider.pvcVolumeName | default "group-provider-pvc-volume" }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.groupProvider.pvcName }}
+        {{- end }}{{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:
@@ -113,6 +123,14 @@ spec:
             {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "pvc" }}
             - mountPath: {{ .Values.config.general.path }}/resource-groups
               name: {{ .Values.resourceGroups.pvcVolumeName | default "resource-groups-pvc-volume" }}
+            {{- end }}{{- end }}
+            {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "configmap" }}
+            - mountPath: {{ .Values.config.general.path }}/group-provider
+              name: group-provider-volume
+            {{- end }}{{- end }}
+            {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "pvc" }}
+            - mountPath: {{ .Values.config.general.path }}/group-provider
+              name: {{ .Values.groupProvider.pvcVolumeName | default "group-provider-pvc-volume" }}
             {{- end }}{{- end }}
             {{- range .Values.secretMounts }}
             - name: {{ .name }}

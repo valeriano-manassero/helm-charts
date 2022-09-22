@@ -303,6 +303,21 @@ resourceGroups: {}
 # If you want to provide your own secrets resource, you can use this field:
 # connectorsSecret:
 
+groupProvider: 
+  # # Supported types: pvc or configmap
+  # type: pvc
+  # refreshPeriod: 5s
+  # # Rules file is mounted to /etc/trino/group-provider
+  # configFile: "/group-provider/groups.txt"
+  # # If you use pvc as the type, you have to specify the pvcName field:
+  # pvcName:
+  # # If you use pvc as the type, you can specify the name of the volume with the pvcVolumeName:
+  # pvcVolumeName:
+  # # If you use configmap as the type, you have to specify the groups field:
+  # groups: 
+  #   groups.txt: |-
+  #    group_name:user_1,user_2,user_3
+
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
   # so data is stored in a secret
