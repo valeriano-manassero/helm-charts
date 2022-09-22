@@ -134,7 +134,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: trino-resource-groups-volume-coordinator
+  name: trino-group-provider-volume-coordinator
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
