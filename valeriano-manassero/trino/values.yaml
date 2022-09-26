@@ -314,7 +314,7 @@ groupProvider: {}
   # # If you use pvc as the type, you can specify the name of the volume with the pvcVolumeName:
   # pvcVolumeName:
   # # If you use configmap as the type, you have to specify the groups field:
-  # groups: 
+  # groups:
   #   groups.txt: |-
   #    group_name:user_1,user_2,user_3
 
