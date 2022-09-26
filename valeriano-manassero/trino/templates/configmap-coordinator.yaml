@@ -80,7 +80,7 @@ data:
   group-provider.properties: |
     group-provider.name=file
     file.refresh-period={{ .Values.groupProvider.refreshPeriod | default "5s" }}
-    file.group-file={{ .Values.config.general.path }}/group-file/{{ .Values.groupProvider.configFile | default "groups.txt" }}
+    file.group-file={{ .Values.config.general.path }}/group-provider/{{ .Values.groupProvider.configFile | default "groups.txt" }}
 {{- end }}{{- end }}
 
 ---
