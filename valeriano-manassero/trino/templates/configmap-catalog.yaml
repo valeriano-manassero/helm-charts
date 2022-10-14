@@ -1,0 +1,13 @@
+{{- if .Values.catalogs }}{{- if eq .Values.config.general.catalogsMountType "configmap" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "trino.catalog" . }}
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+data:
+  {{- range $catalogName, $catalogProperties := .Values.catalogs }}
+  {{ $catalogName }}.properties: |
+    {{- $catalogProperties | nindent 4 }}
+  {{- end }}
+{{- end }}{{- end }}

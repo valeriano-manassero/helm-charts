@@ -37,6 +37,7 @@ High performance, distributed SQL query engine for big data
 | config.coordinator.resources | object | `{}` |  |
 | config.coordinator.tolerations | list | `[]` |  |
 | config.general.authenticationType | string | `""` | Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS For more info: https://trino.io/docs/current/security/authentication-types.html |
+| config.general.catalogsMountType | string | `"secret"` | Can be mounted by secret or configmap. |
 | config.general.http.port | int | `8080` |  |
 | config.general.httpsServer.enabled | bool | `false` |  |
 | config.general.httpsServer.keystore.key | string | `""` |  |
@@ -84,6 +85,7 @@ High performance, distributed SQL query engine for big data
 | ingress.ingressClassName | string | `nil` |  |
 | ingress.tls.secretName | string | `""` |  |
 | resourceGroups | object | `{}` |  |
+| catalogs | object | `{}` |  |
 | schemas | object | `{}` |  |
 | secretMounts | list | `[]` |  |
 | service.type | string | `"ClusterIP"` |  |

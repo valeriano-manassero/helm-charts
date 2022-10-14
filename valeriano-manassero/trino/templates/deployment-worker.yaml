@@ -36,9 +36,15 @@ spec:
           configMap:
             name: {{ template "trino.worker" . }}-health-check
             defaultMode: 0777
+        {{- if eq .Values.config.general.catalogsMountType "configmap" }}
+        - name: catalog-volume
+          configMap:
+            name: {{ template "trino.catalog" . }}
+        {{ else }}
         - name: catalog-volume
           secret:
             secretName: {{ .Values.connectorsSecret | default "trino-connectors" }}
+        {{- end }}
         - name: schemas-volume
           configMap:
             name: schemas-volume-worker
