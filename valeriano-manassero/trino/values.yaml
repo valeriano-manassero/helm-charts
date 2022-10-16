@@ -36,6 +36,7 @@ config:
     # -- Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS
     # For more info: https://trino.io/docs/current/security/authentication-types.html
     authenticationType: ""
+    catalogsMountType: "secret"
     httpsServer:
       enabled: false
       port: 8443
@@ -335,6 +336,16 @@ connectors: {}
   #   elasticsearch.auth.user=elastiuser
   #   elasticsearch.auth.password=elasticpassword
   #   elasticsearch.tls.enabled=true
+
+catalogs: {}
+  # Catalogs that will be mounted in {{ .Values.config.general.path }}/catalog
+  # Requires config.general.catalogsMountType = "configmap"
+  # tpch.properties: |
+  #   connector.name=tpch
+  #   tpch.splits-per-node=4
+  # tpcds.properties: |
+  #   connector.name=tpcds
+  #   tpcds.splits-per-node=4
 
 schemas: {}
   # Custom schemas that will be mounted in /etc/trino/schemas

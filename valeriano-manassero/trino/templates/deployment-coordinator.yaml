@@ -31,9 +31,15 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "trino.coordinator" . }}
+        {{- if eq .Values.config.general.catalogsMountType "configmap" }}
+        - name: catalog-volume
+          configMap:
+            name: {{ template "trino.catalog" . }}
+        {{ else }}
         - name: catalog-volume
           secret:
             secretName: {{ .Values.connectorsSecret | default "trino-connectors" }}
+        {{- end }}
         - name: schemas-volume
           configMap:
             name: schemas-volume-coordinator
