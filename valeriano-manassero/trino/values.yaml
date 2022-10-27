@@ -306,6 +306,7 @@ resourceGroups: {}
 
 groupProvider: {}
   # # Supported types: pvc or configmap
+  # name: file
   # type: pvc
   # refreshPeriod: 5s
   # # Rules file is mounted to /etc/trino/group-provider
