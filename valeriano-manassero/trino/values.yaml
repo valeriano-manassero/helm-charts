@@ -418,7 +418,7 @@ initKeystore:
   image:
     repository: adoptopenjdk/openjdk11
     tag: latest
-    imagePullPolicy: IfNotPresent
+    pullPolicy: IfNotPresent
 
 tls:
   # Set internode encryption
