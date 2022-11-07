@@ -76,15 +76,15 @@ data:
     resource-groups.config-file={{ .Values.config.general.path }}/resource-groups/{{ .Values.resourceGroups.configFile | default "resource-groups.json" }}
 {{- end }}{{- end }}
 
-{{- if .Values.groupProvider }}{{- if .Values.groupProvider.type }}{{- if .Values.groupProvider.name }}
+{{- if .Values.groupProvider }}{{- if .Values.groupProvider.type }}
   group-provider.properties: |
-    group-provider.name={{ .Values.groupProvider.name }}
+    group-provider.name={{ required "groupProvider requires a valid 'name'." .Values.groupProvider.name }}
 {{- if eq .Values.groupProvider.name "file" }}
     file.refresh-period={{ .Values.groupProvider.refreshPeriod | default "5s" }}
     file.group-file={{ .Values.config.general.path }}/group-provider/{{ .Values.groupProvider.configFile | default "groups.txt" }}
 {{- end }}
 {{ .Values.groupProvider.customProperties | indent 4 }}
-{{- end }}{{- end }}{{- end }}
+{{- end }}{{- end }}
 
 ---
 apiVersion: v1
