@@ -11,6 +11,12 @@ spec:
       targetPort: http-coord
       protocol: TCP
       name: http-coord
+    {{- if .Values.config.general.httpsServer.enabled }}
+    - port: {{ .Values.config.general.httpsServer.port }}
+      targetPort: https-coord
+      protocol: TCP
+      name: https-coord
+    {{- end }}
   selector:
     {{- include "trino.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator

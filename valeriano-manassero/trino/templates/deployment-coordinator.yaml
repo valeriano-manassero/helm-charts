@@ -156,6 +156,11 @@ spec:
             - name: http-coord
               containerPort: {{ .Values.config.general.http.port }}
               protocol: TCP
+            {{- if .Values.config.general.httpsServer.enabled }}
+            - name: https-coord
+              containerPort: {{ .Values.config.general.httpsServer.port }}
+              protocol: TCP
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /v1/status
