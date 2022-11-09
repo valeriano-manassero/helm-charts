@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: "380"
 description: High performance, distributed SQL query engine for big data
 name: trino
-version: 2.4.1
+version: 2.4.3
 home: https://trino.io
 icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
 sources:
