@@ -52,7 +52,7 @@ spec:
         - name: certs
           secret:
             secretName: {{ include "trino.tlsSecretName" . }}
-            defaultMode: 0256
+            defaultMode: 0400
         - name: certs-shared
           emptyDir: {}
         {{- end }}
@@ -106,6 +106,7 @@ spec:
           securityContext:
             runAsUser: {{ .runAsUser }}
             runAsGroup: {{ .runAsGroup }}
+            fsGroup: {{ .fsGroup }}
           {{- end }}
           command: [ /bin/bash ]
           args:
