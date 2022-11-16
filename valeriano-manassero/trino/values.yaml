@@ -417,8 +417,8 @@ serviceAccount:
 
 initKeystore:
   image:
-    repository: adoptopenjdk/openjdk11
-    tag: latest
+    repository: bitnami/java
+    tag: 17
     pullPolicy: IfNotPresent
 
 tls:
