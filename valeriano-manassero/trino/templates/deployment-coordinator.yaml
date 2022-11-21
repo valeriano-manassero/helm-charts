@@ -26,6 +26,7 @@ spec:
       securityContext:
         runAsUser: {{ .runAsUser }}
         runAsGroup: {{ .runAsGroup }}
+        fsGroup: {{ .fsGroup }}
       {{- end }}
       volumes:
         - name: config-volume
@@ -106,7 +107,6 @@ spec:
           securityContext:
             runAsUser: {{ .runAsUser }}
             runAsGroup: {{ .runAsGroup }}
-            fsGroup: {{ .fsGroup }}
           {{- end }}
           command: [ /bin/bash ]
           args:
