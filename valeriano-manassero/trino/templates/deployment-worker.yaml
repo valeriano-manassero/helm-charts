@@ -49,6 +49,8 @@ spec:
         - name: schemas-volume
           configMap:
             name: schemas-volume-worker
+        - name: certs-shared
+          emptyDir: {}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:
@@ -83,6 +85,8 @@ spec:
               name: health-check-volume
             - mountPath: {{ .Values.config.general.path }}/catalog
               name: catalog-volume
+            - mountPath: {{ .Values.config.general.path }}/certs
+              name: certs-shared
             {{- range .Values.secretMounts }}
             - name: {{ .name }}
               mountPath: {{ .path }}

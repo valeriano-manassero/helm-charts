@@ -54,9 +54,9 @@ spec:
           secret:
             secretName: {{ include "trino.tlsSecretName" . }}
             defaultMode: 0400
+        {{- end }}
         - name: certs-shared
           emptyDir: {}
-        {{- end }}
         {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
         - name: access-control-volume
           configMap:
@@ -185,10 +185,8 @@ spec:
             - mountPath: {{ .Values.config.general.path }}/auth
               name: password-volume
             {{- end }}{{- end }}
-            {{- if (include "trino.tlsEncryption" . ) }}
-            - name: certs-shared
-              mountPath: {{ .Values.config.general.path }}/certs
-            {{- end }}
+            - mountPath: {{ .Values.config.general.path }}/certs
+              name: certs-shared
             {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
             - mountPath: {{ .Values.config.general.path }}/access-control
               name: access-control-volume
