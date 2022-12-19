@@ -1,14 +1,23 @@
 {{- if .Values.config.worker.autoscaler.enabled -}}
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "trino.worker" . }}
 spec:
-  maxReplicas: {{ .Values.config.worker.autoscaler.maxReplicas }}
-  minReplicas: {{ .Values.config.worker.replicas }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ template "trino.worker" . }}
-  targetCPUUtilizationPercentage: {{ .Values.config.worker.autoscaler.targetCPUUtilizationPercentage }}
+  minReplicas: {{ .Values.config.worker.replicas }}
+  maxReplicas: {{ .Values.config.worker.autoscaler.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.config.worker.autoscaler.targetCPUUtilizationPercentage }}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: {{ .Values.config.worker.autoscaler.stabilizationWindowSeconds }}
 {{- end }}

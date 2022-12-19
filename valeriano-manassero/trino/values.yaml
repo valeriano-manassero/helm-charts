@@ -114,6 +114,7 @@ config:
       enabled: false
       maxReplicas: 5
       targetCPUUtilizationPercentage: 50
+      stabilizationWindowSeconds: 300
 
 auth: {}
   # Set username and password
