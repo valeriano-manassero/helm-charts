@@ -86,6 +86,12 @@ data:
 {{ .Values.groupProvider.customProperties | indent 4 }}
 {{- end }}{{- end }}
 
+{{- if .Values.faultTolerance.enabled }}
+  exchange-manager.properties: |
+    exchange-manager.name=filesystem
+{{ .Values.faultTolerance.additionalProperties | indent 4 }}
+{{- end }}
+
 ---
 apiVersion: v1
 kind: ConfigMap

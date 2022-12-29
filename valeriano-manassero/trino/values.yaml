@@ -327,6 +327,14 @@ groupProvider: {}
   #   custom-property1=custom-value1
   #   custom-property2=custom-value2
 
+faultTolerance:
+  enabled: false
+  # additionalProperties: |-
+  #   exchange.base-directories=s3://<bucket-name>
+  #   exchange.s3.region=us-east-1
+  #   exchange.s3.aws-access-key=<access-key>
+  #   exchange.s3.aws-secret-key=<secret-key>
+
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
   # so data is stored in a secret
