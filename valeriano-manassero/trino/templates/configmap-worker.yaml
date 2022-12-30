@@ -39,9 +39,14 @@ data:
 {{- end }}
 {{ .Values.config.worker.extraConfig | indent 4 }}
 
-
   log.properties: |
     io.trino={{ .Values.config.general.log.trino.level }}
+
+{{- if .Values.faultTolerance.enabled }}
+  exchange-manager.properties: |
+    exchange-manager.name=filesystem
+{{ .Values.faultTolerance.additionalProperties | indent 4 }}
+{{- end }}
 
 ---
 apiVersion: v1
