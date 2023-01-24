@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [trino-2.6.2](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-2.6.2) - 2023-01-24 16:10:54
+
+High performance, distributed SQL query engine for big data
+
 ## [trino-2.6.1](https://github.com/valeriano-manassero/helm-charts/releases/tag/trino-2.6.1) - 2023-01-23 08:05:01
 
 High performance, distributed SQL query engine for big data
