@@ -87,6 +87,13 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.groupProvider.pvcName }}
         {{- end }}{{- end }}
+        {{- if .Values.jmxExporter.coordinator.enabled }}
+        - name: jmx-exporter-config
+          configMap:
+            name: {{ template "trino.fullname" . }}-jmx-exporter
+        - name: jmx-exporter-lib
+          emptyDir: {}
+        {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:
@@ -97,8 +104,25 @@ spec:
           configMap:
             name: {{ .configMapName }}
         {{- end }}
-      {{- if or .Values.config.coordinator.initContainers (include "trino.tlsEncryption" . ) }}
+      {{- if or .Values.jmxExporter.coordinator.enabled .Values.config.coordinator.initContainers (include "trino.tlsEncryption" . ) }}
       initContainers:
+      {{- if .Values.jmxExporter.coordinator.enabled }}
+        - name: download-jmx-exporter
+          image: {{ .Values.jmxExporter.image.repository }}:{{ .Values.jmxExporter.image.tag }}
+          imagePullPolicy: {{ .Values.jmxExporter.image.pullPolicy }}
+          {{- with .Values.image.securityContext }}
+          securityContext:
+            runAsUser: {{ .runAsUser }}
+            runAsGroup: {{ .runAsGroup }}
+          {{- end }}
+          args:
+            - "--output"
+            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}" 
+            - "{{ .Values.jmxExporter.downloadLink }}" 
+          volumeMounts:
+          - name: jmx-exporter-lib
+            mountPath: {{ .Values.jmxExporter.path }}/lib/
+      {{- end }}
       {{- if (include "trino.tlsEncryption" . ) }}
         - name: init-certs
           image: {{ .Values.initKeystore.image.repository }}:{{ .Values.initKeystore.image.tag }}
@@ -211,6 +235,12 @@ spec:
             - mountPath: {{ .Values.config.general.path }}/group-provider
               name: {{ .Values.groupProvider.pvcVolumeName | default "group-provider-pvc-volume" }}
             {{- end }}{{- end }}
+            {{- if .Values.jmxExporter.coordinator.enabled }}
+            - mountPath: {{ .Values.jmxExporter.path }}/etc/
+              name: jmx-exporter-config
+            - mountPath: {{ .Values.jmxExporter.path }}/lib/
+              name: jmx-exporter-lib
+            {{- end }}
             {{- range .Values.secretMounts }}
             - name: {{ .name }}
               mountPath: {{ .path }}
@@ -232,6 +262,11 @@ spec:
             {{- if .Values.config.general.httpsServer.enabled }}
             - name: https-coord
               containerPort: {{ .Values.config.general.httpsServer.port }}
+              protocol: TCP
+            {{- end }}
+            {{- if .Values.jmxExporter.coordinator.enabled }}
+            - name: jmx-exporter
+              containerPort: {{ .Values.jmxExporter.port | default 9000 }}
               protocol: TCP
             {{- end }}
           livenessProbe:

@@ -449,3 +449,29 @@ tls:
     # requests:
     #  cpu: 100m
     #  memory: 128Mi
+
+jmxExporter:
+  coordinator:
+    enabled: false
+  worker:
+    enabled: false
+  port: 9000
+  path: /prometheus
+  jarfile: jmx_prometheus_javaagent-0.17.2.jar
+  downloadLink: https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.17.2/jmx_prometheus_javaagent-0.17.2.jar
+  image:
+    repository: curlimages/curl
+    tag: 7.87.0
+    pullPolicy: IfNotPresent
+  serviceMonitor:
+    enabled: true
+    port: "jmx-exporter"
+    additionalLabels: {}
+    interval: 1m
+    scrapeTimeout: 10s
+    path: /metrics
+    # Additional relabeling configs to the ones that Prometheus Operator
+    # creates by default.
+    # relabelings:
+    #   - sourceLabels: [__meta_kubernetes_endpoints_label_app_kubernetes_io_version]
+    #     targetLabel: version
