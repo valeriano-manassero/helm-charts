@@ -21,6 +21,9 @@ data:
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+ExitOnOutOfMemoryError
     -Djdk.attach.allowAttachSelf=true
+{{- if .Values.jmxExporter.coordinator.enabled }}
+    -javaagent:{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}={{ .Values.jmxExporter.port }}:{{ .Values.jmxExporter.path }}/etc/trino.yaml
+{{- end }}
 {{ .Values.config.coordinator.jvmExtraConfig | indent 4 }}
 
   config.properties: |

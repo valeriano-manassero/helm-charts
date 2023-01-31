@@ -51,6 +51,13 @@ spec:
             name: schemas-volume-worker
         - name: certs-shared
           emptyDir: {}
+        {{- if .Values.jmxExporter.worker.enabled }}
+        - name: jmx-exporter-config
+          configMap:
+            name: {{ template "trino.fullname" . }}-jmx-exporter
+        - name: jmx-exporter-lib
+          emptyDir: {}
+        {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:
@@ -61,9 +68,28 @@ spec:
           configMap:
             name: {{ .configMapName }}
         {{- end }}
-      {{- if .Values.config.worker.initContainers }}
+      {{- if or .Values.jmxExporter.worker.enabled .Values.config.coordinator.initContainers }}
       initContainers:
+      {{- if .Values.jmxExporter.worker.enabled }}
+        - name: download-jmx-exporter
+          image: {{ .Values.jmxExporter.image.repository }}:{{ .Values.jmxExporter.image.tag }}
+          imagePullPolicy: {{ .Values.jmxExporter.image.pullPolicy }}
+          {{- with .Values.image.securityContext }}
+          securityContext:
+            runAsUser: {{ .runAsUser }}
+            runAsGroup: {{ .runAsGroup }}
+          {{- end }}
+          args:
+            - "--output"
+            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}" 
+            - "{{ .Values.jmxExporter.downloadLink }}" 
+          volumeMounts:
+          - name: jmx-exporter-lib
+            mountPath: {{ .Values.jmxExporter.path }}/lib/
+      {{- end }}
+      {{- if .Values.config.worker.initContainers }}
       {{-  tpl (toYaml .Values.config.worker.initContainers) . | nindent 6 }}
+      {{- end }}
       {{- end }}
       serviceAccountName: {{ include "trino.serviceAccountName" . }}
       imagePullSecrets:
@@ -87,6 +113,12 @@ spec:
               name: catalog-volume
             - mountPath: {{ .Values.config.general.path }}/certs
               name: certs-shared
+            {{- if .Values.jmxExporter.worker.enabled }}
+            - mountPath: {{ .Values.jmxExporter.path }}/etc/
+              name: jmx-exporter-config
+            - mountPath: {{ .Values.jmxExporter.path }}/lib/
+              name: jmx-exporter-lib
+            {{- end }}
             {{- range .Values.secretMounts }}
             - name: {{ .name }}
               mountPath: {{ .path }}
@@ -101,6 +133,12 @@ spec:
               subPath: {{ .subPath }}
               {{- end }}
             {{- end }}
+          {{- if .Values.jmxExporter.worker.enabled }}
+          ports:
+            - name: jmx-exporter
+              containerPort: {{ .Values.jmxExporter.port | default 9000 }}
+              protocol: TCP
+          {{- end }}
           livenessProbe:
             exec:
               command:

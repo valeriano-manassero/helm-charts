@@ -1,0 +1,19 @@
+{{- if .Values.jmxExporter.worker.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "trino.worker" . }}
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.jmxExporter.port | default 9000 }}
+      targetPort: jmx-exporter
+      protocol: TCP
+      name: {{ .Values.jmxExporter.serviceMonitor.port | default "jmx-exporter" }}
+  selector:
+    {{- include "trino.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+{{- end }}

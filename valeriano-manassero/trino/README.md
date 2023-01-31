@@ -1,6 +1,6 @@
 # trino
 
-![Version: 2.6.2](https://img.shields.io/badge/Version-2.6.2-informational?style=flat-square) ![AppVersion: 380](https://img.shields.io/badge/AppVersion-380-informational?style=flat-square)
+![Version: 2.7.0](https://img.shields.io/badge/Version-2.7.0-informational?style=flat-square) ![AppVersion: 380](https://img.shields.io/badge/AppVersion-380-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -92,6 +92,21 @@ High performance, distributed SQL query engine for big data
 | initKeystore.image.pullPolicy | string | `"IfNotPresent"` |  |
 | initKeystore.image.repository | string | `"bitnami/java"` |  |
 | initKeystore.image.tag | int | `17` |  |
+| jmxExporter.coordinator.enabled | bool | `false` |  |
+| jmxExporter.downloadLink | string | `"https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.17.2/jmx_prometheus_javaagent-0.17.2.jar"` |  |
+| jmxExporter.image.pullPolicy | string | `"IfNotPresent"` |  |
+| jmxExporter.image.repository | string | `"curlimages/curl"` |  |
+| jmxExporter.image.tag | string | `"7.87.0"` |  |
+| jmxExporter.jarfile | string | `"jmx_prometheus_javaagent-0.17.2.jar"` |  |
+| jmxExporter.path | string | `"/prometheus"` |  |
+| jmxExporter.port | int | `9000` |  |
+| jmxExporter.serviceMonitor.additionalLabels | object | `{}` |  |
+| jmxExporter.serviceMonitor.enabled | bool | `true` |  |
+| jmxExporter.serviceMonitor.interval | string | `"1m"` |  |
+| jmxExporter.serviceMonitor.path | string | `"/metrics"` |  |
+| jmxExporter.serviceMonitor.port | string | `"jmx-exporter"` |  |
+| jmxExporter.serviceMonitor.scrapeTimeout | string | `"10s"` |  |
+| jmxExporter.worker.enabled | bool | `false` |  |
 | resourceGroups | object | `{}` |  |
 | schemas | object | `{}` |  |
 | secretMounts | list | `[]` |  |
