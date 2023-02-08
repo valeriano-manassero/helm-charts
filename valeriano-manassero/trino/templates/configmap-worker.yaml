@@ -51,6 +51,13 @@ data:
 {{ .Values.faultTolerance.additionalProperties | indent 4 }}
 {{- end }}
 
+{{ if .Values.eventListenerProperties }}
+  event-listener.properties: |
+  {{- range $configValue := .Values.eventListenerProperties }}
+    {{ $configValue }}
+  {{- end }}
+{{ end }}
+
 ---
 apiVersion: v1
 kind: ConfigMap

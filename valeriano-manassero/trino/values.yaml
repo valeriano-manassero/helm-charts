@@ -116,6 +116,8 @@ config:
       targetCPUUtilizationPercentage: 50
       stabilizationWindowSeconds: 300
 
+eventListenerProperties: {}
+
 auth: {}
   # Set username and password
   # https://trino.io/docs/current/security/password-file.html#file-format
