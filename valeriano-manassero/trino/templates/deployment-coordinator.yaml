@@ -117,8 +117,8 @@ spec:
           {{- end }}
           args:
             - "--output"
-            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}" 
-            - "{{ .Values.jmxExporter.downloadLink }}" 
+            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}"
+            - "{{ .Values.jmxExporter.downloadLink }}"
           volumeMounts:
           - name: jmx-exporter-lib
             mountPath: {{ .Values.jmxExporter.path }}/lib/
@@ -279,7 +279,7 @@ spec:
               port: http-coord
           resources:
 {{ toYaml .Values.config.coordinator.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
+    {{- with .Values.config.coordinator.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
