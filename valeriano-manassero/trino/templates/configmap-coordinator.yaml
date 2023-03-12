@@ -55,7 +55,9 @@ data:
 {{- if .Values.config.general.internalCommunicationSharedSecret }}
     internal-communication.shared-secret={{ .Values.config.general.internalCommunicationSharedSecret }}
 {{- end }}
-{{ .Values.config.coordinator.extraConfig | indent 4 }}
+{{- range $configValue := .Values.config.coordinator.extraConfig }}
+    {{ $configValue }}
+{{- end }}
 
   log.properties: |
     io.trino={{ .Values.config.general.log.trino.level }}
