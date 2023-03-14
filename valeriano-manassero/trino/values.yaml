@@ -80,7 +80,9 @@ config:
         g1:
           heapRegionSize: "32M"
     jvmExtraConfig: ""
-    extraConfig: ""
+    extraConfig: {}
+    #  - "retry-policy=TASK"
+    #  - "exchange.compression-enabled=true"
 
   worker:
     # -- Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas.
@@ -109,7 +111,9 @@ config:
         g1:
           heapRegionSize: "32M"
     jvmExtraConfig: ""
-    extraConfig: ""
+    extraConfig: {}
+    #  - "retry-policy=TASK"
+    #  - "exchange.compression-enabled=true"
     autoscaler:
       enabled: false
       maxReplicas: 5
