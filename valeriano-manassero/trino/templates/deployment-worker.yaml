@@ -19,7 +19,7 @@ spec:
         app.kubernetes.io/component: worker
       annotations:
         checksum/config: {{ printf "%s%s" (include (print $.Template.BasePath "/configmap-worker.yaml") .) (include (print $.Template.BasePath "/secret.yaml") .) | sha256sum }}
-    {{- with .Values.podAnnotations }}
+    {{- with .Values.config.worker.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
