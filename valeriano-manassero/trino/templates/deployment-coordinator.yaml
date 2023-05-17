@@ -43,7 +43,7 @@ spec:
         {{- end }}
         - name: schemas-volume
           configMap:
-            name: schemas-volume-coordinator
+            name: {{ template "trino.fullname" . }}-schemas-volume-coordinator
         {{- if .Values.config.general.authenticationType }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
         - name: password-volume
           secret:

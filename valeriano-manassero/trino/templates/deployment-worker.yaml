@@ -48,7 +48,7 @@ spec:
         {{- end }}
         - name: schemas-volume
           configMap:
-            name: schemas-volume-worker
+            name: {{ template "trino.fullname" . }}-schemas-volume-worker
         - name: certs-shared
           emptyDir: {}
         {{- if .Values.jmxExporter.worker.enabled }}
