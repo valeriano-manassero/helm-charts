@@ -121,7 +121,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: trino-access-control-volume-coordinator
+  name: {{ template "trino.fullname" . }}-access-control-volume-coordinator
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
@@ -137,7 +137,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: trino-resource-groups-volume-coordinator
+  name: {{ template "trino.fullname" . }}-resource-groups-volume-coordinator
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
@@ -153,7 +153,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: trino-group-provider-volume-coordinator
+  name: {{ template "trino.fullname" . }}-group-provider-volume-coordinator
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
