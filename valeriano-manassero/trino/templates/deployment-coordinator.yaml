@@ -47,7 +47,7 @@ spec:
         {{- if .Values.config.general.authenticationType }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
         - name: password-volume
           secret:
-            secretName: trino-password-authentication
+            secretName: {{ template "trino.fullname" . }}-password-authentication
         {{- end }}{{- end }}
         {{- if (include "trino.tlsEncryption" . ) }}
         - name: certs
@@ -60,7 +60,7 @@ spec:
         {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
         - name: access-control-volume
           configMap:
-            name: trino-access-control-volume-coordinator
+            name: {{ template "trino.fullname" . }}-access-control-volume-coordinator
         {{- end }}{{- end }}
         {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "pvc" }}
         - name: {{ .Values.accessControl.pvcVolumeName | default "access-control-pvc-volume" }}
@@ -70,7 +70,7 @@ spec:
         {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "configmap" }}
         - name: resource-groups-volume
           configMap:
-            name: trino-resource-groups-volume-coordinator
+            name: {{ template "trino.fullname" . }}-resource-groups-volume-coordinator
         {{- end }}{{- end }}
         {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "pvc" }}
         - name: {{ .Values.resourceGroups.pvcVolumeName | default "resource-groups-pvc-volume" }}
@@ -80,7 +80,7 @@ spec:
         {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "configmap" }}
         - name: group-provider-volume
           configMap:
-            name: trino-group-provider-volume-coordinator
+            name: {{ template "trino.fullname" . }}-group-provider-volume-coordinator
         {{- end }}{{- end }}
         {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "pvc" }}
         - name: {{ .Values.groupProvider.pvcVolumeName | default "group-provider-pvc-volume" }}
