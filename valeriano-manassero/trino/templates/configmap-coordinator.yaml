@@ -60,7 +60,7 @@ data:
   log.properties: |
     io.trino={{ .Values.config.general.log.trino.level }}
 
-{{- if .Values.config.general.authenticationType }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
+{{- if .Values.config.general.authenticationType }}{{- if contains "PASSWORD" eq .Values.config.general.authenticationType }}
   password-authenticator.properties: |
     password-authenticator.name=file
     file.password-file={{ .Values.config.general.path }}/auth/password.db
