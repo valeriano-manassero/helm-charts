@@ -17,6 +17,10 @@ High performance, distributed SQL query engine for big data
 * <https://github.com/valeriano-manassero/helm-charts>
 * <https://github.com/trinodb/trino>
 
+## Requirements
+
+Kubernetes: `>= 1.25.0-0 < 1.28.0-0`
+
 ## Values
 
 | Key | Type | Default | Description |
