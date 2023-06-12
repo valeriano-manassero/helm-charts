@@ -41,7 +41,7 @@ data:
     http-server.authentication.type={{ .Values.config.general.authenticationType }}
 {{- end }}
     query.max-memory={{ .Values.config.general.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.config.general.query.maxMemoryPerNode }}
+    query.max-memory-per-node={{ .Values.config.coordinator.query.maxMemoryPerNode }}
     query.max-total-memory={{ .Values.config.general.query.maxTotalMemory }}
     discovery.uri=http://localhost:{{ .Values.config.general.http.port }}
 {{- if .Values.config.general.prestoCompatibleHeader }}
