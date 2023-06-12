@@ -31,7 +31,7 @@ data:
     coordinator=false
     http-server.http.port={{ .Values.config.general.http.port }}
     query.max-memory={{ .Values.config.general.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.config.general.query.maxMemoryPerNode }}
+    query.max-memory-per-node={{ .Values.config.worker.query.maxMemoryPerNode }}
     query.max-total-memory={{ .Values.config.general.query.maxTotalMemory }}
     discovery.uri=http://{{ template "trino.fullname" . }}:{{ .Values.config.general.http.port }}
 {{- if .Values.config.general.prestoCompatibleHeader }}

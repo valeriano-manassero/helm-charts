@@ -52,7 +52,6 @@ config:
     internalCommunicationSharedSecret: some-secret
     query:
       maxMemory: "3GB"
-      maxMemoryPerNode: "1GB"
       maxTotalMemory: "6GB"
     prestoCompatibleHeader: false
 
@@ -83,6 +82,8 @@ config:
           heapRegionSize: "32M"
     jvmExtraConfig: ""
     extraConfig: ""
+    query:
+      maxMemoryPerNode: "1GB"
 
   worker:
     # -- Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas.
@@ -112,6 +113,8 @@ config:
           heapRegionSize: "32M"
     jvmExtraConfig: ""
     extraConfig: ""
+    query:
+      maxMemoryPerNode: "1GB"
     autoscaler:
       enabled: false
       maxReplicas: 5
