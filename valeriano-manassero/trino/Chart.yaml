@@ -2,8 +2,8 @@ apiVersion: v1
 appVersion: "419"
 description: High performance, distributed SQL query engine for big data
 name: trino
-version: 5.1.0
-kubeVersion: ">= 1.25.0-0 < 1.28.0-0"
+version: 5.1.1
+kubeVersion: ">= 1.24.0-0 < 1.28.0-0"
 home: https://trino.io
 icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
 sources:
@@ -26,5 +26,5 @@ keywords:
   - "high performance"
 annotations:
   artifacthub.io/changes: |
-    - kind: changed
-      description: Add extra jvm configs
+    - kind: fixed
+      description: Restored 1.24 compatibility support
