@@ -1,6 +1,6 @@
 # trino
 
-![Version: 5.1.2](https://img.shields.io/badge/Version-5.1.2-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 5.1.3](https://img.shields.io/badge/Version-5.1.3-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -115,6 +115,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | jmxExporter.serviceMonitor.port | string | `"jmx-exporter"` |  |
 | jmxExporter.serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | jmxExporter.worker.enabled | bool | `false` |  |
+| passwordAuthenticatorProperties | object | `{}` | Password authenticator configuration, an item per conf line. Requiere `config.general.authenticationType` set to `PASSWORD`. For file : you don't need to use this propertie if you set `config.general.authenticationType` to `PASSWORD` and use `config.auth` to fill `auth/password.db`. For LDAP : https://trino.io/docs/current/security/ldap.html. For SalesForce : https://trino.io/docs/current/security/salesforce.html |
 | resourceGroups | object | `{}` |  |
 | schemas | object | `{}` |  |
 | secretMounts | list | `[]` |  |
