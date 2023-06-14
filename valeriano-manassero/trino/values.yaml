@@ -123,6 +123,12 @@ config:
 
 eventListenerProperties: {}
 
+passwordAuthenticatorProperties: {}
+  # Password authenticator configuration. config.general.authenticationType MUST BE SET to PASSWORD
+  # for file : you don't need to use this propertie if you set config.general.authenticationType to PASSWORD and use config.auth to fill auth/password.db
+  # for LDAP : https://trino.io/docs/current/security/ldap.html
+  # for SalesForce : https://trino.io/docs/current/security/salesforce.html
+
 auth: {}
   # Set username and password
   # https://trino.io/docs/current/security/password-file.html#file-format
