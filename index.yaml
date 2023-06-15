@@ -340,6 +340,40 @@ entries:
   trino:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: Password authenticator properties
+    apiVersion: v1
+    appVersion: "419"
+    created: "2023-06-15T07:11:50.090550994Z"
+    description: High performance, distributed SQL query engine for big data
+    digest: 5462a23260a106e555bf3ad947f154a926390fa70e9d09b2736bd3d6fe46f3da
+    home: https://trino.io
+    icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
+    keywords:
+    - trino
+    - trinosql
+    - trinodb
+    - presto
+    - prestosql
+    - prestodb
+    - big data
+    - database
+    - sql
+    - query engine
+    - high performance
+    kubeVersion: '>= 1.24.0-0 < 1.28.0-0'
+    maintainers:
+    - name: valeriano-manassero
+      url: https://github.com/valeriano-manassero
+    name: trino
+    sources:
+    - https://github.com/valeriano-manassero/helm-charts
+    - https://github.com/trinodb/trino
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/trino-5.1.3/trino-5.1.3.tgz
+    version: 5.1.3
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: Fix wrong number of args for contains
     apiVersion: v1
