@@ -44,7 +44,7 @@ spec:
         - name: schemas-volume
           configMap:
             name: {{ template "trino.fullname" . }}-schemas-volume-coordinator
-        {{- if .Values.config.general.authenticationType }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
+        {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
         - name: password-volume
           secret:
             secretName: {{ template "trino.fullname" . }}-password-authentication
@@ -205,7 +205,7 @@ spec:
               name: schemas-volume
             - mountPath: {{ .Values.config.general.path }}/catalog
               name: catalog-volume
-            {{- if .Values.config.general.authenticationType }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
+            {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
             - mountPath: {{ .Values.config.general.path }}/auth
               name: password-volume
             {{- end }}{{- end }}
