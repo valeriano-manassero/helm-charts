@@ -44,7 +44,6 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.coordinator.resources | object | `{}` |  |
 | config.coordinator.tolerations | list | `[]` |  |
 | config.general.authenticationType | string | `""` | Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS For more info: https://trino.io/docs/current/security/authentication-types.html |
-| config.passwordAuthenticatorProperties | object | `{}` | If `config.general.authenticationType` is `PASSWORD`, you can customize here `password-authenticator.properties` content for authenticators ldap or salesforce. Otherewise content is `file` and password file is `/auth/password.db` in `config.general.path` |
 | config.general.catalogsMountType | string | `"secret"` |  |
 | config.general.http.port | int | `8080` |  |
 | config.general.httpsServer.enabled | bool | `false` |  |
