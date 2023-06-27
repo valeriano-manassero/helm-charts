@@ -94,6 +94,11 @@ spec:
         - name: jmx-exporter-lib
           emptyDir: {}
         {{- end }}
+        {{- if .Values.faultTolerance.enabled }}
+        - name: fault-tolerance-volume
+          secret:
+            secretName: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
+        {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:

@@ -321,6 +321,7 @@ resourceGroups: {}
 # If you want to provide your own secrets resource, you can use this field:
 # connectorsSecret:
 # authenticationSecret:
+# faultToleranceSecret:
 
 groupProvider: {}
   # # Supported types: pvc or configmap
@@ -343,7 +344,8 @@ groupProvider: {}
 
 faultTolerance:
   enabled: false
-  # additionalProperties: |-
+  # properties: |-
+  #   exchange-manager.name=filesystem
   #   exchange.base-directories=s3://<bucket-name>
   #   exchange.s3.region=us-east-1
   #   exchange.s3.aws-access-key=<access-key>
