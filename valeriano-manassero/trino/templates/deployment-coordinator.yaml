@@ -47,7 +47,7 @@ spec:
         {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
         - name: password-volume
           secret:
-            secretName: {{ template "trino.fullname" . }}-password-authentication
+            secretName: {{ .Values.authenticationSecret | default (printf "%s-password-authentication" (include "trino.fullname" .)) }}
         {{- end }}{{- end }}
         {{- if (include "trino.tlsEncryption" . ) }}
         - name: certs

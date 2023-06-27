@@ -81,8 +81,8 @@ spec:
           {{- end }}
           args:
             - "--output"
-            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}" 
-            - "{{ .Values.jmxExporter.downloadLink }}" 
+            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}"
+            - "{{ .Values.jmxExporter.downloadLink }}"
           volumeMounts:
           - name: jmx-exporter-lib
             mountPath: {{ .Values.jmxExporter.path }}/lib/

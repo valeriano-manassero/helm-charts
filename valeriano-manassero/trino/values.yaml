@@ -320,6 +320,7 @@ resourceGroups: {}
 
 # If you want to provide your own secrets resource, you can use this field:
 # connectorsSecret:
+# authenticationSecret:
 
 groupProvider: {}
   # # Supported types: pvc or configmap
