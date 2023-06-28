@@ -1,6 +1,6 @@
 # trino
 
-![Version: 5.1.3](https://img.shields.io/badge/Version-5.1.3-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 6.0.0](https://img.shields.io/badge/Version-6.0.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -19,7 +19,7 @@ High performance, distributed SQL query engine for big data
 
 ## Requirements
 
-Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
+Kubernetes: `>= 1.23.0-0 < 1.28.0-0`
 
 ## Values
 
