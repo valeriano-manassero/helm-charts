@@ -32,3 +32,9 @@ annotations:
       description: Capabilities to use a custom secret for fault tolerance
     - kind: changed
       description: How the fault tolerance properties are configured
+    - kind: added
+      description: Pod labels
+    - kind: fixed
+      description: Fix container env
+    - kind: added
+      description: Added container envFrom
