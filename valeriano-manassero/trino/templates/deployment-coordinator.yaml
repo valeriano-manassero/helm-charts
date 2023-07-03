@@ -30,8 +30,15 @@ spec:
       {{- end }}
       volumes:
         - name: config-volume
-          configMap:
-            name: {{ template "trino.coordinator" . }}
+          projected:
+            sources:
+            - configMap:
+                name: {{ template "trino.coordinator" . }}
+
+            {{- if .Values.faultTolerance.enabled }}
+            - secret:
+                name: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
+            {{- end }}
         {{- if eq .Values.config.general.catalogsMountType "configmap" }}
         - name: catalog-volume
           configMap:
@@ -93,11 +100,6 @@ spec:
             name: {{ template "trino.fullname" . }}-jmx-exporter
         - name: jmx-exporter-lib
           emptyDir: {}
-        {{- end }}
-        {{- if .Values.faultTolerance.enabled }}
-        - name: fault-tolerance-volume
-          secret:
-            secretName: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
         {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}

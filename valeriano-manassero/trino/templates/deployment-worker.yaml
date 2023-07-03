@@ -31,8 +31,15 @@ spec:
       {{- end }}
       volumes:
         - name: config-volume
-          configMap:
-            name: {{ template "trino.worker" . }}
+          projected:
+            sources:
+            - configMap:
+                name: {{ template "trino.worker" . }}
+
+            {{- if .Values.faultTolerance.enabled }}
+            - secret:
+                name: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
+            {{- end }}
         - name: health-check-volume
           configMap:
             name: {{ template "trino.worker" . }}-health-check
@@ -57,11 +64,6 @@ spec:
             name: {{ template "trino.fullname" . }}-jmx-exporter
         - name: jmx-exporter-lib
           emptyDir: {}
-        {{- end }}
-        {{- if .Values.faultTolerance.enabled }}
-        - name: fault-tolerance-volume
-          secret:
-            secretName: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
         {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
