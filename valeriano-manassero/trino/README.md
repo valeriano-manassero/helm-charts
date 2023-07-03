@@ -1,6 +1,6 @@
 # trino
 
-![Version: 5.1.3](https://img.shields.io/badge/Version-5.1.3-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 5.2.0](https://img.shields.io/badge/Version-5.2.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -39,6 +39,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.coordinator.jvmExtraConfig | string | `""` |  |
 | config.coordinator.nodeSelector | object | `{}` |  |
 | config.coordinator.podAnnotations | object | `{}` |  |
+| config.coordinator.podLabels | object | `{}` |  |
 | config.coordinator.query.maxMemoryPerNode | string | `"1GB"` |  |
 | config.coordinator.replicas | int | `1` |  |
 | config.coordinator.resources | object | `{}` |  |
@@ -74,6 +75,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.worker.jvmExtraConfig | string | `""` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
+| config.worker.podLabels | object | `{}` |  |
 | config.worker.query.maxMemoryPerNode | string | `"1GB"` |  |
 | config.worker.replicas | int | `2` | Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas. |
 | config.worker.resources | object | `{}` |  |
