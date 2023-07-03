@@ -61,6 +61,7 @@ config:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    podLabels: {}
     podAnnotations: {}
     resources: {}
     # limits:
@@ -92,6 +93,7 @@ config:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    podLabels: {}
     podAnnotations: {}
     resources: {}
     # limits:
