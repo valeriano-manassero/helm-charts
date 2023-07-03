@@ -1,6 +1,6 @@
 # trino
 
-![Version: 5.2.0](https://img.shields.io/badge/Version-5.2.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 5.3.0](https://img.shields.io/badge/Version-5.3.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -31,6 +31,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | clusterDomain | string | `"cluster.local"` |  |
 | config.coordinator.affinity | object | `{}` |  |
 | config.coordinator.env | list | `[]` |  |
+| config.coordinator.envFrom | list | `[]` |  |
 | config.coordinator.extraConfig | string | `""` |  |
 | config.coordinator.initContainers | list | `[]` |  |
 | config.coordinator.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
@@ -67,6 +68,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.worker.autoscaler.stabilizationWindowSeconds | int | `300` |  |
 | config.worker.autoscaler.targetCPUUtilizationPercentage | int | `50` |  |
 | config.worker.env | list | `[]` |  |
+| config.worker.envFrom | list | `[]` |  |
 | config.worker.extraConfig | string | `""` |  |
 | config.worker.initContainers | list | `[]` |  |
 | config.worker.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |

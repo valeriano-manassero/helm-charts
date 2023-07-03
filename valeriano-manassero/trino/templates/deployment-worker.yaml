@@ -101,9 +101,13 @@ spec:
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.env }}
+          {{- if .Values.config.worker.env }}
           env:
-          {{-  tpl (toYaml .Values.env) . | nindent 12 }}
+          {{-  tpl (toYaml .Values.config.worker.env) . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.config.worker.envFrom }}
+          envFrom:
+          {{-  tpl (toYaml .Values.config.worker.envFrom) . | nindent 12 }}
           {{- end }}
           volumeMounts:
             - mountPath: {{ .Values.config.general.path }}
