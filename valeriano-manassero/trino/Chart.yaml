@@ -38,3 +38,5 @@ annotations:
       description: Fix container env
     - kind: added
       description: Added container envFrom
+    - kind: fixed
+      description: Password authentication secret rendering when multiple authentication types are configured
