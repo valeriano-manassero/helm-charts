@@ -102,12 +102,6 @@ data:
 {{ .Values.groupProvider.customProperties | indent 4 }}
 {{- end }}{{- end }}
 
-{{- if .Values.faultTolerance.enabled }}
-  exchange-manager.properties: |
-    exchange-manager.name=filesystem
-{{ .Values.faultTolerance.additionalProperties | indent 4 }}
-{{- end }}
-
 {{ if .Values.eventListenerProperties }}
   event-listener.properties: |
   {{- range $configValue := .Values.eventListenerProperties }}

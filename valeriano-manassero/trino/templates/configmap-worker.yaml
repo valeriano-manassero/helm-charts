@@ -52,12 +52,6 @@ data:
   log.properties: |
     io.trino={{ .Values.config.general.log.trino.level }}
 
-{{- if .Values.faultTolerance.enabled }}
-  exchange-manager.properties: |
-    exchange-manager.name=filesystem
-{{ .Values.faultTolerance.additionalProperties | indent 4 }}
-{{- end }}
-
 {{ if .Values.eventListenerProperties }}
   event-listener.properties: |
   {{- range $configValue := .Values.eventListenerProperties }}
