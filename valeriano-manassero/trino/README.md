@@ -1,6 +1,6 @@
 # trino
 
-![Version: 6.0.0](https://img.shields.io/badge/Version-6.0.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 6.1.0](https://img.shields.io/badge/Version-6.1.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -31,6 +31,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | clusterDomain | string | `"cluster.local"` |  |
 | config.coordinator.affinity | object | `{}` |  |
 | config.coordinator.env | list | `[]` |  |
+| config.coordinator.envFrom | list | `[]` |  |
 | config.coordinator.extraConfig | string | `""` |  |
 | config.coordinator.initContainers | list | `[]` |  |
 | config.coordinator.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
@@ -39,6 +40,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.coordinator.jvmExtraConfig | string | `""` |  |
 | config.coordinator.nodeSelector | object | `{}` |  |
 | config.coordinator.podAnnotations | object | `{}` |  |
+| config.coordinator.podLabels | object | `{}` |  |
 | config.coordinator.query.maxMemoryPerNode | string | `"1GB"` |  |
 | config.coordinator.replicas | int | `1` |  |
 | config.coordinator.resources | object | `{}` |  |
@@ -66,6 +68,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.worker.autoscaler.stabilizationWindowSeconds | int | `300` |  |
 | config.worker.autoscaler.targetCPUUtilizationPercentage | int | `50` |  |
 | config.worker.env | list | `[]` |  |
+| config.worker.envFrom | list | `[]` |  |
 | config.worker.extraConfig | string | `""` |  |
 | config.worker.initContainers | list | `[]` |  |
 | config.worker.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
@@ -74,6 +77,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.worker.jvmExtraConfig | string | `""` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
+| config.worker.podLabels | object | `{}` |  |
 | config.worker.query.maxMemoryPerNode | string | `"1GB"` |  |
 | config.worker.replicas | int | `2` | Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas. |
 | config.worker.resources | object | `{}` |  |
