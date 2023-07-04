@@ -16,6 +16,9 @@ spec:
       labels:
         {{- include "trino.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: coordinator
+    {{- with .Values.config.coordinator.podLabels }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       annotations:
         checksum/config: {{ printf "%s%s" (include (print $.Template.BasePath "/configmap-coordinator.yaml") .) (include (print $.Template.BasePath "/secret.yaml") .) | sha256sum }}
     {{- with .Values.config.coordinator.podAnnotations }}
@@ -51,7 +54,7 @@ spec:
         - name: schemas-volume
           configMap:
             name: {{ template "trino.fullname" . }}-schemas-volume-coordinator
-        {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
+        {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if contains "PASSWORD" .Values.config.general.authenticationType }}
         - name: password-volume
           secret:
             secretName: {{ .Values.authenticationSecret | default (printf "%s-password-authentication" (include "trino.fullname" .)) }}
@@ -194,7 +197,7 @@ spec:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.env }}
+          {{- if .Values.config.coordinator.env }}
           env:
             {{- if or .Values.tls.keystorePasswordSecret }}
             - name: TRINO_KEYSTORE_PASSWORD
@@ -203,7 +206,11 @@ spec:
                   name: {{ .Values.tls.keystorePasswordSecret }}
                   key: keystore-password
             {{- end }}
-          {{-  tpl (toYaml .Values.env) . | nindent 12 }}
+          {{-  tpl (toYaml .Values.config.coordinator.env) . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.config.coordinator.envFrom }}
+          envFrom:
+          {{-  tpl (toYaml .Values.config.coordinator.envFrom) . | nindent 12 }}
           {{- end }}
           volumeMounts:
             - mountPath: {{ .Values.config.general.path }}/
@@ -212,7 +219,7 @@ spec:
               name: schemas-volume
             - mountPath: {{ .Values.config.general.path }}/catalog
               name: catalog-volume
-            {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if eq .Values.config.general.authenticationType "PASSWORD" }}
+            {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if contains "PASSWORD" .Values.config.general.authenticationType }}
             - mountPath: {{ .Values.config.general.path }}/auth
               name: password-volume
             {{- end }}{{- end }}
