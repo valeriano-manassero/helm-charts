@@ -58,9 +58,11 @@ config:
   coordinator:
     replicas: 1
     env: []
+    envFrom: []
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    podLabels: {}
     podAnnotations: {}
     resources: {}
     # limits:
@@ -89,9 +91,11 @@ config:
     # -- Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas.
     replicas: 2
     env: []
+    envFrom: []
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    podLabels: {}
     podAnnotations: {}
     resources: {}
     # limits:
