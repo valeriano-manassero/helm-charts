@@ -54,6 +54,8 @@ config:
       maxMemory: "3GB"
       maxTotalMemory: "6GB"
     prestoCompatibleHeader: false
+    env: []
+    envFrom: []
 
   coordinator:
     replicas: 1

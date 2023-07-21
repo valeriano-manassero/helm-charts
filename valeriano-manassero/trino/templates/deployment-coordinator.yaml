@@ -197,7 +197,7 @@ spec:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.config.coordinator.env }}
+          {{- if or .Values.config.general.env .Values.config.coordinator.env .Values.tls.keystorePasswordSecret }}
           env:
             {{- if or .Values.tls.keystorePasswordSecret }}
             - name: TRINO_KEYSTORE_PASSWORD
@@ -206,10 +206,12 @@ spec:
                   name: {{ .Values.tls.keystorePasswordSecret }}
                   key: keystore-password
             {{- end }}
+          {{-  tpl (toYaml .Values.config.general.env) . | nindent 12 }}
           {{-  tpl (toYaml .Values.config.coordinator.env) . | nindent 12 }}
           {{- end }}
-          {{- if .Values.config.coordinator.envFrom }}
+          {{- if or .Values.config.general.envFrom .Values.config.coordinator.envFrom }}
           envFrom:
+          {{-  tpl (toYaml .Values.config.general.envFrom) . | nindent 12 }}
           {{-  tpl (toYaml .Values.config.coordinator.envFrom) . | nindent 12 }}
           {{- end }}
           volumeMounts:

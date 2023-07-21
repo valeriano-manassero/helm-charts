@@ -1,6 +1,6 @@
 # trino
 
-![Version: 6.1.0](https://img.shields.io/badge/Version-6.1.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 6.2.0](https://img.shields.io/badge/Version-6.2.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -47,6 +47,8 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.coordinator.tolerations | list | `[]` |  |
 | config.general.authenticationType | string | `""` | Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS For more info: https://trino.io/docs/current/security/authentication-types.html |
 | config.general.catalogsMountType | string | `"secret"` |  |
+| config.general.env | list | `[]` |  |
+| config.general.envFrom | list | `[]` |  |
 | config.general.http.port | int | `8080` |  |
 | config.general.httpsServer.enabled | bool | `false` |  |
 | config.general.httpsServer.keystore.key | string | `""` |  |
