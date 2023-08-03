@@ -4,6 +4,8 @@ metadata:
   name: {{ template "trino.fullname" . }}
   labels:
     {{- include "trino.labels" . | nindent 4 }}
+  annotations:
+    {{- include "trino.service.annotations" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
