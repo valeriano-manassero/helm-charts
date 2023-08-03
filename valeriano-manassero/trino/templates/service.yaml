@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "trino.labels" . | nindent 4 }}
   annotations:
-    {{- include "trino.service.annotations" . | nindent 4 }}
+    {{- toYaml .Values.coordinator.service.annotations | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
