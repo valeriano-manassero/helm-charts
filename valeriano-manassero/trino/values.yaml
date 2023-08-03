@@ -356,3 +356,5 @@ serviceAccount:
   name: ""
 
 podAnnotations: {}
+
+serviceAnnotations: {}
