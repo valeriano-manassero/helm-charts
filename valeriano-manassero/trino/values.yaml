@@ -447,8 +447,7 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
-
+# sets extra service annotations for the trino server service
 serviceAnnotations: {}
 
 initKeystore:
