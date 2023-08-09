@@ -27,4 +27,4 @@ keywords:
 annotations:
   artifacthub.io/changes: |
     - kind: added
-      description: Allow Environment Variables to be defined for both coordinator and workers in the same place
+      description: Allow Service annotations to be modified in values.yaml
