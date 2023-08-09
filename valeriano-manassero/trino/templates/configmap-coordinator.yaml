@@ -7,76 +7,113 @@ metadata:
     app.kubernetes.io/component: coordinator
 data:
   node.properties: |
-    node.environment={{ .Values.server.node.environment }}
-    node.data-dir={{ .Values.server.node.dataDir }}
-    plugin.dir={{ .Values.server.node.pluginDir }}
+    node.environment={{ .Values.config.general.node.environment }}
+    node.data-dir={{ .Values.config.general.node.dataDir }}
+    plugin.dir={{ .Values.config.general.node.pluginDir }}
 
   jvm.config: |
     -server
-    -Xmx{{ .Values.server.jvm.maxHeapSize }}
-    -XX:+{{ .Values.server.jvm.gcMethod.type }}
-    -XX:G1HeapRegionSize={{ .Values.server.jvm.gcMethod.g1.heapRegionSize }}
+    -Xmx{{ .Values.config.coordinator.jvm.maxHeapSize }}
+    -XX:+{{ .Values.config.coordinator.jvm.gcMethod.type }}
+    -XX:G1HeapRegionSize={{ .Values.config.coordinator.jvm.gcMethod.g1.heapRegionSize }}
     -XX:+UseGCOverheadLimit
     -XX:+ExplicitGCInvokesConcurrent
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+ExitOnOutOfMemoryError
     -Djdk.attach.allowAttachSelf=true
+    -XX:-UseBiasedLocking
+    -XX:ReservedCodeCacheSize=512M
+    -XX:PerMethodRecompilationCutoff=10000
+    -XX:PerBytecodeRecompilationCutoff=10000
+    -Djdk.nio.maxCachedBufferSize=2000000
+    -XX:+UnlockDiagnosticVMOptions
+    -XX:+UseAESCTRIntrinsics
+{{- if .Values.jmxExporter.coordinator.enabled }}
+    -javaagent:{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}={{ .Values.jmxExporter.port }}:{{ .Values.jmxExporter.path }}/etc/trino.yaml
+{{- end }}
+{{ .Values.config.coordinator.jvmExtraConfig | indent 4 }}
 
   config.properties: |
     coordinator=true
-{{- if gt (int .Values.server.workers) 0 }}
+{{- if gt (int .Values.config.worker.replicas) 0 }}
     node-scheduler.include-coordinator=false
 {{- else }}
     node-scheduler.include-coordinator=true
 {{- end }}
-    http-server.http.port={{ .Values.server.config.http.port }}
-{{- if .Values.server.config.processForwarded }}
-    http-server.process-forwarded={{ .Values.server.config.processForwarded }}
+    http-server.http.port={{ .Values.config.general.http.port }}
+{{- if .Values.config.general.processForwarded }}
+    http-server.process-forwarded={{ .Values.config.general.processForwarded }}
 {{- end }}
-{{- if .Values.server.config.authenticationType }}
-    http-server.authentication.type={{ .Values.server.config.authenticationType }}
+{{- if .Values.config.general.authenticationType }}
+    http-server.authentication.type={{ .Values.config.general.authenticationType }}
 {{- end }}
-    query.max-memory={{ .Values.server.config.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
-    query.max-total-memory={{ .Values.server.config.query.maxTotalMemory }}
-    discovery.uri=http://localhost:{{ .Values.server.config.http.port }}
-{{- if .Values.server.config.prestoCompatibleHeader }}
+    query.max-memory={{ .Values.config.general.query.maxMemory }}
+    query.max-memory-per-node={{ .Values.config.coordinator.query.maxMemoryPerNode }}
+    query.max-total-memory={{ .Values.config.general.query.maxTotalMemory }}
+    discovery.uri=http://localhost:{{ .Values.config.general.http.port }}
+{{- if .Values.config.general.prestoCompatibleHeader }}
     protocol.v1.alternate-header-name=Presto
 {{- end }}
-{{- if .Values.server.config.httpsServer.enabled }}
+{{- if .Values.config.general.httpsServer.enabled }}
     http-server.https.enabled=true
-    http-server.https.port={{ .Values.server.config.httpsServer.port }}
-    http-server.https.keystore.path={{ .Values.server.config.httpsServer.keystore.path }}
+    http-server.https.port={{ .Values.config.general.httpsServer.port }}
+    http-server.https.keystore.path={{ .Values.config.general.httpsServer.keystore.path }}
 {{- end }}
-{{ .Values.server.coordinatorExtraConfig | indent 4 }}
+{{- if .Values.config.general.internalCommunicationSharedSecret }}
+    internal-communication.shared-secret={{ .Values.config.general.internalCommunicationSharedSecret }}
+{{- end }}
+{{ .Values.config.coordinator.extraConfig | indent 4 }}
 
   log.properties: |
-    io.trino={{ .Values.server.log.trino.level }}
+    io.trino={{ .Values.config.general.log.trino.level }}
 
-{{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
+{{ if .Values.config.general.authenticationType }}{{ if contains "PASSWORD" .Values.config.general.authenticationType }}
   password-authenticator.properties: |
+  {{- if .Values.passwordAuthenticatorProperties }}
+    {{- range $configValue := .Values.passwordAuthenticatorProperties }}
+    {{ $configValue }}
+    {{- end }}
+  {{- else }}
     password-authenticator.name=file
-    file.password-file={{ .Values.server.config.path }}/auth/password.db
+    file.password-file={{ .Values.config.general.path }}/auth/password.db
+  {{- end }}
 {{- end }}{{- end }}
 
 {{- if .Values.accessControl }}{{- if .Values.accessControl.type }}
   access-control.properties: |
     access-control.name=file
     security.refresh-period={{ .Values.accessControl.refreshPeriod | default "1s" }}
-    security.config-file={{ .Values.server.config.path }}/access-control/{{ .Values.accessControl.configFile | default "rules.json" }}
+    security.config-file={{ .Values.config.general.path }}/access-control/{{ .Values.accessControl.configFile | default "rules.json" }}
 {{- end }}{{- end }}
 
 {{- if .Values.resourceGroups }}{{- if .Values.resourceGroups.type }}
   resource-groups.properties: |
     resource-groups.configuration-manager=file
-    resource-groups.config-file={{ .Values.server.config.path }}/resource-groups/{{ .Values.resourceGroups.configFile | default "resource-groups.json" }}
+    resource-groups.config-file={{ .Values.config.general.path }}/resource-groups/{{ .Values.resourceGroups.configFile | default "resource-groups.json" }}
 {{- end }}{{- end }}
+
+{{- if .Values.groupProvider }}{{- if .Values.groupProvider.type }}
+  group-provider.properties: |
+    group-provider.name={{ required "groupProvider requires a valid 'name'." .Values.groupProvider.name }}
+{{- if eq .Values.groupProvider.name "file" }}
+    file.refresh-period={{ .Values.groupProvider.refreshPeriod | default "5s" }}
+    file.group-file={{ .Values.config.general.path }}/group-provider/{{ .Values.groupProvider.configFile | default "groups.txt" }}
+{{- end }}
+{{ .Values.groupProvider.customProperties | indent 4 }}
+{{- end }}{{- end }}
+
+{{ if .Values.eventListenerProperties }}
+  event-listener.properties: |
+  {{- range $configValue := .Values.eventListenerProperties }}
+    {{ $configValue }}
+  {{- end }}
+{{ end }}
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: schemas-volume-coordinator
+  name: {{ template "trino.fullname" . }}-schemas-volume-coordinator
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
@@ -91,7 +128,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: trino-access-control-volume-coordinator
+  name: {{ template "trino.fullname" . }}-access-control-volume-coordinator
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
@@ -107,12 +144,28 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: trino-resource-groups-volume-coordinator
+  name: {{ template "trino.fullname" . }}-resource-groups-volume-coordinator
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
 data:
   {{- range $key, $val := .Values.resourceGroups.rules }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+{{- end }}{{- end }}
+
+---
+
+{{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "configmap" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "trino.fullname" . }}-group-provider-volume-coordinator
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coordinator
+data:
+  {{- range $key, $val := .Values.groupProvider.groups }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
 {{- end }}{{- end }}

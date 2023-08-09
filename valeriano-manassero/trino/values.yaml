@@ -1,43 +1,47 @@
 image:
   repository: trinodb/trino
-  tag: 369
+  tag: 419
   pullPolicy: IfNotPresent
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
+    fsGroup: 1000
+
+fullnameOverride: trino
 
 imagePullSecrets: []
 # For example:
 # imagePullSecrets:
 #   - name: registry-credentials
 
-env: []
-# Both worker & coordinator can use environment variables to expose information about itself to Containers running in the Pod
-
 ingress:
   enabled: false
+  ingressClassName:
   annotations: {}
+    # kubernetes.io/ingress.class: nginx
   host: ""
   tls:
     secretName: ""
 
-server:
-  workers: 3
-  node:
-    environment: production
-    dataDir: /data/trino
-    pluginDir: /usr/lib/trino/plugin
-  log:
-    trino:
-      level: INFO
-  config:
+clusterDomain: cluster.local
+
+config:
+  general:
+    node:
+      environment: production
+      dataDir: /data/trino
+      pluginDir: /usr/lib/trino/plugin
+    log:
+      trino:
+        level: INFO
     path: /etc/trino
     http:
       port: 8080
     processForwarded: false
-    # Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS
+    # -- Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS
     # For more info: https://trino.io/docs/current/security/authentication-types.html
-    # authenticationType: "PASSWORD"
+    authenticationType: ""
+    catalogsMountType: "secret"
     httpsServer:
       enabled: false
       port: 8443
@@ -45,35 +49,91 @@ server:
         path: "/usr/local/certs/clustercoord.pem"
         # JKS keystores always require a password, while PEM format certificates can optionally require a password
         key: ""
+    internalCommunicationSharedSecret: some-secret
     query:
       maxMemory: "3GB"
-      maxMemoryPerNode: "1GB"
       maxTotalMemory: "6GB"
-      maxTotalMemoryPerNode: "2GB"
     prestoCompatibleHeader: false
-  workerExtraConfig: ""
-  coordinatorExtraConfig: ""
-  jvm:
-    maxHeapSize: "7G"
-    gcMethod:
-      type: "UseG1GC"
-      g1:
-        heapRegionSize: "32M"
-  autoscaler:
-    enabled: false
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 50
+    env: []
+    envFrom: []
 
-initContainers: {}
-  # coordinator:
-  #   - name: init-coordinator
-  #     image: busybox:1.28
-  #     imagePullPolicy: IfNotPresent
-  #     command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
-  # worker:
-  #   - name: init-worker
-  #     image: busybox:1.28
-  #     command: ['sh', '-c', 'echo The worker is running! && sleep 3600']
+  coordinator:
+    replicas: 1
+    env: []
+    envFrom: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podLabels: {}
+    podAnnotations: {}
+    resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+    initContainers: []
+    #   - name: init-coordinator
+    #     image: busybox:1.28
+    #     imagePullPolicy: IfNotPresent
+    #     command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+    jvm:
+      maxHeapSize: "24G"
+      gcMethod:
+        type: "UseG1GC"
+        g1:
+          heapRegionSize: "32M"
+    jvmExtraConfig: ""
+    extraConfig: ""
+    query:
+      maxMemoryPerNode: "1GB"
+
+  worker:
+    # -- Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas.
+    replicas: 2
+    env: []
+    envFrom: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podLabels: {}
+    podAnnotations: {}
+    resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+    initContainers: []
+    # worker:
+    #   - name: init-worker
+    #     image: busybox:1.28
+    #     command: ['sh', '-c', 'echo The worker is running! && sleep 3600']
+    jvm:
+      maxHeapSize: "10G"
+      gcMethod:
+        type: "UseG1GC"
+        g1:
+          heapRegionSize: "32M"
+    jvmExtraConfig: ""
+    extraConfig: ""
+    query:
+      maxMemoryPerNode: "1GB"
+    autoscaler:
+      enabled: false
+      maxReplicas: 5
+      targetCPUUtilizationPercentage: 50
+      stabilizationWindowSeconds: 300
+
+eventListenerProperties: {}
+
+# -- Password authenticator configuration, an item per conf line. Requiere `config.general.authenticationType` set to `PASSWORD`.
+# For file : you don't need to use this propertie if you set `config.general.authenticationType` to `PASSWORD` and use `config.auth` to fill `auth/password.db`.
+# For LDAP : https://trino.io/docs/current/security/ldap.html.
+# For SalesForce : https://trino.io/docs/current/security/salesforce.html
+passwordAuthenticatorProperties: {}
 
 auth: {}
   # Set username and password
@@ -266,6 +326,36 @@ resourceGroups: {}
 
 # If you want to provide your own secrets resource, you can use this field:
 # connectorsSecret:
+# authenticationSecret:
+# faultToleranceSecret:
+
+groupProvider: {}
+  # # Supported types: pvc or configmap
+  # name: file
+  # type: pvc
+  # refreshPeriod: 5s
+  # # Rules file is mounted to /etc/trino/group-provider
+  # configFile: "/group-provider/groups.txt"
+  # # If you use pvc as the type, you have to specify the pvcName field:
+  # pvcName:
+  # # If you use pvc as the type, you can specify the name of the volume with the pvcVolumeName:
+  # pvcVolumeName:
+  # # If you use configmap as the type, you have to specify the groups field:
+  # groups:
+  #   groups.txt: |-
+  #    group_name:user_1,user_2,user_3
+  # customProperties: |-
+  #   custom-property1=custom-value1
+  #   custom-property2=custom-value2
+
+faultTolerance:
+  enabled: false
+  # properties: |-
+  #   exchange-manager.name=filesystem
+  #   exchange.base-directories=s3://<bucket-name>
+  #   exchange.s3.region=us-east-1
+  #   exchange.s3.aws-access-key=<access-key>
+  #   exchange.s3.aws-secret-key=<secret-key>
 
 connectors: {}
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
@@ -284,6 +374,16 @@ connectors: {}
   #   elasticsearch.auth.user=elastiuser
   #   elasticsearch.auth.password=elasticpassword
   #   elasticsearch.tls.enabled=true
+
+catalogs: {}
+  # Catalogs that will be mounted in {{ .Values.config.general.path }}/catalog
+  # Requires config.general.catalogsMountType = "configmap"
+  # tpch.properties: |
+  #   connector.name=tpch
+  #   tpch.splits-per-node=4
+  # tpcds.properties: |
+  #   connector.name=tpcds
+  #   tpcds.splits-per-node=4
 
 schemas: {}
   # Custom schemas that will be mounted in /etc/trino/schemas
@@ -323,28 +423,20 @@ schemas: {}
 service:
   type: ClusterIP
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
 secretMounts: []
   # - name: ssl-cert
   #   secretName: ssl-cert
   #   path: /usr/local/certs/
+  # - name: ssh-key
+  #   secretName: ssh-key
+  #   path: /home/trino/.ssh/id_rsa.pub
+  #   subPath: id_rsa.pub
+
+configMapMounts: []
+  # - name: ssh-config
+  #   configMapName: ssh-config
+  #   path: /home/trino/.ssh/config
+  #   subPath: config
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -358,3 +450,54 @@ serviceAccount:
 podAnnotations: {}
 
 serviceAnnotations: {}
+
+initKeystore:
+  image:
+    repository: bitnami/java
+    tag: 17
+    pullPolicy: IfNotPresent
+
+tls:
+  # Set internode encryption
+  internodeEncryption: false
+  # Generate automatically self-signed TLS certificates. Currently only supports PEM certificates
+  autoGenerated: false
+  # Existing secret that contains the keystore
+  existingKeystoreSecret: ""
+  # Existing secret that contains the cert and key for the keystore
+  tlsEncryptionSecretName: ""
+  # Existing secret that contains the password to the keystore
+  keystorePasswordSecret: ""
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+
+jmxExporter:
+  coordinator:
+    enabled: false
+  worker:
+    enabled: false
+  port: 9000
+  path: /prometheus
+  jarfile: jmx_prometheus_javaagent-0.17.2.jar
+  downloadLink: https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.17.2/jmx_prometheus_javaagent-0.17.2.jar
+  image:
+    repository: curlimages/curl
+    tag: 7.87.0
+    pullPolicy: IfNotPresent
+  serviceMonitor:
+    enabled: true
+    port: "jmx-exporter"
+    additionalLabels: {}
+    interval: 1m
+    scrapeTimeout: 10s
+    path: /metrics
+    # Additional relabeling configs to the ones that Prometheus Operator
+    # creates by default.
+    # relabelings:
+    #   - sourceLabels: [__meta_kubernetes_endpoints_label_app_kubernetes_io_version]
+    #     targetLabel: version

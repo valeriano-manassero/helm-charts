@@ -1,4 +1,4 @@
-{{- if gt (int .Values.server.workers) 0 }}
+{{- if gt (int .Values.config.worker.replicas) 0 }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,37 +8,57 @@ metadata:
     app.kubernetes.io/component: worker
 data:
   node.properties: |
-    node.environment={{ .Values.server.node.environment }}
-    node.data-dir={{ .Values.server.node.dataDir }}
-    plugin.dir={{ .Values.server.node.pluginDir }}
+    node.environment={{ .Values.config.general.node.environment }}
+    node.data-dir={{ .Values.config.general.node.dataDir }}
+    plugin.dir={{ .Values.config.general.node.pluginDir }}
 
   jvm.config: |
     -server
-    -Xmx{{ .Values.server.jvm.maxHeapSize }}
-    -XX:+{{ .Values.server.jvm.gcMethod.type }}
-    -XX:G1HeapRegionSize={{ .Values.server.jvm.gcMethod.g1.heapRegionSize }}
+    -Xmx{{ .Values.config.worker.jvm.maxHeapSize }}
+    -XX:+{{ .Values.config.worker.jvm.gcMethod.type }}
+    -XX:G1HeapRegionSize={{ .Values.config.worker.jvm.gcMethod.g1.heapRegionSize }}
     -XX:+UseGCOverheadLimit
     -XX:+ExplicitGCInvokesConcurrent
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+ExitOnOutOfMemoryError
     -Djdk.attach.allowAttachSelf=true
+    -XX:-UseBiasedLocking
+    -XX:ReservedCodeCacheSize=512M
+    -XX:PerMethodRecompilationCutoff=10000
+    -XX:PerBytecodeRecompilationCutoff=10000
+    -Djdk.nio.maxCachedBufferSize=2000000
+    -XX:+UnlockDiagnosticVMOptions
+    -XX:+UseAESCTRIntrinsics
+{{- if .Values.jmxExporter.worker.enabled }}
+    -javaagent:{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}={{ .Values.jmxExporter.port }}:{{ .Values.jmxExporter.path }}/etc/trino.yaml
+{{- end }}
+{{ .Values.config.worker.jvmExtraConfig | indent 4 }}
 
   config.properties: |
     coordinator=false
-    http-server.http.port={{ .Values.server.config.http.port }}
-    query.max-memory={{ .Values.server.config.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
-    query.max-total-memory={{ .Values.server.config.query.maxTotalMemory }}
-    discovery.uri=http://{{ template "trino.fullname" . }}:{{ .Values.server.config.http.port }}
-{{- if .Values.server.config.prestoCompatibleHeader }}
+    http-server.http.port={{ .Values.config.general.http.port }}
+    query.max-memory={{ .Values.config.general.query.maxMemory }}
+    query.max-memory-per-node={{ .Values.config.worker.query.maxMemoryPerNode }}
+    query.max-total-memory={{ .Values.config.general.query.maxTotalMemory }}
+    discovery.uri=http://{{ template "trino.fullname" . }}:{{ .Values.config.general.http.port }}
+{{- if .Values.config.general.prestoCompatibleHeader }}
     protocol.v1.alternate-header-name=Presto
 {{- end }}
-{{ .Values.server.workerExtraConfig | indent 4 }}
-
+{{- if .Values.config.general.internalCommunicationSharedSecret }}
+    internal-communication.shared-secret={{ .Values.config.general.internalCommunicationSharedSecret }}
+{{- end }}
+{{ .Values.config.worker.extraConfig | indent 4 }}
 
   log.properties: |
-    io.trino={{ .Values.server.log.trino.level }}
-  
+    io.trino={{ .Values.config.general.log.trino.level }}
+
+{{ if .Values.eventListenerProperties }}
+  event-listener.properties: |
+  {{- range $configValue := .Values.eventListenerProperties }}
+    {{ $configValue }}
+  {{- end }}
+{{ end }}
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -50,12 +70,12 @@ metadata:
 data:
   health_check.sh: |
     #!/bin/bash
-    curl -H 'X-trino-User: healthCheck' -m 3 --silent {{ template "trino.fullname" . }}:{{ .Values.server.config.http.port }}/v1/info/state | grep --silent 'ACTIVE'
+    curl -H 'X-trino-User: healthCheck' -m 3 --silent {{ template "trino.fullname" . }}:{{ .Values.config.general.http.port }}/v1/info/state | grep --silent 'ACTIVE'
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: schemas-volume-worker
+  name: {{ template "trino.fullname" . }}-schemas-volume-worker
   labels:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: worker

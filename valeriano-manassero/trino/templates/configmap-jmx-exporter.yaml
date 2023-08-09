@@ -1,0 +1,63 @@
+{{- if or .Values.jmxExporter.coordinator.enabled .Values.jmxExporter.worker.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "trino.fullname" . }}-jmx-exporter
+  labels:
+    {{- include "trino.labels" . | nindent 4 }}
+data:
+  trino.yaml: |
+    startDelaySeconds: 5
+    rules:
+    - pattern : trino.execution<name=SqlTaskManager><>InputDataSize.OneMinute.Count
+      name: trino_coord_Input_bytes_sci
+
+    - pattern : trino.execution<name=SqlTaskManager><>InputPositions.OneMinute.Count
+      name: trino_coord_Input_rows
+      
+    - pattern : trino.execution<name=SqlTaskManager><>OutputDataSize.OneMinute.Count
+      name: trino_coord_Output_bytes_sci
+      
+    - pattern : trino.execution<name=SqlTaskManager><>OutputPositions.OneMinute.Count
+      name: trino_coord_Output_rows
+      
+    - pattern : trino.memory<type=ClusterMemoryPool, name=general><>TotalDistributedBytes
+      name: trino_TotalDistributedBytes
+      
+    - pattern : trino.memory<type=ClusterMemoryPool, name=general><>ReservedDistributedBytes
+      name: trino_ReservedDistributedBytes
+
+    - pattern : trino.execution<name=QueryManager><>FailedQueries.OneMinute.Count
+      name: trino_Failed_Queries
+      
+    - pattern : trino.execution<name=QueryManager><>RunningQueries
+      name: trino_running_queries
+
+    - pattern : trino.failuredetector<name=HeartbeatFailureDetector><>ActiveCount
+      name: trino_active_nodes
+
+    - pattern : trino.memory<type=ClusterMemoryPool, name=general><>FreeDistributedBytes
+      name: trino_cluster_free_memory
+      
+    - pattern : trino.execution<name=QueryExecution><>Executor.QueuedTaskCount
+      name: trino_queued_task_count
+
+    - pattern : trino.execution<name=QueryManager><>StartedQueries.FiveMinute.Count
+      name: trino_started_queries
+
+    - pattern : java.lang<type=Memory><HeapMemoryUsage>committed
+      name: trino_jvm_heap_memory_usage
+
+    - pattern : java.lang<type=Threading><>ThreadCount
+      name: trino_jvm_thread_count
+
+    - pattern : trino.execution<name=QueryManager><>InternalFailures.OneMinute.Count
+      name: trino_failed_queries_internal
+
+    - pattern : trino.execution<name=QueryManager><>ExternalFailures.OneMinute.Count
+      name: trino_failed_queries_external
+
+    - pattern : trino.execution<name=QueryManager><>UserErrorFailures.OneMinute.Count
+      name: trino_failed_queries_user
+
+{{- end }}

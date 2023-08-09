@@ -6,6 +6,7 @@ metadata:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: coordinator
 spec:
+  replicas: {{ .Values.config.coordinator.replicas }}
   selector:
     matchLabels:
       {{- include "trino.selectorLabels" . | nindent 6 }}
@@ -15,9 +16,12 @@ spec:
       labels:
         {{- include "trino.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: coordinator
+    {{- with .Values.config.coordinator.podLabels }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       annotations:
         checksum/config: {{ printf "%s%s" (include (print $.Template.BasePath "/configmap-coordinator.yaml") .) (include (print $.Template.BasePath "/secret.yaml") .) | sha256sum }}
-    {{- with .Values.podAnnotations }}
+    {{- with .Values.config.coordinator.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
@@ -25,26 +29,48 @@ spec:
       securityContext:
         runAsUser: {{ .runAsUser }}
         runAsGroup: {{ .runAsGroup }}
+        fsGroup: {{ .fsGroup }}
       {{- end }}
       volumes:
         - name: config-volume
+          projected:
+            sources:
+            - configMap:
+                name: {{ template "trino.coordinator" . }}
+
+            {{- if .Values.faultTolerance.enabled }}
+            - secret:
+                name: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
+            {{- end }}
+        {{- if eq .Values.config.general.catalogsMountType "configmap" }}
+        - name: catalog-volume
           configMap:
-            name: {{ template "trino.coordinator" . }}
+            name: {{ template "trino.catalog" . }}
+        {{ else }}
         - name: catalog-volume
           secret:
             secretName: {{ .Values.connectorsSecret | default "trino-connectors" }}
+        {{- end }}
         - name: schemas-volume
           configMap:
-            name: schemas-volume-coordinator
-        {{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
+            name: {{ template "trino.fullname" . }}-schemas-volume-coordinator
+        {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if contains "PASSWORD" .Values.config.general.authenticationType }}
         - name: password-volume
           secret:
-            secretName: trino-password-authentication
+            secretName: {{ .Values.authenticationSecret | default (printf "%s-password-authentication" (include "trino.fullname" .)) }}
         {{- end }}{{- end }}
+        {{- if (include "trino.tlsEncryption" . ) }}
+        - name: certs
+          secret:
+            secretName: {{ include "trino.tlsSecretName" . }}
+            defaultMode: 0400
+        {{- end }}
+        - name: certs-shared
+          emptyDir: {}
         {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
         - name: access-control-volume
           configMap:
-            name: trino-access-control-volume-coordinator
+            name: {{ template "trino.fullname" . }}-access-control-volume-coordinator
         {{- end }}{{- end }}
         {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "pvc" }}
         - name: {{ .Values.accessControl.pvcVolumeName | default "access-control-pvc-volume" }}
@@ -54,22 +80,116 @@ spec:
         {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "configmap" }}
         - name: resource-groups-volume
           configMap:
-            name: trino-resource-groups-volume-coordinator
+            name: {{ template "trino.fullname" . }}-resource-groups-volume-coordinator
         {{- end }}{{- end }}
         {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "pvc" }}
         - name: {{ .Values.resourceGroups.pvcVolumeName | default "resource-groups-pvc-volume" }}
           persistentVolumeClaim:
             claimName: {{ .Values.resourceGroups.pvcName }}
         {{- end }}{{- end }}
+        {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "configmap" }}
+        - name: group-provider-volume
+          configMap:
+            name: {{ template "trino.fullname" . }}-group-provider-volume-coordinator
+        {{- end }}{{- end }}
+        {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "pvc" }}
+        - name: {{ .Values.groupProvider.pvcVolumeName | default "group-provider-pvc-volume" }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.groupProvider.pvcName }}
+        {{- end }}{{- end }}
+        {{- if .Values.jmxExporter.coordinator.enabled }}
+        - name: jmx-exporter-config
+          configMap:
+            name: {{ template "trino.fullname" . }}-jmx-exporter
+        - name: jmx-exporter-lib
+          emptyDir: {}
+        {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:
             secretName: {{ .secretName }}
         {{- end }}
-      {{- if .Values.initContainers.coordinator }}
+        {{- range .Values.configMapMounts }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .configMapName }}
+        {{- end }}
+      {{- if or .Values.jmxExporter.coordinator.enabled .Values.config.coordinator.initContainers (include "trino.tlsEncryption" . ) }}
       initContainers:
-      {{-  tpl (toYaml .Values.initContainers.coordinator) . | nindent 6 }}
+      {{- if .Values.jmxExporter.coordinator.enabled }}
+        - name: download-jmx-exporter
+          image: {{ .Values.jmxExporter.image.repository }}:{{ .Values.jmxExporter.image.tag }}
+          imagePullPolicy: {{ .Values.jmxExporter.image.pullPolicy }}
+          {{- with .Values.image.securityContext }}
+          securityContext:
+            runAsUser: {{ .runAsUser }}
+            runAsGroup: {{ .runAsGroup }}
+          {{- end }}
+          args:
+            - "--output"
+            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}"
+            - "{{ .Values.jmxExporter.downloadLink }}"
+          volumeMounts:
+          - name: jmx-exporter-lib
+            mountPath: {{ .Values.jmxExporter.path }}/lib/
       {{- end }}
+      {{- if (include "trino.tlsEncryption" . ) }}
+        - name: init-certs
+          image: {{ .Values.initKeystore.image.repository }}:{{ .Values.initKeystore.image.tag }}
+          imagePullPolicy: {{ .Values.initKeystore.image.pullPolicy }}
+          {{- with .Values.image.securityContext }}
+          securityContext:
+            runAsUser: {{ .runAsUser }}
+            runAsGroup: {{ .runAsGroup }}
+          {{- end }}
+          command: [ /bin/bash ]
+          args:
+          - -ec
+          - |-
+            {{- if .Values.tls.autoGenerated }}
+            if [[ -f "/certs/tls.key" ]] && [[ -f "/certs/tls.crt" ]]; then
+              openssl pkcs12 -export -in "/certs/tls.crt" \
+                  -passout pass:"${TRINO_KEYSTORE_PASSWORD}" \
+                  -inkey "/certs/tls.key" \
+                  -out "/tmp/keystore.pfx"
+              keytool -importkeystore -srckeystore "/tmp/keystore.pfx" \
+                  -srcstoretype PKCS12 \
+                  -srcstorepass "${TRINO_KEYSTORE_PASSWORD}" \
+                  -deststorepass "${TRINO_KEYSTORE_PASSWORD}" \
+                  -destkeystore "{{ .Values.config.general.path }}/certs/keystore"
+              rm "/tmp/keystore.pfx"
+            else
+                echo "Couldn't find the expected PEM certificates! They are mandatory when encryption via TLS is enabled."
+                exit 1
+            fi
+            {{- else }}
+            if [[ -f "/certs/keystore" ]]; then
+                cp "/certs/keystore" "{{ .Values.config.general.path }}/certs/keystore"
+            else
+                echo "Couldn't find the expected Java Key Stores (JKS) files! They are mandatory when encryption via TLS is enabled."
+                exit 1
+            fi
+            {{- end }}
+          env:
+            {{- if .Values.tls.keystorePasswordSecret }}
+            - name: TRINO_KEYSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tls.keystorePasswordSecret }}
+                  key: keystore-password
+            {{- end }}
+          {{- if .Values.tls.resources }}
+          resources: {{- toYaml .Values.tls.resources | nindent 10 }}
+          {{- end }}
+          volumeMounts:
+          - name: certs
+            mountPath: /certs
+          - name: certs-shared
+            mountPath: {{ .Values.config.general.path }}/certs
+      {{- end }}
+      {{- if .Values.config.coordinator.initContainers }}
+      {{-  tpl (toYaml .Values.config.coordinator.initContainers) . | nindent 8 }}
+      {{- end }}{{- end }}
       serviceAccountName: {{ include "trino.serviceAccountName" . }}
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
@@ -77,45 +197,94 @@ spec:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.env }}
+          {{- if or .Values.config.general.env .Values.config.coordinator.env .Values.tls.keystorePasswordSecret }}
           env:
-          {{-  tpl (toYaml .Values.env) . | nindent 12 }}
+            {{- if or .Values.tls.keystorePasswordSecret }}
+            - name: TRINO_KEYSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tls.keystorePasswordSecret }}
+                  key: keystore-password
+            {{- end }}
+          {{-  tpl (toYaml .Values.config.general.env) . | nindent 12 }}
+          {{-  tpl (toYaml .Values.config.coordinator.env) . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.config.general.envFrom .Values.config.coordinator.envFrom }}
+          envFrom:
+          {{-  tpl (toYaml .Values.config.general.envFrom) . | nindent 12 }}
+          {{-  tpl (toYaml .Values.config.coordinator.envFrom) . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - mountPath: {{ .Values.server.config.path }}/
+            - mountPath: {{ .Values.config.general.path }}/
               name: config-volume
             - mountPath: /etc/trino/schemas
               name: schemas-volume
-            - mountPath: {{ .Values.server.config.path }}/catalog
+            - mountPath: {{ .Values.config.general.path }}/catalog
               name: catalog-volume
-            {{- if .Values.server.config.authenticationType }}{{- if eq .Values.server.config.authenticationType "PASSWORD" }}
-            - mountPath: {{ .Values.server.config.path }}/auth
+            {{- if (and .Values.config.general.authenticationType (not .Values.passwordAuthenticatorProperties)) }}{{- if contains "PASSWORD" .Values.config.general.authenticationType }}
+            - mountPath: {{ .Values.config.general.path }}/auth
               name: password-volume
             {{- end }}{{- end }}
+            - mountPath: {{ .Values.config.general.path }}/certs
+              name: certs-shared
             {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
-            - mountPath: {{ .Values.server.config.path }}/access-control
+            - mountPath: {{ .Values.config.general.path }}/access-control
               name: access-control-volume
             {{- end }}{{- end }}
             {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "pvc" }}
-            - mountPath: {{ .Values.server.config.path }}/access-control
+            - mountPath: {{ .Values.config.general.path }}/access-control
               name: {{ .Values.accessControl.pvcVolumeName | default "access-control-pvc-volume" }}
             {{- end }}{{- end }}
             {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "configmap" }}
-            - mountPath: {{ .Values.server.config.path }}/resource-groups
+            - mountPath: {{ .Values.config.general.path }}/resource-groups
               name: resource-groups-volume
             {{- end }}{{- end }}
             {{- if .Values.resourceGroups }}{{- if eq .Values.resourceGroups.type "pvc" }}
-            - mountPath: {{ .Values.server.config.path }}/resource-groups
+            - mountPath: {{ .Values.config.general.path }}/resource-groups
               name: {{ .Values.resourceGroups.pvcVolumeName | default "resource-groups-pvc-volume" }}
             {{- end }}{{- end }}
+            {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "configmap" }}
+            - mountPath: {{ .Values.config.general.path }}/group-provider
+              name: group-provider-volume
+            {{- end }}{{- end }}
+            {{- if .Values.groupProvider }}{{- if eq .Values.groupProvider.type "pvc" }}
+            - mountPath: {{ .Values.config.general.path }}/group-provider
+              name: {{ .Values.groupProvider.pvcVolumeName | default "group-provider-pvc-volume" }}
+            {{- end }}{{- end }}
+            {{- if .Values.jmxExporter.coordinator.enabled }}
+            - mountPath: {{ .Values.jmxExporter.path }}/etc/
+              name: jmx-exporter-config
+            - mountPath: {{ .Values.jmxExporter.path }}/lib/
+              name: jmx-exporter-lib
+            {{- end }}
             {{- range .Values.secretMounts }}
             - name: {{ .name }}
               mountPath: {{ .path }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+            {{- end }}
+            {{- range .Values.configMapMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .path }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
             {{- end }}
           ports:
             - name: http-coord
-              containerPort: {{ .Values.server.config.http.port }}
+              containerPort: {{ .Values.config.general.http.port }}
               protocol: TCP
+            {{- if .Values.config.general.httpsServer.enabled }}
+            - name: https-coord
+              containerPort: {{ .Values.config.general.httpsServer.port }}
+              protocol: TCP
+            {{- end }}
+            {{- if .Values.jmxExporter.coordinator.enabled }}
+            - name: jmx-exporter
+              containerPort: {{ .Values.jmxExporter.port | default 9000 }}
+              protocol: TCP
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /v1/status
@@ -125,16 +294,16 @@ spec:
               path: /v1/status
               port: http-coord
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
+{{ toYaml .Values.config.coordinator.resources | indent 12 }}
+    {{- with .Values.config.coordinator.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.config.coordinator.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.config.coordinator.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}

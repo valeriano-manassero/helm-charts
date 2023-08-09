@@ -1,4 +1,4 @@
-{{- if gt (int .Values.server.workers) 0 }}
+{{- if gt (int .Values.config.worker.replicas) 0 }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,7 +7,7 @@ metadata:
     {{- include "trino.labels" . | nindent 4 }}
     app.kubernetes.io/component: worker
 spec:
-  replicas: {{ .Values.server.workers }}
+  replicas: {{ .Values.config.worker.replicas }}
   selector:
     matchLabels:
       {{- include "trino.selectorLabels" . | nindent 6 }}
@@ -17,29 +17,89 @@ spec:
       labels:
         {{- include "trino.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: worker
+    {{- with .Values.config.worker.podLabels }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       annotations:
         checksum/config: {{ printf "%s%s" (include (print $.Template.BasePath "/configmap-worker.yaml") .) (include (print $.Template.BasePath "/secret.yaml") .) | sha256sum }}
-    {{- with .Values.podAnnotations }}
+    {{- with .Values.config.worker.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
+      {{- with .Values.image.securityContext }}
+      securityContext:
+        runAsUser: {{ .runAsUser }}
+        runAsGroup: {{ .runAsGroup }}
+        fsGroup: {{ .fsGroup }}
+      {{- end }}
       volumes:
         - name: config-volume
-          configMap:
-            name: {{ template "trino.worker" . }}
+          projected:
+            sources:
+            - configMap:
+                name: {{ template "trino.worker" . }}
+
+            {{- if .Values.faultTolerance.enabled }}
+            - secret:
+                name: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
+            {{- end }}
         - name: health-check-volume
           configMap:
             name: {{ template "trino.worker" . }}-health-check
             defaultMode: 0777
+        {{- if eq .Values.config.general.catalogsMountType "configmap" }}
+        - name: catalog-volume
+          configMap:
+            name: {{ template "trino.catalog" . }}
+        {{ else }}
         - name: catalog-volume
           secret:
             secretName: {{ .Values.connectorsSecret | default "trino-connectors" }}
+        {{- end }}
         - name: schemas-volume
           configMap:
-            name: schemas-volume-worker
-      {{- if .Values.initContainers.worker }}
+            name: {{ template "trino.fullname" . }}-schemas-volume-worker
+        - name: certs-shared
+          emptyDir: {}
+        {{- if .Values.jmxExporter.worker.enabled }}
+        - name: jmx-exporter-config
+          configMap:
+            name: {{ template "trino.fullname" . }}-jmx-exporter
+        - name: jmx-exporter-lib
+          emptyDir: {}
+        {{- end }}
+        {{- range .Values.secretMounts }}
+        - name: {{ .name }}
+          secret:
+            secretName: {{ .secretName }}
+        {{- end }}
+        {{- range .Values.configMapMounts }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .configMapName }}
+        {{- end }}
+      {{- if or .Values.jmxExporter.worker.enabled .Values.config.coordinator.initContainers }}
       initContainers:
-      {{-  tpl (toYaml .Values.initContainers.worker) . | nindent 6 }}
+      {{- if .Values.jmxExporter.worker.enabled }}
+        - name: download-jmx-exporter
+          image: {{ .Values.jmxExporter.image.repository }}:{{ .Values.jmxExporter.image.tag }}
+          imagePullPolicy: {{ .Values.jmxExporter.image.pullPolicy }}
+          {{- with .Values.image.securityContext }}
+          securityContext:
+            runAsUser: {{ .runAsUser }}
+            runAsGroup: {{ .runAsGroup }}
+          {{- end }}
+          args:
+            - "--output"
+            - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}"
+            - "{{ .Values.jmxExporter.downloadLink }}"
+          volumeMounts:
+          - name: jmx-exporter-lib
+            mountPath: {{ .Values.jmxExporter.path }}/lib/
+      {{- end }}
+      {{- if .Values.config.worker.initContainers }}
+      {{-  tpl (toYaml .Values.config.worker.initContainers) . | nindent 6 }}
+      {{- end }}
       {{- end }}
       serviceAccountName: {{ include "trino.serviceAccountName" . }}
       imagePullSecrets:
@@ -48,19 +108,53 @@ spec:
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.env }}
+          {{- if or .Values.config.general.env .Values.config.worker.env }}
           env:
-          {{-  tpl (toYaml .Values.env) . | nindent 12 }}
+          {{-  tpl (toYaml .Values.config.general.env) . | nindent 12 }}
+          {{-  tpl (toYaml .Values.config.worker.env) . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.config.general.envFrom .Values.config.worker.envFrom }}
+          envFrom:
+          {{-  tpl (toYaml .Values.config.general.envFrom) . | nindent 12 }}
+          {{-  tpl (toYaml .Values.config.worker.envFrom) . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - mountPath: {{ .Values.server.config.path }}
+            - mountPath: {{ .Values.config.general.path }}
               name: config-volume
             - mountPath: /etc/trino/schemas
               name: schemas-volume
             - mountPath: /startup/
               name: health-check-volume
-            - mountPath: {{ .Values.server.config.path }}/catalog
+            - mountPath: {{ .Values.config.general.path }}/catalog
               name: catalog-volume
+            - mountPath: {{ .Values.config.general.path }}/certs
+              name: certs-shared
+            {{- if .Values.jmxExporter.worker.enabled }}
+            - mountPath: {{ .Values.jmxExporter.path }}/etc/
+              name: jmx-exporter-config
+            - mountPath: {{ .Values.jmxExporter.path }}/lib/
+              name: jmx-exporter-lib
+            {{- end }}
+            {{- range .Values.secretMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .path }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+            {{- end }}
+            {{- range .Values.configMapMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .path }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+            {{- end }}
+          {{- if .Values.jmxExporter.worker.enabled }}
+          ports:
+            - name: jmx-exporter
+              containerPort: {{ .Values.jmxExporter.port | default 9000 }}
+              protocol: TCP
+          {{- end }}
           livenessProbe:
             exec:
               command:
@@ -74,16 +168,16 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
+{{ toYaml .Values.config.worker.resources | indent 12 }}
+    {{- with .Values.config.worker.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.config.worker.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.config.worker.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
