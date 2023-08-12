@@ -341,6 +341,40 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: added
+          description: Allow Service annotations to be modified in values.yaml
+    apiVersion: v1
+    appVersion: "419"
+    created: "2023-08-12T16:37:19.118763752Z"
+    description: High performance, distributed SQL query engine for big data
+    digest: 824ace6ed3f118750da07bd354b077cd5a198c4227a11ddf8f067e8840efd352
+    home: https://trino.io
+    icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
+    keywords:
+    - trino
+    - trinosql
+    - trinodb
+    - presto
+    - prestosql
+    - prestodb
+    - big data
+    - database
+    - sql
+    - query engine
+    - high performance
+    kubeVersion: '>= 1.24.0-0 < 1.28.0-0'
+    maintainers:
+    - name: valeriano-manassero
+      url: https://github.com/valeriano-manassero
+    name: trino
+    sources:
+    - https://github.com/valeriano-manassero/helm-charts
+    - https://github.com/trinodb/trino
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/trino-6.3.0/trino-6.3.0.tgz
+    version: 6.3.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
           description: Allow Environment Variables to be defined for both coordinator and workers in the same place
     apiVersion: v1
     appVersion: "419"
