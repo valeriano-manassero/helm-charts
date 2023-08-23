@@ -126,6 +126,8 @@ config:
       maxReplicas: 5
       targetCPUUtilizationPercentage: 50
       stabilizationWindowSeconds: 300
+    # allows for using lifecycle hooks to set node as marked for eviction
+    lifecycle: {}
 
 eventListenerProperties: {}
 

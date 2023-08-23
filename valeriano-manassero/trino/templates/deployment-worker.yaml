@@ -155,6 +155,10 @@ spec:
               containerPort: {{ .Values.jmxExporter.port | default 9000 }}
               protocol: TCP
           {{- end }}
+          {{- with .Values.config.worker.lifecycle }}
+          lifecycle:
+{{ toYaml . | nident 12 }}
+          {{- end }}
           livenessProbe:
             exec:
               command:
