@@ -1,6 +1,6 @@
 # trino
 
-![Version: 6.3.0](https://img.shields.io/badge/Version-6.3.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 6.4.0](https://img.shields.io/badge/Version-6.4.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -77,6 +77,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.worker.jvm.gcMethod.type | string | `"UseG1GC"` |  |
 | config.worker.jvm.maxHeapSize | string | `"10G"` |  |
 | config.worker.jvmExtraConfig | string | `""` |  |
+| config.worker.lifecycle | object | `{}` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
 | config.worker.podLabels | object | `{}` |  |

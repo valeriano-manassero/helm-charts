@@ -126,6 +126,13 @@ config:
       maxReplicas: 5
       targetCPUUtilizationPercentage: 50
       stabilizationWindowSeconds: 300
+    # allows for using lifecycle hooks to set node as marked for eviction
+    lifecycle: {}
+      # sample config for no auth cluster
+      # preStop:
+      #   exec:
+      #     command: ["sh", "-c", "curl -v -X PUT -d '\"SHUTTING_DOWN\"' -H \"Content-type: application/json\" -H \"X-Trino-User: admin\" http://localhost:8080/v1/info/state"]
+
 
 eventListenerProperties: {}
 
