@@ -27,4 +27,4 @@ keywords:
 annotations:
   artifacthub.io/changes: |
     - kind: added
-      description: Allow Service annotations to be modified in values.yaml
+      description: Allow worker lifecycle hooks for graceful shutdown
