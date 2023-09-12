@@ -340,6 +340,40 @@ entries:
   trino:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: Fix configuration for env and envFrom for worker and coordinator
+    apiVersion: v1
+    appVersion: "419"
+    created: "2023-09-12T12:20:04.140397936Z"
+    description: High performance, distributed SQL query engine for big data
+    digest: e5c0948e33a3d8b7270f42bd711294393f93818ae0b7c66c435e1b56dc563bdd
+    home: https://trino.io
+    icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
+    keywords:
+    - trino
+    - trinosql
+    - trinodb
+    - presto
+    - prestosql
+    - prestodb
+    - big data
+    - database
+    - sql
+    - query engine
+    - high performance
+    kubeVersion: '>= 1.24.0-0 < 1.28.0-0'
+    maintainers:
+    - name: valeriano-manassero
+      url: https://github.com/valeriano-manassero
+    name: trino
+    sources:
+    - https://github.com/valeriano-manassero/helm-charts
+    - https://github.com/trinodb/trino
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/trino-6.4.1/trino-6.4.1.tgz
+    version: 6.4.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: Allow worker lifecycle hooks for graceful shutdown
     apiVersion: v1
