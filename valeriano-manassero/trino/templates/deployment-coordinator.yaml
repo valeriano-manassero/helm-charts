@@ -199,20 +199,28 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if or .Values.config.general.env .Values.config.coordinator.env .Values.tls.keystorePasswordSecret }}
           env:
-            {{- if or .Values.tls.keystorePasswordSecret }}
+            {{- if .Values.tls.keystorePasswordSecret }}
             - name: TRINO_KEYSTORE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.tls.keystorePasswordSecret }}
                   key: keystore-password
             {{- end }}
-          {{-  tpl (toYaml .Values.config.general.env) . | nindent 12 }}
-          {{-  tpl (toYaml .Values.config.coordinator.env) . | nindent 12 }}
+            {{- if .Values.config.general.env }}
+              {{-  tpl (toYaml .Values.config.general.env) . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.config.coordinator.env }}
+              {{-  tpl (toYaml .Values.config.coordinator.env) . | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- if or .Values.config.general.envFrom .Values.config.coordinator.envFrom }}
           envFrom:
-          {{-  tpl (toYaml .Values.config.general.envFrom) . | nindent 12 }}
-          {{-  tpl (toYaml .Values.config.coordinator.envFrom) . | nindent 12 }}
+            {{- if .Values.config.general.envFrom }}
+              {{-  tpl (toYaml .Values.config.general.envFrom) . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.config.coordinator.envFrom }}
+              {{-  tpl (toYaml .Values.config.coordinator.envFrom) . | nindent 12 }}
+            {{- end }}
           {{- end }}
           volumeMounts:
             - mountPath: {{ .Values.config.general.path }}/
