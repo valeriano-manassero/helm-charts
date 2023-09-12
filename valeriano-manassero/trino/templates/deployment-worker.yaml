@@ -110,13 +110,21 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if or .Values.config.general.env .Values.config.worker.env }}
           env:
-          {{-  tpl (toYaml .Values.config.general.env) . | nindent 12 }}
-          {{-  tpl (toYaml .Values.config.worker.env) . | nindent 12 }}
+            {{- if .Values.config.general.env }}
+              {{- tpl (toYaml .Values.config.general.env) . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.config.worker.env }}
+              {{- tpl (toYaml .Values.config.worker.env) . | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- if or .Values.config.general.envFrom .Values.config.worker.envFrom }}
           envFrom:
-          {{-  tpl (toYaml .Values.config.general.envFrom) . | nindent 12 }}
-          {{-  tpl (toYaml .Values.config.worker.envFrom) . | nindent 12 }}
+            {{- if .Values.config.general.envFrom }}
+              {{-  tpl (toYaml .Values.config.general.envFrom) . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.config.worker.envFrom }}
+              {{-  tpl (toYaml .Values.config.worker.envFrom) . | nindent 12 }}
+            {{- end }}
           {{- end }}
           volumeMounts:
             - mountPath: {{ .Values.config.general.path }}
