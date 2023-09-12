@@ -1,6 +1,6 @@
 # trino
 
-![Version: 6.5.0](https://img.shields.io/badge/Version-6.5.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 7.0.0](https://img.shields.io/badge/Version-7.0.0-informational?style=flat-square) ![AppVersion: 426](https://img.shields.io/badge/AppVersion-426-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -96,7 +96,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | image.securityContext.fsGroup | int | `1000` |  |
 | image.securityContext.runAsGroup | int | `1000` |  |
 | image.securityContext.runAsUser | int | `1000` |  |
-| image.tag | int | `419` |  |
+| image.tag | int | `426` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
