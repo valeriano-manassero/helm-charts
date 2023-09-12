@@ -1,6 +1,6 @@
 # trino
 
-![Version: 6.4.1](https://img.shields.io/badge/Version-6.4.1-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
+![Version: 6.5.0](https://img.shields.io/badge/Version-6.5.0-informational?style=flat-square) ![AppVersion: 419](https://img.shields.io/badge/AppVersion-419-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -36,7 +36,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.coordinator.initContainers | list | `[]` |  |
 | config.coordinator.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | config.coordinator.jvm.gcMethod.type | string | `"UseG1GC"` |  |
-| config.coordinator.jvm.maxHeapSize | string | `"24G"` |  |
+| config.coordinator.jvm.maxRAMPercentage | float | `80` |  |
 | config.coordinator.jvmExtraConfig | string | `""` |  |
 | config.coordinator.nodeSelector | object | `{}` |  |
 | config.coordinator.podAnnotations | object | `{}` |  |
@@ -75,7 +75,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.worker.initContainers | list | `[]` |  |
 | config.worker.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | config.worker.jvm.gcMethod.type | string | `"UseG1GC"` |  |
-| config.worker.jvm.maxHeapSize | string | `"10G"` |  |
+| config.worker.jvm.maxRAMPercentage | float | `80` |  |
 | config.worker.jvmExtraConfig | string | `""` |  |
 | config.worker.lifecycle | object | `{}` |  |
 | config.worker.nodeSelector | object | `{}` |  |

@@ -79,7 +79,7 @@ config:
     #     imagePullPolicy: IfNotPresent
     #     command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
     jvm:
-      maxHeapSize: "24G"
+      maxRAMPercentage: 80.0
       gcMethod:
         type: "UseG1GC"
         g1:
@@ -112,7 +112,7 @@ config:
     #     image: busybox:1.28
     #     command: ['sh', '-c', 'echo The worker is running! && sleep 3600']
     jvm:
-      maxHeapSize: "10G"
+      maxRAMPercentage: 80.0
       gcMethod:
         type: "UseG1GC"
         g1:

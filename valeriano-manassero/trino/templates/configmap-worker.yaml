@@ -14,7 +14,8 @@ data:
 
   jvm.config: |
     -server
-    -Xmx{{ .Values.config.worker.jvm.maxHeapSize }}
+    -XX:InitialRAMPercentage={{ .Values.config.worker.jvm.MaxRAMPercentage }}
+    -XX:MaxRAMPercentage={{ .Values.config.worker.jvm.MaxRAMPercentage }}
     -XX:+{{ .Values.config.worker.jvm.gcMethod.type }}
     -XX:G1HeapRegionSize={{ .Values.config.worker.jvm.gcMethod.g1.heapRegionSize }}
     -XX:+UseGCOverheadLimit
