@@ -340,6 +340,40 @@ entries:
   trino:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: Switch to the -XX:InitialRAMPercentage and -XX:MaxRAMPercentage instead of -Xmx flag
+    apiVersion: v1
+    appVersion: "426"
+    created: "2023-09-24T06:54:45.973575859Z"
+    description: High performance, distributed SQL query engine for big data
+    digest: a25e23555327b2b60133e60e8b3aa90f17b67d0176ca07df612e4e09fbb6848e
+    home: https://trino.io
+    icon: https://trino.io/assets/images/trino-logo/trino-ko_tiny-alt.svg
+    keywords:
+    - trino
+    - trinosql
+    - trinodb
+    - presto
+    - prestosql
+    - prestodb
+    - big data
+    - database
+    - sql
+    - query engine
+    - high performance
+    kubeVersion: '>= 1.24.0-0 < 1.28.0-0'
+    maintainers:
+    - name: valeriano-manassero
+      url: https://github.com/valeriano-manassero
+    name: trino
+    sources:
+    - https://github.com/valeriano-manassero/helm-charts
+    - https://github.com/trinodb/trino
+    urls:
+    - https://github.com/valeriano-manassero/helm-charts/releases/download/trino-7.0.0/trino-7.0.0.tgz
+    version: 7.0.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: Fix configuration for env and envFrom for worker and coordinator
     apiVersion: v1
