@@ -461,7 +461,7 @@ podSecurityContext:
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
-  
+
 # -- SecurityContext configuration for containers
 containerSecurityContext:
   allowPrivilegeEscalation: false
