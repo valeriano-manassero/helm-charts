@@ -2,10 +2,6 @@ image:
   repository: trinodb/trino
   tag: 426
   pullPolicy: IfNotPresent
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
 
 fullnameOverride: trino
 
@@ -456,6 +452,21 @@ serviceAccount:
 
 # sets extra service annotations for the trino server service
 serviceAnnotations: {}
+
+# -- SecurityContext configuration for pods
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+# -- SecurityContext configuration for containers
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
 
 initKeystore:
   image:

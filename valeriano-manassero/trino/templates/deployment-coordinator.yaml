@@ -25,12 +25,8 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
-      {{- with .Values.image.securityContext }}
       securityContext:
-        runAsUser: {{ .runAsUser }}
-        runAsGroup: {{ .runAsGroup }}
-        fsGroup: {{ .fsGroup }}
-      {{- end }}
+        {{ toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: config-volume
           projected:
@@ -120,11 +116,8 @@ spec:
         - name: download-jmx-exporter
           image: {{ .Values.jmxExporter.image.repository }}:{{ .Values.jmxExporter.image.tag }}
           imagePullPolicy: {{ .Values.jmxExporter.image.pullPolicy }}
-          {{- with .Values.image.securityContext }}
           securityContext:
-            runAsUser: {{ .runAsUser }}
-            runAsGroup: {{ .runAsGroup }}
-          {{- end }}
+            {{ toYaml .Values.containerSecurityContext | nindent 12 }}
           args:
             - "--output"
             - "{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}"
@@ -137,11 +130,8 @@ spec:
         - name: init-certs
           image: {{ .Values.initKeystore.image.repository }}:{{ .Values.initKeystore.image.tag }}
           imagePullPolicy: {{ .Values.initKeystore.image.pullPolicy }}
-          {{- with .Values.image.securityContext }}
           securityContext:
-            runAsUser: {{ .runAsUser }}
-            runAsGroup: {{ .runAsGroup }}
-          {{- end }}
+            {{ toYaml .Values.containerSecurityContext | nindent 12 }}
           command: [ /bin/bash ]
           args:
           - -ec
