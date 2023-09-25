@@ -19,7 +19,7 @@ High performance, distributed SQL query engine for big data
 
 ## Requirements
 
-Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
+Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
 
 ## Values
 
@@ -87,7 +87,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | config.worker.tolerations | list | `[]` |  |
 | configMapMounts | list | `[]` |  |
 | connectors | object | `{}` |  |
-| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"fsGroup":1000,"runAsGroup":1000,"runAsUser":1000}` | SecurityContext configuration for containers |
+| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]}}` | SecurityContext configuration for containers |
 | eventListenerProperties | object | `{}` |  |
 | faultTolerance.enabled | bool | `false` |  |
 | fullnameOverride | string | `"trino"` |  |
@@ -120,7 +120,7 @@ Kubernetes: `>= 1.24.0-0 < 1.28.0-0`
 | jmxExporter.serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | jmxExporter.worker.enabled | bool | `false` |  |
 | passwordAuthenticatorProperties | object | `{}` | Password authenticator configuration, an item per conf line. Requiere `config.general.authenticationType` set to `PASSWORD`. For file : you don't need to use this propertie if you set `config.general.authenticationType` to `PASSWORD` and use `config.auth` to fill `auth/password.db`. For LDAP : https://trino.io/docs/current/security/ldap.html. For SalesForce : https://trino.io/docs/current/security/salesforce.html |
-| podSecurityContext | object | `{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}}` | SecurityContext configuration for pods |
+| podSecurityContext | object | `{"fsGroup":1000,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}` | SecurityContext configuration for pods |
 | resourceGroups | object | `{}` |  |
 | schemas | object | `{}` |  |
 | secretMounts | list | `[]` |  |
