@@ -187,6 +187,8 @@ spec:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{ toYaml .Values.containerSecurityContext | nindent 12 }}
           {{- if or .Values.config.general.env .Values.config.coordinator.env .Values.tls.keystorePasswordSecret }}
           env:
             {{- if .Values.tls.keystorePasswordSecret }}
