@@ -1,6 +1,6 @@
 image:
   repository: trinodb/trino
-  tag: 426
+  tag: 433
   pullPolicy: IfNotPresent
 
 fullnameOverride: trino
