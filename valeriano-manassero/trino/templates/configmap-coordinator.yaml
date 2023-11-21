@@ -13,22 +13,21 @@ data:
 
   jvm.config: |
     -server
+    -agentpath:/usr/lib/trino/bin/libjvmkill.so
     -XX:InitialRAMPercentage={{ .Values.config.coordinator.jvm.maxRAMPercentage }}
     -XX:MaxRAMPercentage={{ .Values.config.coordinator.jvm.maxRAMPercentage }}
     -XX:+{{ .Values.config.coordinator.jvm.gcMethod.type }}
     -XX:G1HeapRegionSize={{ .Values.config.coordinator.jvm.gcMethod.g1.heapRegionSize }}
-    -XX:+UseGCOverheadLimit
     -XX:+ExplicitGCInvokesConcurrent
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+ExitOnOutOfMemoryError
-    -Djdk.attach.allowAttachSelf=true
-    -XX:-UseBiasedLocking
+    -XX:-OmitStackTraceInFastThrow
     -XX:ReservedCodeCacheSize=512M
     -XX:PerMethodRecompilationCutoff=10000
     -XX:PerBytecodeRecompilationCutoff=10000
+    -Djdk.attach.allowAttachSelf=true
     -Djdk.nio.maxCachedBufferSize=2000000
     -XX:+UnlockDiagnosticVMOptions
-    -XX:+UseAESCTRIntrinsics
 {{- if .Values.jmxExporter.coordinator.enabled }}
     -javaagent:{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}={{ .Values.jmxExporter.port }}:{{ .Values.jmxExporter.path }}/etc/trino.yaml
 {{- end }}
