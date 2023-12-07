@@ -1,6 +1,6 @@
 # trino
 
-![Version: 9.0.0](https://img.shields.io/badge/Version-9.0.0-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
+![Version: 9.1.0](https://img.shields.io/badge/Version-9.1.0-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -89,6 +89,7 @@ Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
 | connectors | object | `{}` |  |
 | containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]}}` | SecurityContext configuration for containers |
 | eventListenerProperties | object | `{}` |  |
+| faultTolerance.configAsSecret | bool | `true` |  |
 | faultTolerance.enabled | bool | `false` |  |
 | fullnameOverride | string | `"trino"` |  |
 | groupProvider | object | `{}` |  |
