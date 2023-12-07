@@ -353,6 +353,7 @@ groupProvider: {}
 
 faultTolerance:
   enabled: false
+  configAsSecret: true
   # properties: |-
   #   exchange-manager.name=filesystem
   #   exchange.base-directories=s3://<bucket-name>
