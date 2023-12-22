@@ -35,7 +35,7 @@ spec:
             - configMap:
                 name: {{ template "trino.worker" . }}
 
-            {{- if .Values.faultTolerance.enabled }}
+            {{- if and .Values.faultTolerance.enabled .Values.faultTolerance.configAsSecret }}
             - secret:
                 name: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
             {{- end }}
