@@ -19,7 +19,7 @@ High performance, distributed SQL query engine for big data
 
 ## Requirements
 
-Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
+Kubernetes: `>= 1.24.0-0 < 1.30.0-0`
 
 ## Values
 
