@@ -27,4 +27,4 @@ keywords:
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: restore ability to provide fault tolerance config without b64 encoded secret
+      description: Fix worker initContainer condition so it is done on worker and not on coordinator.

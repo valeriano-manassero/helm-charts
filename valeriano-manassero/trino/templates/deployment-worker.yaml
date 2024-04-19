@@ -78,7 +78,7 @@ spec:
         - name: {{ $volumeName }}
         {{- tpl (toYaml $volume) $ | nindent 10 -}}
         {{- end }}
-      {{- if or .Values.jmxExporter.worker.enabled .Values.config.coordinator.initContainers }}
+      {{- if or .Values.jmxExporter.worker.enabled .Values.config.worker.initContainers }}
       initContainers:
       {{- if .Values.jmxExporter.worker.enabled }}
         - name: download-jmx-exporter
