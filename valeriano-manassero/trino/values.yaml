@@ -30,6 +30,10 @@ config:
     log:
       trino:
         level: INFO
+        extraLevels: {}
+        # For example:
+        # extraLevels:
+        #   org.apache.kafka: WARN
     path: /etc/trino
     http:
       port: 8080

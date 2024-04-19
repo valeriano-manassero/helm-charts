@@ -66,6 +66,9 @@ data:
 
   log.properties: |
     io.trino={{ .Values.config.general.log.trino.level }}
+  {{- range $package, $level := .Values.config.general.log.trino.extraLevels }}
+    {{ $package }}={{ $level }}
+  {{- end }}
 
 {{ if .Values.config.general.authenticationType }}{{ if contains "PASSWORD" .Values.config.general.authenticationType }}
   password-authenticator.properties: |

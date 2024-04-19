@@ -1,6 +1,6 @@
 # trino
 
-![Version: 9.1.1](https://img.shields.io/badge/Version-9.1.1-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
+![Version: 9.3.0](https://img.shields.io/badge/Version-9.3.0-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -55,6 +55,7 @@ Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
 | config.general.httpsServer.keystore.path | string | `"/usr/local/certs/clustercoord.pem"` |  |
 | config.general.httpsServer.port | int | `8443` |  |
 | config.general.internalCommunicationSharedSecret | string | `"some-secret"` |  |
+| config.general.log.trino.extraLevels | object | `{}` |  |
 | config.general.log.trino.level | string | `"INFO"` |  |
 | config.general.node.dataDir | string | `"/data/trino"` |  |
 | config.general.node.environment | string | `"production"` |  |
