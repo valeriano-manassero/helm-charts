@@ -51,6 +51,9 @@ data:
 
   log.properties: |
     io.trino={{ .Values.config.general.log.trino.level }}
+  {{- range $package, $level := .Values.config.general.log.trino.extraLevels }}
+    {{ $package }}={{ $level }}
+  {{- end }}
 
 {{- if .Values.faultTolerance.enabled }}{{- if not .Values.faultTolerance.configAsSecret }}
   exchange-manager.properties: |
