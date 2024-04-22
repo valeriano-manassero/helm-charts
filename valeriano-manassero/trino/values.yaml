@@ -131,13 +131,13 @@ config:
     extraVolumeMounts: {}
       # sample config for temp storage volume mount
       # localtemp:
-      #  mountpath: /tmp/localtemp
-    #  readOnly: false
+      #   mountpath: /tmp/localtemp
+      #   readOnly: false
     extraVolumes: {}
       # sample config for temp storage volume
       # localtemp:
-      #  hostPath:
-    #    path: /mnt
+      #   hostPath:
+      #     path: /mnt
 
 
 eventListenerProperties: {}
