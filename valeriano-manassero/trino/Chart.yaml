@@ -27,4 +27,4 @@ keywords:
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: Fix worker initContainer condition so it is done on worker and not on coordinator.
+      description: Add the capability to configure extra volumes and extra volume mounts.
