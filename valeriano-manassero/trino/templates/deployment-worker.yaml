@@ -74,6 +74,10 @@ spec:
           configMap:
             name: {{ .configMapName }}
         {{- end }}
+        {{- range $volumeName, $volume := .Values.config.worker.extraVolumes }}
+        - name: {{ $volumeName }}
+        {{- tpl (toYaml $volume) $ | nindent 10 -}}
+        {{- end }}
       {{- if or .Values.jmxExporter.worker.enabled .Values.config.worker.initContainers }}
       initContainers:
       {{- if .Values.jmxExporter.worker.enabled }}
@@ -151,6 +155,10 @@ spec:
               {{- if .subPath }}
               subPath: {{ .subPath }}
               {{- end }}
+            {{- end }}
+            {{- range $mountName, $mount := .Values.config.worker.extraVolumeMounts }}
+            - name: {{ $mountName }}
+            {{- tpl (toYaml $mount) $ | nindent 14 -}}
             {{- end }}
           {{- if .Values.jmxExporter.worker.enabled }}
           ports:

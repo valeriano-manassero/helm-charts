@@ -128,6 +128,16 @@ config:
       # preStop:
       #   exec:
       #     command: ["sh", "-c", "curl -v -X PUT -d '\"SHUTTING_DOWN\"' -H \"Content-type: application/json\" -H \"X-Trino-User: admin\" http://localhost:8080/v1/info/state"]
+    extraVolumeMounts: {}
+      # sample config for temp storage volume mount
+      # localtemp:
+      #   mountpath: /tmp/localtemp
+      #   readOnly: false
+    extraVolumes: {}
+      # sample config for temp storage volume
+      # localtemp:
+      #   hostPath:
+      #     path: /mnt
 
 
 eventListenerProperties: {}
