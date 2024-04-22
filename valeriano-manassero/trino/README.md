@@ -73,6 +73,8 @@ Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
 | config.worker.env | list | `[]` |  |
 | config.worker.envFrom | list | `[]` |  |
 | config.worker.extraConfig | string | `""` |  |
+| config.worker.extraVolumeMounts | object | `{}` |  |
+| config.worker.extraVolumes | object | `{}` |  |
 | config.worker.initContainers | list | `[]` |  |
 | config.worker.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | config.worker.jvm.gcMethod.type | string | `"UseG1GC"` |  |
