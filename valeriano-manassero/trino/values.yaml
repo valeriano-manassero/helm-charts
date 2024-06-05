@@ -1,6 +1,6 @@
 image:
   repository: trinodb/trino
-  tag: 433
+  tag: 449
   pullPolicy: IfNotPresent
 
 fullnameOverride: trino
@@ -84,7 +84,19 @@ config:
         type: "UseG1GC"
         g1:
           heapRegionSize: "32M"
-    jvmExtraConfig: ""
+    jvmExtraConfig: |-
+      -agentpath:/usr/lib/trino/bin/libjvmkill.so
+      -XX:+ExplicitGCInvokesConcurrent
+      -XX:+HeapDumpOnOutOfMemoryError
+      -XX:+ExitOnOutOfMemoryError
+      -XX:-OmitStackTraceInFastThrow
+      -XX:ReservedCodeCacheSize=512M
+      -XX:PerMethodRecompilationCutoff=10000
+      -XX:PerBytecodeRecompilationCutoff=10000
+      -Djdk.attach.allowAttachSelf=true
+      -Djdk.nio.maxCachedBufferSize=2000000
+      -XX:+UnlockDiagnosticVMOptions
+      -XX:G1NumCollectionsKeepPinned=10000000
     extraConfig: ""
     query:
       maxMemoryPerNode: "1GB"
@@ -117,7 +129,19 @@ config:
         type: "UseG1GC"
         g1:
           heapRegionSize: "32M"
-    jvmExtraConfig: ""
+    jvmExtraConfig: |-
+      -agentpath:/usr/lib/trino/bin/libjvmkill.so
+      -XX:+ExplicitGCInvokesConcurrent
+      -XX:+HeapDumpOnOutOfMemoryError
+      -XX:+ExitOnOutOfMemoryError
+      -XX:-OmitStackTraceInFastThrow
+      -XX:ReservedCodeCacheSize=512M
+      -XX:PerMethodRecompilationCutoff=10000
+      -XX:PerBytecodeRecompilationCutoff=10000
+      -Djdk.attach.allowAttachSelf=true
+      -Djdk.nio.maxCachedBufferSize=2000000
+      -XX:+UnlockDiagnosticVMOptions
+      -XX:G1NumCollectionsKeepPinned=10000000
     extraConfig: ""
     query:
       maxMemoryPerNode: "1GB"
