@@ -19,16 +19,6 @@ data:
     -XX:MaxRAMPercentage={{ .Values.config.worker.jvm.maxRAMPercentage }}
     -XX:+{{ .Values.config.worker.jvm.gcMethod.type }}
     -XX:G1HeapRegionSize={{ .Values.config.worker.jvm.gcMethod.g1.heapRegionSize }}
-    -XX:+ExplicitGCInvokesConcurrent
-    -XX:+HeapDumpOnOutOfMemoryError
-    -XX:+ExitOnOutOfMemoryError
-    -XX:-OmitStackTraceInFastThrow
-    -XX:ReservedCodeCacheSize=512M
-    -XX:PerMethodRecompilationCutoff=10000
-    -XX:PerBytecodeRecompilationCutoff=10000
-    -Djdk.attach.allowAttachSelf=true
-    -Djdk.nio.maxCachedBufferSize=2000000
-    -XX:+UnlockDiagnosticVMOptions
 {{- if .Values.jmxExporter.worker.enabled }}
     -javaagent:{{ .Values.jmxExporter.path }}/lib/{{ .Values.jmxExporter.jarfile }}={{ .Values.jmxExporter.port }}:{{ .Values.jmxExporter.path }}/etc/trino.yaml
 {{- end }}

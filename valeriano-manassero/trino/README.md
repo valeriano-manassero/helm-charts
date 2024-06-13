@@ -1,6 +1,6 @@
 # trino
 
-![Version: 9.3.0](https://img.shields.io/badge/Version-9.3.0-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
+![Version: 10.0.0](https://img.shields.io/badge/Version-10.0.0-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -19,7 +19,7 @@ High performance, distributed SQL query engine for big data
 
 ## Requirements
 
-Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
+Kubernetes: `>= 1.24.0-0 < 1.31.0-0`
 
 ## Values
 
@@ -37,7 +37,7 @@ Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
 | config.coordinator.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | config.coordinator.jvm.gcMethod.type | string | `"UseG1GC"` |  |
 | config.coordinator.jvm.maxRAMPercentage | float | `80` |  |
-| config.coordinator.jvmExtraConfig | string | `""` |  |
+| config.coordinator.jvmExtraConfig | string | `"-agentpath:/usr/lib/trino/bin/libjvmkill.so\n-XX:+ExplicitGCInvokesConcurrent\n-XX:+HeapDumpOnOutOfMemoryError\n-XX:+ExitOnOutOfMemoryError\n-XX:-OmitStackTraceInFastThrow\n-XX:ReservedCodeCacheSize=512M\n-XX:PerMethodRecompilationCutoff=10000\n-XX:PerBytecodeRecompilationCutoff=10000\n-Djdk.attach.allowAttachSelf=true\n-Djdk.nio.maxCachedBufferSize=2000000\n-XX:+UnlockDiagnosticVMOptions\n-XX:G1NumCollectionsKeepPinned=10000000"` |  |
 | config.coordinator.nodeSelector | object | `{}` |  |
 | config.coordinator.podAnnotations | object | `{}` |  |
 | config.coordinator.podLabels | object | `{}` |  |
@@ -79,7 +79,7 @@ Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
 | config.worker.jvm.gcMethod.g1.heapRegionSize | string | `"32M"` |  |
 | config.worker.jvm.gcMethod.type | string | `"UseG1GC"` |  |
 | config.worker.jvm.maxRAMPercentage | float | `80` |  |
-| config.worker.jvmExtraConfig | string | `""` |  |
+| config.worker.jvmExtraConfig | string | `"-agentpath:/usr/lib/trino/bin/libjvmkill.so\n-XX:+ExplicitGCInvokesConcurrent\n-XX:+HeapDumpOnOutOfMemoryError\n-XX:+ExitOnOutOfMemoryError\n-XX:-OmitStackTraceInFastThrow\n-XX:ReservedCodeCacheSize=512M\n-XX:PerMethodRecompilationCutoff=10000\n-XX:PerBytecodeRecompilationCutoff=10000\n-Djdk.attach.allowAttachSelf=true\n-Djdk.nio.maxCachedBufferSize=2000000\n-XX:+UnlockDiagnosticVMOptions\n-XX:G1NumCollectionsKeepPinned=10000000"` |  |
 | config.worker.lifecycle | object | `{}` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
@@ -98,7 +98,7 @@ Kubernetes: `>= 1.24.0-0 < 1.29.0-0`
 | groupProvider | object | `{}` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"trinodb/trino"` |  |
-| image.tag | int | `433` |  |
+| image.tag | int | `449` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
