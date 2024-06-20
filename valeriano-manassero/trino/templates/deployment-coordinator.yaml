@@ -287,12 +287,21 @@ spec:
             {{- end }}
           livenessProbe:
             httpGet:
-              path: /v1/status
+              path: /v1/info
               port: http-coord
+            initialDelaySeconds: {{ .Values.config.coordinator.livenessProbe.initialDelaySeconds | default 30 }}
+            periodSeconds: {{ .Values.config.coordinator.livenessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.config.coordinator.livenessProbe.timeoutSeconds | default 5 }}
+            failureThreshold: {{ .Values.config.coordinator.livenessProbe.failureThreshold | default 6 }}
+            successThreshold: {{ .Values.config.coordinator.livenessProbe.successThreshold | default 1 }}
           readinessProbe:
-            httpGet:
-              path: /v1/status
-              port: http-coord
+            exec:
+              command: [/usr/lib/trino/bin/health-check]
+            initialDelaySeconds: {{ .Values.config.coordinator.readinessProbe.initialDelaySeconds | default 10 }}
+            periodSeconds: {{ .Values.config.coordinator.readinessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.config.coordinator.readinessProbe.timeoutSeconds | default 5 }}
+            failureThreshold: {{ .Values.config.coordinator.readinessProbe.failureThreshold | default 6 }}
+            successThreshold: {{ .Values.config.coordinator.readinessProbe.successThreshold | default 1 }}
           resources:
 {{ toYaml .Values.config.coordinator.resources | indent 12 }}
     {{- with .Values.config.coordinator.nodeSelector }}

@@ -39,10 +39,6 @@ spec:
             - secret:
                 name: {{ .Values.faultToleranceSecret | default "trino-fault-tolerance" }}
             {{- end }}
-        - name: health-check-volume
-          configMap:
-            name: {{ template "trino.worker" . }}-health-check
-            defaultMode: 0777
         {{- if eq .Values.config.general.catalogsMountType "configmap" }}
         - name: catalog-volume
           configMap:
@@ -130,8 +126,6 @@ spec:
               name: config-volume
             - mountPath: /etc/trino/schemas
               name: schemas-volume
-            - mountPath: /startup/
-              name: health-check-volume
             - mountPath: {{ .Values.config.general.path }}/catalog
               name: catalog-volume
             - mountPath: {{ .Values.config.general.path }}/certs
@@ -160,8 +154,11 @@ spec:
             - name: {{ $mountName }}
             {{- tpl (toYaml $mount) $ | nindent 14 -}}
             {{- end }}
-          {{- if .Values.jmxExporter.worker.enabled }}
           ports:
+            - name: http-worker
+              containerPort: {{ .Values.config.general.http.port }}
+              protocol: TCP
+          {{- if .Values.jmxExporter.worker.enabled }}
             - name: jmx-exporter
               containerPort: {{ .Values.jmxExporter.port | default 9000 }}
               protocol: TCP
@@ -171,17 +168,22 @@ spec:
 {{ toYaml . | nindent 12 }}
           {{- end }}
           livenessProbe:
-            exec:
-              command:
-                - /startup/health_check.sh
-            initialDelaySeconds: 10
-            periodSeconds: 25
+            httpGet:
+              path: /v1/info
+              port: http-worker
+            initialDelaySeconds: {{ .Values.config.worker.livenessProbe.initialDelaySeconds | default 30 }}
+            periodSeconds: {{ .Values.config.worker.livenessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.config.worker.livenessProbe.timeoutSeconds | default 5 }}
+            failureThreshold: {{ .Values.config.worker.livenessProbe.failureThreshold | default 6 }}
+            successThreshold: {{ .Values.config.worker.livenessProbe.successThreshold | default 1 }}
           readinessProbe:
             exec:
-              command:
-                - /startup/health_check.sh
-            initialDelaySeconds: 5
-            periodSeconds: 10
+              command: [/usr/lib/trino/bin/health-check]
+            initialDelaySeconds: {{ .Values.config.worker.readinessProbe.initialDelaySeconds | default 10 }}
+            periodSeconds: {{ .Values.config.worker.readinessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.config.worker.readinessProbe.timeoutSeconds | default 5 }}
+            failureThreshold: {{ .Values.config.worker.readinessProbe.failureThreshold | default 6 }}
+            successThreshold: {{ .Values.config.worker.readinessProbe.successThreshold | default 1 }}
           resources:
 {{ toYaml .Values.config.worker.resources | indent 12 }}
     {{- with .Values.config.worker.nodeSelector }}

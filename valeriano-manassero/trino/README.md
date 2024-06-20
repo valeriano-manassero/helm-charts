@@ -1,6 +1,6 @@
 # trino
 
-![Version: 10.0.0](https://img.shields.io/badge/Version-10.0.0-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
+![Version: 10.1.0](https://img.shields.io/badge/Version-10.1.0-informational?style=flat-square) ![AppVersion: 433](https://img.shields.io/badge/AppVersion-433-informational?style=flat-square)
 
 High performance, distributed SQL query engine for big data
 
@@ -38,10 +38,12 @@ Kubernetes: `>= 1.24.0-0 < 1.31.0-0`
 | config.coordinator.jvm.gcMethod.type | string | `"UseG1GC"` |  |
 | config.coordinator.jvm.maxRAMPercentage | float | `80` |  |
 | config.coordinator.jvmExtraConfig | string | `"-agentpath:/usr/lib/trino/bin/libjvmkill.so\n-XX:+ExplicitGCInvokesConcurrent\n-XX:+HeapDumpOnOutOfMemoryError\n-XX:+ExitOnOutOfMemoryError\n-XX:-OmitStackTraceInFastThrow\n-XX:ReservedCodeCacheSize=512M\n-XX:PerMethodRecompilationCutoff=10000\n-XX:PerBytecodeRecompilationCutoff=10000\n-Djdk.attach.allowAttachSelf=true\n-Djdk.nio.maxCachedBufferSize=2000000\n-XX:+UnlockDiagnosticVMOptions\n-XX:G1NumCollectionsKeepPinned=10000000"` |  |
+| config.coordinator.livenessProbe | object | `{}` |  |
 | config.coordinator.nodeSelector | object | `{}` |  |
 | config.coordinator.podAnnotations | object | `{}` |  |
 | config.coordinator.podLabels | object | `{}` |  |
 | config.coordinator.query.maxMemoryPerNode | string | `"1GB"` |  |
+| config.coordinator.readinessProbe | object | `{}` |  |
 | config.coordinator.replicas | int | `1` |  |
 | config.coordinator.resources | object | `{}` |  |
 | config.coordinator.tolerations | list | `[]` |  |
@@ -81,10 +83,12 @@ Kubernetes: `>= 1.24.0-0 < 1.31.0-0`
 | config.worker.jvm.maxRAMPercentage | float | `80` |  |
 | config.worker.jvmExtraConfig | string | `"-agentpath:/usr/lib/trino/bin/libjvmkill.so\n-XX:+ExplicitGCInvokesConcurrent\n-XX:+HeapDumpOnOutOfMemoryError\n-XX:+ExitOnOutOfMemoryError\n-XX:-OmitStackTraceInFastThrow\n-XX:ReservedCodeCacheSize=512M\n-XX:PerMethodRecompilationCutoff=10000\n-XX:PerBytecodeRecompilationCutoff=10000\n-Djdk.attach.allowAttachSelf=true\n-Djdk.nio.maxCachedBufferSize=2000000\n-XX:+UnlockDiagnosticVMOptions\n-XX:G1NumCollectionsKeepPinned=10000000"` |  |
 | config.worker.lifecycle | object | `{}` |  |
+| config.worker.livenessProbe | object | `{}` |  |
 | config.worker.nodeSelector | object | `{}` |  |
 | config.worker.podAnnotations | object | `{}` |  |
 | config.worker.podLabels | object | `{}` |  |
 | config.worker.query.maxMemoryPerNode | string | `"1GB"` |  |
+| config.worker.readinessProbe | object | `{}` |  |
 | config.worker.replicas | int | `2` | Replica count when autoscaler is disabled. If autoscaler is enabled, it sets minimum number of replicas. |
 | config.worker.resources | object | `{}` |  |
 | config.worker.tolerations | list | `[]` |  |

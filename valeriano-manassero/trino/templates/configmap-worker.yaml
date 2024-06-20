@@ -62,18 +62,6 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "trino.worker" . }}-health-check
-  labels:
-    {{- include "trino.labels" . | nindent 4 }}
-    app.kubernetes.io/component: worker
-data:
-  health_check.sh: |
-    #!/bin/bash
-    curl -H 'X-trino-User: healthCheck' -m 3 --silent {{ template "trino.fullname" . }}:{{ .Values.config.general.http.port }}/v1/info/state | grep --silent 'ACTIVE'
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: {{ template "trino.fullname" . }}-schemas-volume-worker
   labels:
     {{- include "trino.labels" . | nindent 4 }}
